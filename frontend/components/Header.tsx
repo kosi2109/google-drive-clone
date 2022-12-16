@@ -3,11 +3,9 @@ import React, { useCallback, useRef, useState } from "react";
 import Logo from "../public/assets/driveLogo.png";
 import People from "../public/assets/test.jpg";
 import { GoSettings } from "react-icons/go";
-import { AiOutlineClose, AiFillFolder, AiOutlineSearch } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import RoundedHoverBtn from "./buttons/RoundedHoverBtn";
-import SearchHistories from "./Search/SearchHistories";
-import FileTypes from "./Search/FileTypes";
-import AdvanceFilter from "./Search/AdvanceFilter";
+import { SearchHistories, AdvanceFilter, FileTypes } from "./Search";
 
 function Header() {
   const [isFoucs, setIsFoucs] = useState<boolean>(false);
@@ -50,7 +48,7 @@ function Header() {
             value={keyword}
             onChange={searchHandler}
             type="text"
-            className="border-none outline-none bg-transparent w-full h-8 pl-12 pr-20 text-md bg-red-100"
+            className="border-none outline-none bg-transparent w-full h-8 pl-12 pr-20 text-md"
             placeholder="Search in Drive"
           />
           {keyword.length > 0 && (
@@ -65,7 +63,7 @@ function Header() {
             className="absolute right-1"
             onClickHandle={() => setOpenFilter((pre: any) => !pre)}
           />
-          
+
           {/* if open filter */}
           {openFilter && (
             <div className="absolute top-[95%] w-full shadow-lg border bg-white z-[100]">

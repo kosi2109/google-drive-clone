@@ -1,7 +1,12 @@
 import React from "react";
-import { IconType } from "react-icons";
+import { RoundedBtnType } from "../../types/components";
 
-function RoundedHoverBtn({Icon, className, onClickHandle}: {Icon: IconType; className?: string; onClickHandle?: any}) {
+function RoundedHoverBtn({
+  Icon,
+  className,
+  onClickHandle,
+  size = 23,
+}: RoundedBtnType) {
   return (
     <button
       onClick={onClickHandle}
@@ -9,7 +14,7 @@ function RoundedHoverBtn({Icon, className, onClickHandle}: {Icon: IconType; clas
         className && className
       }`}
     >
-      <Icon size={23} />
+      <Icon size={size} />
     </button>
   );
 }
