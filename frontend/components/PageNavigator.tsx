@@ -1,6 +1,5 @@
 import React from "react";
-import { AiOutlineInfoCircle } from "react-icons/ai";
-import { FaList } from "react-icons/fa";
+import { AiOutlineInfoCircle, AiOutlineUnorderedList } from "react-icons/ai";
 import { PageNavigatorType } from "../types/components";
 import { RoundedHoverBtn } from "./buttons";
 
@@ -11,8 +10,8 @@ function PageNavigator({ pageName }: PageNavigatorType) {
         <p className="text-lg">{pageName}</p>
       </div>
       <div className="flex">
-        <RoundedHoverBtn Icon={FaList} size={20} />
-        <RoundedHoverBtn Icon={AiOutlineInfoCircle} size={20} />
+        <RoundedHoverBtn Icon={AiOutlineUnorderedList} />
+        <RoundedHoverBtn Icon={AiOutlineInfoCircle} />
       </div>
     </div>
   );

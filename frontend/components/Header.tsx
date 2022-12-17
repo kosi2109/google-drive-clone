@@ -26,7 +26,7 @@ function Header() {
   };
 
   return (
-    <div className="py-3 px-4 border-b flex justify-between items-center h-20">
+    <div className="py-3 px-4 border-b flex justify-between items-center h-18">
       {/* logo */}
       <div className="flex items-center w-1/6">
         <Image src={Logo} alt="Logo" width={45} height={45} className="mr-1" />

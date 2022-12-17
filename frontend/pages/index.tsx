@@ -1,4 +1,5 @@
 import { useSelector } from "react-redux"
+import { GridContainer } from "../components/CardContainer";
 import { selectUser } from "../features/userSlice";
 
 export default function Home() {
@@ -6,7 +7,8 @@ export default function Home() {
 
   return (
     <div>
-      <h1 className="text-center">Hello {user.name}</h1>
+      <GridContainer title="Today" />
+      <GridContainer title="Last week" />
     </div>
   )
 }
