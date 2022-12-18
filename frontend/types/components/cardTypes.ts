@@ -1,16 +1,18 @@
 import { IconType } from "../../constant/fileTypes"
 
-type GridContainerType = {
+type ItemsContainerType = {
     title : string
 }
 
-type GridCardType = {
+type ItemType = {
+    id : number,
     type : keyof typeof IconType,
     image : string,
-    title : string
+    title : string,
+    isListItem? : boolean
 }
 
 export type {
-    GridContainerType,
-    GridCardType
+    ItemsContainerType,
+    ItemType
 }

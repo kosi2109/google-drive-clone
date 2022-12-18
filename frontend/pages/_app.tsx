@@ -15,9 +15,7 @@ export default function App({ Component, pageProps }: AppProps) {
           </div>
           <div className="w-5/6">
             <PageNavigator pageName="test" />
-            <div className="w-full h-screen overflow-scroll pb-32">
-              <Component {...pageProps} />
-            </div>
+            <Component {...pageProps} />
           </div>
         </div>
       </div>

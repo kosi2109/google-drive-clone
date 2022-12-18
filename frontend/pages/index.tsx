@@ -1,14 +1,14 @@
 import { useSelector } from "react-redux"
-import { GridContainer } from "../components/CardContainer";
+import ItemsContainer from "../components/Items/ItemsContainer";
+import AppLayout from "../components/Layouts/AppLayout";
 import { selectUser } from "../features/userSlice";
 
 export default function Home() {
   const user = useSelector(selectUser);
 
   return (
-    <div>
-      <GridContainer title="Today" />
-      <GridContainer title="Last week" />
-    </div>
+    <AppLayout>
+      <ItemsContainer title="Today" />
+    </AppLayout>
   )
 }

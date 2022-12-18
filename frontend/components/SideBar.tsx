@@ -8,6 +8,7 @@ function LinkList() {
     <div className="flex flex-col pr-4">
       {sideBarLink.map((link, i) => (
         <SideBarBtn
+          key={i}
           Icon={link.icon}
           text={link.text}
           active={i === 0 ? true : false}
