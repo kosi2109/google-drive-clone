@@ -2,15 +2,11 @@ import { createSlice } from "@reduxjs/toolkit";
 import { ItemType } from "../types/data/itemTypes";
 
 export type ItemState = {
-    selected : ItemType
+    selected : ItemType | null
 }
   
 const initialState: ItemState = {
-    selected : {
-        id: 0,
-        title : "",
-        type : ""
-    }
+    selected : null
 }
 
 export const itemSlice = createSlice({

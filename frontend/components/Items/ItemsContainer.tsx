@@ -62,6 +62,7 @@ function ItemsContainer({ title }: ItemsContainerType) {
       <div className={isListView ? "flex flex-col" : `grid grid-cols-2 ${ isOpenDetail ? 'lg:grid-cols-3' : 'lg:grid-cols-5' } gap-2 transition-all` }>
         {dumpData.map((d) => (
           <Item
+            key={d.id}
             id={d.id}
             type={d.type}
             image={d.image}

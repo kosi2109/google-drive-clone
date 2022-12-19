@@ -1,15 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import getIconByType from "../../constant/fileTypes";
 import { selectIsOpenDetailView } from "../../features/appSlice";
 import { changeSelectItem, selectSelectedItem } from "../../features/itemSlice";
+import useOutsideClick from "../../hooks/useOutsideClick";
 import { ItemType } from "../../types/components/cardTypes";
 
 const styleFunction = (isList: boolean) => {
 
   const itemClass = isList
-    ? "flex items-center h-10 px-4 py-6"
-    : "flex flex-col border-2 rounded-md overflow-hidden w-60 h-60 group";
+    ? "flex items-center h-10 px-4 py-6 select-none"
+    : "flex flex-col border-2 rounded-md overflow-hidden w-60 h-60 group select-none";
   const itemClassOnFocus = isList
     ? "border border-blue-700 text-blue-900 bg-blue-50"
     : "border-blue-400";
@@ -38,14 +39,17 @@ function Item({id, type, image, title, isListItem = false }: ItemType) {
   const item = useSelector(selectSelectedItem);
   const dispatch = useDispatch();
   const isOpenDetail = useSelector(selectIsOpenDetailView);
+  const focusRef = useRef<any>();
 
+  useOutsideClick(focusRef);
 
   useEffect(() => {
-    setFocus(item.id === id);
+    setFocus(item?.id === id);
   },[item])
 
   return (
     <div
+      ref={focus ? focusRef : null}
       onClick={() => dispatch(changeSelectItem({id,title,type}))}
       className={`${style.itemClass} 
       ${ focus ? style.itemClassOnFocus : style.itemClassNotOnFocus }`}
