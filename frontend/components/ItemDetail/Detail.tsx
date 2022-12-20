@@ -17,6 +17,7 @@ const Detail = ({ item }: { item: ItemType }) => {
           <h5 className="text-xl ml-4">{item.title}</h5>
         </div>
         <RoundedHoverBtn
+          text="hide details"
           Icon={AiOutlineClose}
           onClickHandle={() => dispatch(changeOpenDetailView())}
         />

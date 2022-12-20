@@ -31,6 +31,12 @@ let dumpData = [
     type : IconType.pdf,
     title : "d"
   },
+  {
+    id : Math.floor(Math.random() * 100),
+    image : "https://picsum.photos/200",
+    type : IconType.pdf,
+    title : "d"
+  },
 ]
 
 function ItemsContainer({ title }: ItemsContainerType) {
@@ -59,7 +65,7 @@ function ItemsContainer({ title }: ItemsContainerType) {
           <h5 className="text-md font-semibold text-gray-600">{title}</h5>
         }
       </div>
-      <div className={isListView ? "flex flex-col" : `grid grid-cols-2 ${ isOpenDetail ? 'lg:grid-cols-3' : 'lg:grid-cols-5' } gap-2 transition-all` }>
+      <div className={isListView ? "flex flex-col" : `flex flex-wrap gap-2 transition-all` }>
         {dumpData.map((d) => (
           <Item
             key={d.id}

@@ -36,11 +36,11 @@ function Header() {
       {/* search */}
       <div className="w-5/6">
         <div
-          className={`z-100 h-full flex flex-col justify-start items-center w-3/5 h-12 p-1 rounded relative ${
+          className={`z-50 h-full flex justify-start items-center w-3/5 h-12 p-1 rounded relative ${
             isFoucs ? "bg-white-200 shadow-lg border" : "bg-gray-100"
           }`}
         >
-          <RoundedHoverBtn Icon={AiOutlineSearch} className="absolute left-1" />
+          <RoundedHoverBtn Icon={AiOutlineSearch} className="px-2" text="Search" />
           <input
             ref={inputRef}
             onFocus={() => setIsFoucs(true)}
@@ -48,32 +48,33 @@ function Header() {
             value={keyword}
             onChange={searchHandler}
             type="text"
-            className="border-none outline-none bg-transparent w-full h-8 pl-12 pr-20 text-md"
+            className="border-none outline-none bg-transparent w-full h-8 text-md"
             placeholder="Search in Drive"
           />
           {keyword.length > 0 && (
             <RoundedHoverBtn
               Icon={AiOutlineClose}
-              className="absolute right-12"
               onClickHandle={clearKeyword}
+              text="Clear Search"
             />
           )}
           <RoundedHoverBtn
+            className="px-2"
             Icon={GoSettings}
-            className="absolute right-1"
+            text="Show Search Options"
             onClickHandle={() => setOpenFilter((pre: any) => !pre)}
           />
 
           {/* if open filter */}
           {openFilter && (
-            <div className="absolute top-[95%] w-full shadow-lg border bg-white z-[100]">
+            <div className="z-[50] absolute top-[95%] w-full shadow-lg border bg-white z-[100]">
               <AdvanceFilter />
             </div>
           )}
 
           {/* show on focus */}
           {isFoucs && keyword.length < 1 && !openFilter && (
-            <div className="absolute top-[95%] w-full shadow-lg border bg-white z-[100]">
+            <div className="z-[50] absolute top-[95%] w-full shadow-lg border bg-white z-[100]">
               <SearchHistories />
               <FileTypes />
               <div className="p-3">

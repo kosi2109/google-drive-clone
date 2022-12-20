@@ -6,15 +6,19 @@ function RoundedHoverBtn({
   className,
   onClickHandle,
   size = 23,
+  text 
 }: RoundedBtnType) {
   return (
     <button
       onClick={onClickHandle}
-      className={`rounded-full hover:bg-gray-200 p-1 w-10 h-10 flex items-center justify-center ${
+      className={`mx-1 rounded-full hover:bg-gray-200 p-1 w-10 h-10 relative flex items-center justify-center group ${
         className && className
       }`}
     >
       <Icon size={size} />
+      <div className="z-[100] absolute top-[100%] p-1 z-[100] bg-gray-600 rounded-sm opacity-0 group-hover:opacity-100 group-hover:transition-all delay-300">
+        <p className="text-xs text-white font-semibold capitalize whitespace-nowrap">{text}</p>
+      </div>
     </button>
   );
 }

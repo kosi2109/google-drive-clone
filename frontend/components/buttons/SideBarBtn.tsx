@@ -1,9 +1,13 @@
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 import { SideBarBtnType } from "../../types/components";
 
-function SideBarBtn({ Icon, text, active = false }: SideBarBtnType) {
+function SideBarBtn({ Icon, text, url, active = false }: SideBarBtnType) {
+  const router = useRouter();
+
   return (
     <button
+      onClick={() => router.push(`/drive/${url}`)}
       className={`flex items-center w-full h-10 rounded-r-full px-6 ${
         active ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100"
       }`}

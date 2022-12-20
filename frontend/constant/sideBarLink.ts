@@ -6,26 +6,32 @@ import { BsTrash } from "react-icons/bs";
 export default [
   {
     icon: BiBookHeart,
-    text: "My Device",
+    text: "My Drive",
+    url : 'my-drive'
   },
   {
     icon: MdDevices,
     text: "Computers",
+    url : 'computers'
   },
   {
     icon: MdOutlinePeopleOutline,
     text: "Share with me",
+    url : 'share-with-me'
   },
   {
     icon: BiTimeFive,
     text: "Recent",
+    url : 'recent'
   },
   {
     icon: AiOutlineStar,
     text: "Starred",
+    url : 'starred'
   },
   {
     icon: BsTrash,
     text: "Trash",
+    url : 'trash'
   },
 ];

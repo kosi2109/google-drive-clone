@@ -1,9 +1,8 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import getIconByType from "../../constant/fileTypes";
 import { selectIsOpenDetailView } from "../../features/appSlice";
 import { changeSelectItem, selectSelectedItem } from "../../features/itemSlice";
-import useOutsideClick from "../../hooks/useOutsideClick";
 import { ItemType } from "../../types/components/cardTypes";
 
 const styleFunction = (isList: boolean) => {
@@ -39,9 +38,6 @@ function Item({id, type, image, title, isListItem = false }: ItemType) {
   const item = useSelector(selectSelectedItem);
   const dispatch = useDispatch();
   const isOpenDetail = useSelector(selectIsOpenDetailView);
-  const focusRef = useRef<any>();
-
-  useOutsideClick(focusRef);
 
   useEffect(() => {
     setFocus(item?.id === id);
@@ -49,7 +45,6 @@ function Item({id, type, image, title, isListItem = false }: ItemType) {
 
   return (
     <div
-      ref={focus ? focusRef : null}
       onClick={() => dispatch(changeSelectItem({id,title,type}))}
       className={`${style.itemClass} 
       ${ focus ? style.itemClassOnFocus : style.itemClassNotOnFocus }`}
