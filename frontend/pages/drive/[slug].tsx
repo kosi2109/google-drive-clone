@@ -1,6 +1,9 @@
 import { useRouter } from 'next/router'
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import Dialog from '../../components/common/Dialog';
+import ItemsContainer from '../../components/Items/ItemsContainer';
 import AppLayout from '../../components/Layouts/AppLayout';
+import { IconType } from '../../constant/fileTypes';
 import PageNotFound from '../404';
 
 const routes : any = [
@@ -12,6 +15,39 @@ const routes : any = [
   "trash",
 ];
 
+let dumpData = [
+  {
+    id : Math.floor(Math.random() * 100),
+    image : "https://picsum.photos/200",
+    type : IconType.pdf,
+    title : "a"
+  },
+  {
+    id : Math.floor(Math.random() * 100),
+    image : "https://picsum.photos/200",
+    type : IconType.folder,
+    title : "b"
+  },
+  {
+    id : Math.floor(Math.random() * 100),
+    image : "https://picsum.photos/200",
+    type : IconType.document,
+    title : "c"
+  },
+  {
+    id : Math.floor(Math.random() * 100),
+    image : "https://picsum.photos/200",
+    type : IconType.pdf,
+    title : "d"
+  },
+  {
+    id : Math.floor(Math.random() * 100),
+    image : "https://picsum.photos/200",
+    type : IconType.pdf,
+    title : "d"
+  },
+]
+
 function MyDrive() {
   const router = useRouter();
   const { slug } = router.query;
@@ -20,11 +56,19 @@ function MyDrive() {
     return <PageNotFound />
   }
 
-  console.log(slug);
-  
+  // const [data, setData] = useState<any>([]);
+
+  // useEffect(() => {
+  //   if (slug === 'my-drive') {
+  //     setData(dumpData);
+  //   } else {
+  //     setData([]);
+  //   }
+  // },[slug])
+
   return (
     <AppLayout>
-      tes
+      <ItemsContainer title='Test' data={dumpData} />
     </AppLayout>
   )
 }

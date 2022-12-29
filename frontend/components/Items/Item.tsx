@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import getIconByType from "../../constant/fileTypes";
@@ -38,13 +39,19 @@ function Item({id, type, image, title, isListItem = false }: ItemType) {
   const item = useSelector(selectSelectedItem);
   const dispatch = useDispatch();
   const isOpenDetail = useSelector(selectIsOpenDetailView);
+  const router = useRouter();
 
   useEffect(() => {
     setFocus(item?.id === id);
   },[item])
 
+  const changeRoute = ()=> {
+    type === 'folder' && router.push(`/drive/folders/${id}`);
+  }
+
   return (
     <div
+      onDoubleClick={() => changeRoute()}
       onClick={() => dispatch(changeSelectItem({id,title,type}))}
       className={`${style.itemClass} 
       ${ focus ? style.itemClassOnFocus : style.itemClassNotOnFocus }`}

@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+import { SetStateAction, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { changeSelectItem } from "../features/itemSlice";
 
-function useOutsideClick(ref: any) {
+function useOutsideClick(ref: any, setState : SetStateAction<any>) {
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -11,8 +11,7 @@ function useOutsideClick(ref: any) {
      */
     function handleClickOutside(event: any) {
       if (ref.current && !ref.current.contains(event.target)) {        
-        // alert("You clicked outside of me!");
-        dispatch(changeSelectItem(null));
+        setState(false)
       }
     }
     // Bind the event listener

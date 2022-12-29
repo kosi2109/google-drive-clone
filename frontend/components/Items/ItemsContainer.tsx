@@ -6,40 +6,8 @@ import { changeSortBy, selectIsOpenDetailView, selectListView, selectSortBy } fr
 import { ItemsContainerType } from "../../types/components/cardTypes";
 import Item from "./Item";
 
-let dumpData = [
-  {
-    id : Math.floor(Math.random() * 100),
-    image : "https://picsum.photos/200",
-    type : IconType.pdf,
-    title : "a"
-  },
-  {
-    id : Math.floor(Math.random() * 100),
-    image : "https://picsum.photos/200",
-    type : IconType.folder,
-    title : "b"
-  },
-  {
-    id : Math.floor(Math.random() * 100),
-    image : "https://picsum.photos/200",
-    type : IconType.document,
-    title : "c"
-  },
-  {
-    id : Math.floor(Math.random() * 100),
-    image : "https://picsum.photos/200",
-    type : IconType.pdf,
-    title : "d"
-  },
-  {
-    id : Math.floor(Math.random() * 100),
-    image : "https://picsum.photos/200",
-    type : IconType.pdf,
-    title : "d"
-  },
-]
 
-function ItemsContainer({ title }: ItemsContainerType) {
+function ItemsContainer({ title , data }: ItemsContainerType) {
   const isListView = useSelector(selectListView);
   const sortBy = useSelector(selectSortBy);
   const isOpenDetail = useSelector(selectIsOpenDetailView);
@@ -66,7 +34,7 @@ function ItemsContainer({ title }: ItemsContainerType) {
         }
       </div>
       <div className={isListView ? "flex flex-col" : `flex flex-wrap gap-2 transition-all` }>
-        {dumpData.map((d) => (
+        {data.map((d : any) => (
           <Item
             key={d.id}
             id={d.id}

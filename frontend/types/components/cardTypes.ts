@@ -1,7 +1,8 @@
 import { IconType } from "../../constant/fileTypes"
 
 type ItemsContainerType = {
-    title : string
+    title : string,
+    data : any
 }
 
 type ItemType = {
