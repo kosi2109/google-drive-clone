@@ -5,7 +5,7 @@ import People from "../public/assets/test.jpg";
 import { GoSettings } from "react-icons/go";
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import RoundedHoverBtn from "./buttons/RoundedHoverBtn";
-import { SearchHistories, AdvanceFilter, FileTypes } from "./Search";
+import { SearchHistories, AdvanceFilter, FileTypes } from "./search";
 
 function Header() {
   const [isFoucs, setIsFoucs] = useState<boolean>(false);
@@ -90,7 +90,7 @@ function Header() {
       {/* setting */}
       <div className="w-12 flex justify-end items-center">
         <div className="w-10 h-10 rounded-full hover:bg-gray-100 p-1 cursor-pointer">
-          <img
+          <Image
             src={People.src}
             alt="profile"
             className="w-full h-full rounded-full"

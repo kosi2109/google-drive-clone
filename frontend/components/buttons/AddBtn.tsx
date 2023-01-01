@@ -5,7 +5,7 @@ import { BsFileEarmarkArrowUp } from "react-icons/bs";
 import { GrAdd } from "react-icons/gr";
 import { RiFolderUploadLine } from "react-icons/ri";
 import useOutsideClick from "../../hooks/useOutsideClick";
-import Devider from "../common/Devider";
+import Devider from "../Common/Devider";
 
 function LinkBtn({Icon, text, onClickHandler} : {Icon : IconType, text : string, onClickHandler? : any}) {
   return <button onClick={onClickHandler} className="h-10 w-full flex items-center justify-start px-4 hover:bg-gray-200">

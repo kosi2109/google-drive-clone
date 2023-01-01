@@ -1,7 +1,7 @@
 import React from "react";
 import {  useSelector } from "react-redux";
 import { selectSelectedItem } from "../features/itemSlice";
-import Detail from "./ItemDetail/Detail";
+import Detail from "./itemDetail/Detail";
 
 function ItemDetail() {
   const item = useSelector(selectSelectedItem);

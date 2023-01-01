@@ -1,8 +1,7 @@
 import { useRouter } from 'next/router'
-import React, { useEffect, useState } from 'react'
-import Dialog from '../../components/common/Dialog';
-import ItemsContainer from '../../components/Items/ItemsContainer';
-import AppLayout from '../../components/Layouts/AppLayout';
+import React from 'react'
+import ItemsContainer from '../../components/items/ItemsContainer';
+import AppLayout from '../../components/layouts/AppLayout';
 import { IconType } from '../../constant/fileTypes';
 import PageNotFound from '../404';
 
