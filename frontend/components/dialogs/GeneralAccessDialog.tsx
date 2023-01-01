@@ -6,6 +6,7 @@ import { ImEarth } from "react-icons/im";
 import { TiTick } from "react-icons/ti";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import Dialog from "../Common/Dialog";
+import "./GeneralAccessDialog"
 
 const accessOption = [
   {
@@ -32,7 +33,7 @@ function GeneralAccessDialog({
 
   return (
     <Dialog setIsOpen={openHandler} width="30%" height="auto">
-      <div className="p-4">
+      <div className="p-4 dark:text-black">
         <h1 className="text-xl mb-3">Name</h1>
         <h1 className="text-sm text-gray-500 mb-3">
           Lorem ipsum dolor sit amet consectetur adipisicing elit. Deleniti,
@@ -40,12 +41,12 @@ function GeneralAccessDialog({
         </h1>
         <input
           type="text"
-          className="w-full border-2 h-12 rounded-md hover:border-gray-500 focus:border-red-800 p-4 mb-3"
+          className="w-full border-2 h-12 rounded-md hover:border-gray-500 focus:border-red-800 p-4 mb-3 dark:text-white"
           placeholder="Add People to send the link to"
         />
         <textarea
           placeholder="Message"
-          className="w-full border-2 h-auto rounded-md hover:border-gray-500 focus:border-red-800 p-4 mb-3"
+          className="w-full border-2 h-auto rounded-md hover:border-gray-500 focus:border-red-800 p-4 mb-3 dark:text-white"
         ></textarea>
 
         <div className="mb-3">
@@ -99,7 +100,7 @@ function GeneralAccessDialog({
           </div>
 
           <div>
-            <button className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md">
+            <button onClick={()=> openHandler(false)} className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md">
               Done
             </button>
           </div>

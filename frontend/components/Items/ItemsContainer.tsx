@@ -42,7 +42,7 @@ function ItemsContainer({ title, data }: ItemsContainerType) {
             </div>
           </div>
         ) : (
-          <h5 className="text-md font-semibold text-gray-600">{title}</h5>
+          <h5 className="text-md font-semibold text-gray-600 dark:text-gray-400">{title}</h5>
         )}
       </div>
       <div

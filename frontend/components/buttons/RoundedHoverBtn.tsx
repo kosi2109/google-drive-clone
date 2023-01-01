@@ -11,7 +11,7 @@ function RoundedHoverBtn({
   return (
     <button
       onClick={onClickHandle}
-      className={`mx-1 rounded-full hover:bg-gray-200 p-1 w-10 h-10 relative flex items-center justify-center group ${
+      className={`mx-1 rounded-full hover:bg-gray-200 dark:hover:bg-gray-800 p-1 w-10 h-10 relative flex items-center justify-center group ${
         className && className
       }`}
     >

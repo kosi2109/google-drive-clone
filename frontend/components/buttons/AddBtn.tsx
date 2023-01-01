@@ -20,11 +20,11 @@ function AddBtn() {
 
   return (
     <div className="relative" ref={btnRef}>
-      <button onClick={() => setOpen(true)} className="mx-4 mb-4 flex items-center w-32 h-14  bg-white shadow-md hover:shadow-xl hover:bg-gray-100 text-sm px-4 py-2  border rounded-full">
+      <button onClick={() => setOpen(true)} className="mx-4 mb-4 flex items-center w-32 h-14  bg-white shadow-md hover:shadow-xl hover:bg-gray-100 text-sm px-4 py-2 border rounded-full dark:shadow-slate-600 dark:hover:shadow-slate-900">
         <GrAdd size={20} />
         <span className="ml-4 text-md font-semibold text-black">New</span>
       </button>
-        <div className={`pointer-events-none py-2 absolute bg-white shadow-lg drop-shadow-md z-[50] w-80 h-0 opacity-0 top-0 left-4 rounded-md transition-all ${open ? 'h-40 opacity-100 pointer-events-auto' : ''}`}>
+        <div className={`pointer-events-none py-2 absolute bg-white dark:text-black shadow-lg drop-shadow-md z-[50] w-80 h-0 opacity-0 top-0 left-4 rounded-md transition-all ${open ? 'h-40 opacity-100 pointer-events-auto' : ''}`}>
           <LinkBtn Icon={AiOutlineFolderAdd} text="new folder" />
           <Devider className="h-[2px] bg-gray-100 my-2" />
           <LinkBtn Icon={BsFileEarmarkArrowUp} text="file upload" />

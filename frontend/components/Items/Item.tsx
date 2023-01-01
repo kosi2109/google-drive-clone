@@ -12,15 +12,15 @@ const styleFunction = (isList: boolean) => {
     ? "flex items-center h-10 px-4 py-6 select-none"
     : "flex flex-col border-2 rounded-md overflow-hidden w-60 h-60 group select-none";
   const itemClassOnFocus = isList
-    ? "border border-blue-700 text-blue-900 bg-blue-50"
+    ? "border border-blue-700 text-blue-900 bg-blue-50 dark:text-white dark:bg-gray-600"
     : "border-blue-400";
-  const itemClassNotOnFocus = isList ? "border-b-2 hover:bg-gray-100" : "";
+  const itemClassNotOnFocus = isList ? "border-b-2 hover:bg-gray-100 hover:bg-gray-800" : "";
 
   const contentClass = isList
     ? "flex items-center w-4/6 h-full"
     : "flex items-center p-4 h-12 w-full";
-  const contentClassOnFocus = isList ? "" : "bg-sky-100";
-  const contentClassNotOnFocus = isList ? "" : "group-hover:bg-gray-100";
+  const contentClassOnFocus = isList ? "" : "bg-sky-100 dark:bg-gray-600";
+  const contentClassNotOnFocus = isList ? "" : "group-hover:bg-gray-100 dark:group-hover:bg-gray-800";
 
   return {
     itemClass,

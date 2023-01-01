@@ -6,12 +6,16 @@ import { GoSettings } from "react-icons/go";
 import { AiOutlineClose, AiOutlineSearch } from "react-icons/ai";
 import RoundedHoverBtn from "./buttons/RoundedHoverBtn";
 import { SearchHistories, AdvanceFilter, FileTypes } from "./search";
+import { useTheme } from "next-themes";
+import { BsMoon, BsSun } from "react-icons/bs";
 
 function Header() {
   const [isFoucs, setIsFoucs] = useState<boolean>(false);
   const [keyword, setKeyword] = useState<string>("");
   const [openFilter, setOpenFilter] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const { systemTheme, theme, setTheme } = useTheme();
+  const currentTheme = theme === "system" ? systemTheme : theme;
 
   const searchHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,7 +44,11 @@ function Header() {
             isFoucs ? "bg-white-200 shadow-lg border" : "bg-gray-100"
           }`}
         >
-          <RoundedHoverBtn Icon={AiOutlineSearch} className="px-2" text="Search" />
+          <RoundedHoverBtn
+            Icon={AiOutlineSearch}
+            className={`px-2 ${isFoucs ? 'dark:text-white' : 'hover:dark:bg-gray-300 dark:text-black'}`}
+            text="Search"
+          />
           <input
             ref={inputRef}
             onFocus={() => setIsFoucs(true)}
@@ -48,7 +56,7 @@ function Header() {
             value={keyword}
             onChange={searchHandler}
             type="text"
-            className="border-none outline-none bg-transparent w-full h-8 text-md"
+            className={`border-none outline-none bg-transparent w-full h-8 text-md ${isFoucs ? 'text-white' : 'text-black' }`}
             placeholder="Search in Drive"
           />
           {keyword.length > 0 && (
@@ -56,10 +64,11 @@ function Header() {
               Icon={AiOutlineClose}
               onClickHandle={clearKeyword}
               text="Clear Search"
+              className={`${isFoucs ? 'dark:text-white' : 'hover:dark:bg-gray-300 dark:text-black'}`}
             />
           )}
           <RoundedHoverBtn
-            className="px-2"
+            className={`px-2 ${isFoucs ? 'dark:text-white' : 'hover:dark:bg-gray-300 dark:text-black' }`}
             Icon={GoSettings}
             text="Show Search Options"
             onClickHandle={() => setOpenFilter((pre: any) => !pre)}
@@ -67,7 +76,7 @@ function Header() {
 
           {/* if open filter */}
           {openFilter && (
-            <div className="z-[50] absolute top-[95%] w-full shadow-lg border bg-white z-[100]">
+            <div className="z-[50] absolute left-0 top-[95%] w-full shadow-lg border bg-white z-[100]">
               <AdvanceFilter />
             </div>
           )}
@@ -88,9 +97,31 @@ function Header() {
       </div>
 
       {/* setting */}
+      <div
+        onClick={() => setTheme(currentTheme === "dark" ? "light" : "dark")}
+        className="w-8 h-8 rounded-full flex relative overflow-hidden hover:bg-gray-100 dark:hover:text-black-900 cursor-pointer"
+      >
+        <div
+          className={`absolute w-8 h-8 flex items-center justify-center transition-all ease-in-out duration-300 ${
+            currentTheme === "dark" ? "right-[100%]" : "right-[0%]"
+          }`}
+        >
+          <BsMoon color="black" size={15} />
+        </div>
+        <div
+          className={`absolute dark:hover:text-black w-8 h-8 flex items-center justify-center transition-all ease-in-out duration-300 ${
+            currentTheme === "dark" ? "right-[0%]" : "right-[-100%]"
+          }`}
+        >
+          <BsSun size={15} />
+        </div>
+      </div>
+
       <div className="w-12 flex justify-end items-center">
         <div className="w-10 h-10 rounded-full hover:bg-gray-100 p-1 cursor-pointer">
           <Image
+            width={10}
+            height={10}
             src={People.src}
             alt="profile"
             className="w-full h-full rounded-full"
