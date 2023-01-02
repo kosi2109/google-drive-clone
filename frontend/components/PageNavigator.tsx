@@ -26,7 +26,7 @@ function PageNavigator() {
   const router = useRouter();
   const {slug} : any = router.query;
   const [pageName, setPageName] = useState("");
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (slug) {
@@ -40,7 +40,7 @@ function PageNavigator() {
       <div>
         <p className="text-lg capitalize">{pageName} &gt; {item?.title}</p>
       </div>
-      <div className="flex items-center">
+      <div className="items-center hidden lg:flex">
         {item && <ItemSettings openHandler={setIsOpen} /> }
         <div className="flex">
           <RoundedHoverBtn

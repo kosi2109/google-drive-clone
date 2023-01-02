@@ -14,7 +14,7 @@ const styleFunction = (isList: boolean) => {
   const itemClassOnFocus = isList
     ? "border border-blue-700 text-blue-900 bg-blue-50 dark:text-white dark:bg-gray-600"
     : "border-blue-400";
-  const itemClassNotOnFocus = isList ? "border-b-2 hover:bg-gray-100 hover:bg-gray-800" : "";
+  const itemClassNotOnFocus = isList ? "border-b-2 hover:bg-gray-100 dark:hover:bg-gray-800" : "";
 
   const contentClass = isList
     ? "flex items-center w-4/6 h-full"
@@ -43,7 +43,7 @@ function Item({id, type, image, title, isListItem = false }: ItemType) {
 
   useEffect(() => {
     setFocus(item?.id === id);
-  },[item])
+  },[item, id])
 
   const changeRoute = ()=> {
     type === 'folder' && router.push(`/drive/folders/${id}`);

@@ -47,7 +47,7 @@ function ItemsContainer({ title, data }: ItemsContainerType) {
       </div>
       <div
         className={
-          isListView ? "flex flex-col" : `flex flex-wrap gap-2 transition-all`
+          isListView ? "flex flex-col" : `flex flex-wrap justify-center sm:justify-start gap-2 transition-all`
         }
       >
         {data.map((d: any) => (

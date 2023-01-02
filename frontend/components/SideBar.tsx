@@ -34,7 +34,7 @@ function SideBar() {
       <div className="border-t pr-4 py-2 flex flex-col">
         <SideBarBtn url="test" Icon={AiOutlineCloud} text="Storage" />
         <div className="ml-4 flex flex-col py-2">
-          <div className="w-5/6 h-1 bg-gray-200 mb-2 relative">
+          <div className="w-5/6 h-1 lg:bg-gray-200 mb-2 relative">
             <div className={`absolute left-0 top-0 h-full bg-blue-700`} style={{width : percent+"%"}}>
 
             </div>
