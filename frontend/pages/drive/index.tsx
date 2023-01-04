@@ -7,4 +7,5 @@ export default function Home() {
   useEffect(() => {
     router.push('/drive/my-drive')
   })
+
 }

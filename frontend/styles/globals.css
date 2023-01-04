@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+body {
+    width: 100vw;
+    height: 100vh;
+    overflow: hidden;
+}
+
+@layer base {
+    .bg-dark{
+        @apply bg-gray-900
+    }
+
+    .inputInnerBtn {
+        @apply hover:dark:bg-gray-800 hover:dark:text-white dark:text-black
+    }
+}
