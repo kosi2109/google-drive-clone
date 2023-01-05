@@ -12,7 +12,7 @@ class UserRepository implements UserRepositoryInterface
     /**
      * UserRepository constructor.
      *
-     * @param User $user
+     * @param User $model
      */
     public function __construct(private User $model)
     {
