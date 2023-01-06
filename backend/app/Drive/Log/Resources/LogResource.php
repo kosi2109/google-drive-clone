@@ -1,10 +1,11 @@
 <?php
 
-namespace App\Drive\File\Resources;
+namespace App\Drive\Log\Resources;
 
 use App\Drive\Base\BaseResource;
+use App\Drive\User\Resources\UserResource;
 
-class FileResource extends BaseResource
+class LogResource extends BaseResource
 {
     /**
      * Transform the resource into an array.
@@ -16,10 +17,8 @@ class FileResource extends BaseResource
     {
         return [
             'id' => $this->id,
-            'name' => $this->name,
-            'access' => $this->access,
-            'size' => $this->size,
-            'file_path' => $this->file_path,
+            'created_at' => $this->created_at,
+            'process_by' => new UserResource($this->processBy)
         ];
     }
 }

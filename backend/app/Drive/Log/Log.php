@@ -10,6 +10,13 @@ class Log extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        "process_name",
+        "process_id",
+        "process_type",
+        "process_by"
+    ];
+
     protected $with = [
         'processBy'
     ];
