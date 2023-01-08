@@ -2,6 +2,8 @@
 
 namespace App\Providers;
 
+use App\Drive\Auth\Google\Repositories\GoogleAuthRepository;
+use App\Drive\Auth\Google\Repositories\Interfaces\GoogleAuthRepositoryInterface;
 use App\Drive\File\Repositories\FileRepository;
 use App\Drive\File\Repositories\Interfaces\FileRepositoryInterface;
 use App\Drive\Folder\Repositories\FolderRepository;
@@ -22,6 +24,11 @@ class RepositoryServiceProvider extends ServiceProvider
         $this->app->bind(
             UserRepositoryInterface::class,
             UserRepository::class
+        );
+
+        $this->app->bind(
+            GoogleAuthRepositoryInterface::class,
+            GoogleAuthRepository::class
         );
 
         $this->app->bind(

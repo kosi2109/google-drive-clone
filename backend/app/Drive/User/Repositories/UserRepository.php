@@ -36,7 +36,7 @@ class UserRepository implements UserRepositoryInterface
      * 
      * @return User
      */
-    public function createUser(array $params) : User
+    public function createUser(array $params): User
     {
         return $this->model->create($params);
     }
@@ -46,9 +46,9 @@ class UserRepository implements UserRepositoryInterface
      * 
      * @return User
      */
-    public function findUserById(int $id) : User
+    public function findUserById(int $id): User
     {
-        try {       
+        try {
             return $this->model->findOrFail($id);
         } catch (ModelNotFoundException $th) {
             throw new UserNotFoundException('User Not Found', 404);
@@ -78,7 +78,15 @@ class UserRepository implements UserRepositoryInterface
     public function deleteUser(int $id): bool
     {
         $user = $this->findUserById($id);
-        
+
         return $user->delete();
+    }
+
+    /**
+     * 
+     */
+    public function firstOrCreateUser(string $email, array $params): User
+    {
+        return $this->model->firstOrCreate(['email' => $email], $params);
     }
 }
