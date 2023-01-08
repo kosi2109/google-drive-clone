@@ -3,8 +3,10 @@
 namespace App\Drive\File\Resources;
 
 use App\Drive\Base\BaseResource;
+use App\Drive\Log\Resources\LogResource;
+use App\Drive\User\Resources\UserResource;
 
-class FileResource extends BaseResource
+class FileOverviewResource extends BaseResource
 {
     /**
      * Transform the resource into an array.
@@ -20,6 +22,8 @@ class FileResource extends BaseResource
             'access' => $this->access,
             'size' => $this->size,
             'file_path' => $this->file_path,
+            'lastView' => new LogResource($this->lastView),
+            'ownBy' => new UserResource($this->ownBy),
         ];
     }
 }

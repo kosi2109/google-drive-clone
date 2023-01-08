@@ -1,10 +1,10 @@
 <?php
 
-namespace App\Drive\File\Repositories;
+namespace App\Drive\Folder\Repositories;
 
 use App\Drive\File\Exceptions\FileNotFoundException;
-use App\Drive\File\Repositories\Interfaces\FolderRepositoryInterface;
 use App\Drive\Folder\Folder;
+use App\Drive\Folder\Repositories\Interfaces\FolderRepositoryInterface;
 use App\Drive\Log\Repositories\LogRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -16,7 +16,7 @@ class FolderRepository implements FolderRepositoryInterface
     private $process_types;
 
     /**
-     * UserRepository constructor.
+     * FolderRepository constructor.
      *
      * @param Folder $model
      */
@@ -35,7 +35,7 @@ class FolderRepository implements FolderRepositoryInterface
     }
 
     /**
-     * Get Files from not under any folder
+     * Get Folders from not under any folder
      * 
      */
     public function getOuterFolders(): Collection
@@ -44,6 +44,8 @@ class FolderRepository implements FolderRepositoryInterface
     }
 
     /**
+     * Get Folder by Id
+     * 
      * @param int $id
      * 
      * @return Folder
@@ -62,6 +64,8 @@ class FolderRepository implements FolderRepositoryInterface
     }
 
     /**
+     * Create Folder
+     * 
      * @param array $params
      * 
      * @return Folder
@@ -76,6 +80,8 @@ class FolderRepository implements FolderRepositoryInterface
     }
 
     /**
+     * Update Folder by Id
+     * 
      * @param int $id
      * @param array $params
      * 
@@ -83,26 +89,36 @@ class FolderRepository implements FolderRepositoryInterface
      */
     public function updateFolder(int $id, array $params): Folder
     {
-        $file = $this->findFolderById($id);
-
-        $file->update($params);
-
-        $this->makeLog($file->id, $this->process_types['update']); 
-
-        return $file->fresh();
+        try {
+            $file = $this->model->findOrFail($id);
+    
+            $file->update($params);
+    
+            $this->makeLog($file->id, $this->process_types['update']); 
+    
+            return $file->fresh();
+        } catch (ModelNotFoundException $th) {
+            throw new FileNotFoundException('File Not Found', 404);
+        }
     }
 
     /**
+     * Delete Folder by Id
+     * 
      * @param int $id
      * 
      * @return bool
      */
     public function deleteFolder(int $id): bool
     {
-        $file = $this->findFolderById($id);
-
-        $this->makeLog($file->id, $this->process_types['delete']); 
-
-        return $file->delete();
+        try {
+            $file = $this->model->findOrFail($id);
+    
+            $this->makeLog($file->id, $this->process_types['delete']); 
+    
+            return $file->delete();
+        } catch (ModelNotFoundException $th) {
+            throw new FileNotFoundException('File Not Found', 404);
+        }
     }
 }

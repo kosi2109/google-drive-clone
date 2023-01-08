@@ -1,10 +1,12 @@
 <?php
 
-namespace App\Drive\File\Resources;
+namespace App\Drive\Folder\Resources;
 
 use App\Drive\Base\BaseResource;
+use App\Drive\Log\Resources\LogResource;
+use App\Drive\User\Resources\UserResource;
 
-class FileResource extends BaseResource
+class FolderOveviewResource extends BaseResource
 {
     /**
      * Transform the resource into an array.
@@ -17,9 +19,9 @@ class FileResource extends BaseResource
         return [
             'id' => $this->id,
             'name' => $this->name,
-            'access' => $this->access,
-            'size' => $this->size,
-            'file_path' => $this->file_path,
+            'lastView' => new LogResource($this->lastView),
+            'ownBy' => new UserResource($this->ownBy),
+            'created_at' => $this->created_at
         ];
     }
 }

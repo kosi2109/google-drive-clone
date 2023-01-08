@@ -44,6 +44,8 @@ class FileRepository implements FileRepositoryInterface
     }
 
     /**
+     * Get File by Id
+     * 
      * @param int $id
      * 
      * @return File
@@ -62,6 +64,8 @@ class FileRepository implements FileRepositoryInterface
     }
 
     /**
+     * Create File
+     * 
      * @param array $params
      * 
      * @return File
@@ -76,6 +80,8 @@ class FileRepository implements FileRepositoryInterface
     }
 
     /**
+     * Update File by Id
+     * 
      * @param int $id
      * @param array $params
      * 
@@ -83,26 +89,36 @@ class FileRepository implements FileRepositoryInterface
      */
     public function updateFile(int $id, array $params): File
     {
-        $file = $this->findFileById($id);
-
-        $file->update($params);
-
-        $this->makeLog($file->id, $this->process_types['update']); 
-
-        return $file->fresh();
+        try {
+            $file = $file = $this->model->findOrFail($id);;
+    
+            $file->update($params);
+    
+            $this->makeLog($file->id, $this->process_types['update']); 
+    
+            return $file->fresh();
+        } catch (ModelNotFoundException $th) {
+            throw new FileNotFoundException('File Not Found', 404);
+        }
     }
 
     /**
+     * Delete File by Id
+     * 
      * @param int $id
      * 
      * @return bool
      */
     public function deleteFile(int $id): bool
     {
-        $file = $this->findFileById($id);
-
-        $this->makeLog($file->id, $this->process_types['delete']); 
-
-        return $file->delete();
+        try {
+            $file = $file = $this->model->findOrFail($id);
+    
+            $this->makeLog($file->id, $this->process_types['delete']); 
+    
+            return $file->delete();
+        } catch (ModelNotFoundException $th) {
+            throw new FileNotFoundException('File Not Found', 404);
+        }
     }
 }
