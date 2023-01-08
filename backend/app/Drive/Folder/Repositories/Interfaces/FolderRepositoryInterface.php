@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Drive\File\Repositories\Interfaces;
+namespace App\Drive\Folder\Repositories\Interfaces;
 
 use App\Drive\Folder\Folder;
 use Illuminate\Database\Eloquent\Collection;
