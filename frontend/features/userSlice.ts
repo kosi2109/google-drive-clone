@@ -1,4 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { getCookie, hasCookie } from "cookies-next";
 import Cookies from "js-cookie";
 import { User } from "../types/data/userType";
 
@@ -6,7 +7,11 @@ interface UserState {
   user: User | null
 }
 
-const initialState = { user: null } as UserState
+if (hasCookie('user_data')) {
+  var initialState = { user : JSON.parse(getCookie('user_data') as string) } as UserState 
+} else {
+  var initialState = { user: null } as UserState;
+}
 
 export const userSlice = createSlice({
   name: "user",

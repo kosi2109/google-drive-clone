@@ -2,7 +2,9 @@ import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
+import { googleApiCallback } from "../../api/backendApi";
 import { login } from "../../features/userSlice";
+import { logIn } from "../../utils/auth";
 
 function GoogleCallback() {
   const [loading, setLoading] = useState(true);
@@ -10,38 +12,18 @@ function GoogleCallback() {
   const [user, setUser] = useState(null);
   const router = useRouter();
   const dispatch = useDispatch();
+  
+  const callback = async () => {
+    const { data }  = await googleApiCallback(router.asPath.split("?")[1]);
     
+    setLoading(false);
+    logIn(JSON.stringify(data.user), data.access_token)
+  } 
+
   // On page load, we take "search" parameters
   // and proxy them to /api/auth/callback on our Laravel API
   useEffect(() => {    
-    axios
-      .get("http://localhost:8000/sanctum/csrf-cookie", {
-        withCredentials: true,
-      })
-      .then(() => {
-        axios
-          .get(
-            `http://localhost:8000/api/auth/google/callback?${
-              router.asPath.split("?")[1]
-            }`,
-            {
-              headers: {
-                "Content-Type": "application/json",
-                'Accept': "application/json",
-              },
-              withCredentials: true,
-            }
-          )
-          .catch((data) => {
-            console.log(data);
-            
-          })
-          .then((res) => {
-            setLoading(false);
-            dispatch(login(res?.data?.user))
-            router.push('/');
-          });
-      });
+    callback();
   }, []);
 
   // Helper method to fetch User data for authenticated user
@@ -53,10 +35,10 @@ function GoogleCallback() {
       })
       .then((response: any) => {
         console.log(response);
+      })
+      .then((data : any) => {
+        setUser(data);
       });
-    //   .then((data) => {
-    //     setUser(data);
-    //   });
   }
 
   if (loading) {

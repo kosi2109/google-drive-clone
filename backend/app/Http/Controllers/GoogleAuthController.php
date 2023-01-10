@@ -54,6 +54,6 @@ class GoogleAuthController extends Controller
             'user' => $user,
             'access_token' => $token,
             'token_type' => 'Bearer',
-        ])->withCookie(Cookie('access_token', $token));
+        ]);
     }
 }

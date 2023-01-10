@@ -8,8 +8,9 @@ import RoundedHoverBtn from "./buttons/RoundedHoverBtn";
 import { SearchHistories, AdvanceFilter, FileTypes } from "./search";
 import { useTheme } from "next-themes";
 import { BsMoon, BsSun } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeOpenMobileMenu } from "../features/appSlice";
+import { selectUser } from "../features/userSlice";
 
 function Header() {
   const [isFoucs, setIsFoucs] = useState<boolean>(false);
@@ -19,6 +20,7 @@ function Header() {
   const { systemTheme, theme, setTheme } = useTheme();
   const currentTheme = theme === "system" ? systemTheme : theme;
   const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
   const searchHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +33,8 @@ function Header() {
     setKeyword("");
     inputRef.current?.focus();
   };
-
+  console.log(user);
+  
   return (
     <div className="py-3 px-4 border-b flex justify-between items-center h-18">
       {/* logo */}
@@ -127,7 +130,7 @@ function Header() {
           <Image
             width={10}
             height={10}
-            src={People.src}
+            src={user?.avatar}
             alt="profile"
             className="w-full h-full rounded-full"
           />
