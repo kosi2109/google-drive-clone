@@ -1,41 +1,18 @@
 import React, { useEffect, useState } from 'react'
+import { googleLogin } from '../../api/backendApi';
 
 function Auth() {
     const [loginUrl, setLoginUrl] = useState(null);
 
-    useEffect(() => {
-        fetch('http://localhost:8000/api/auth/google', {
-            headers : {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error('Something went wrong!');
-            })
-            .then((data) => setLoginUrl( data.url ))
-            .catch((error) => console.error(error));
-    }, []);
-    // useEffect(() => {
-    //     fetch('http://localhost:8000/api/auth/google', {
-    //         headers : {
-    //             'Content-Type': 'application/json',
-    //             'Accept': 'application/json'
-    //         }
-    //     })
-    //         .then((response) => {
-    //             if (response.ok) {
-    //                 return response.json();
-    //             }
-    //             throw new Error('Something went wrong!');
-    //         })
-    //         .then((data) => setLoginUrl( data.url ))
-    //         .catch((error) => console.error(error));
-    // }, []);
+    const callGoogle = async ()=> {
+        const {data} = await googleLogin();
+        setLoginUrl(data.url)
+    }
 
+    useEffect(() => {
+        callGoogle()
+    }, []);
+    
     return (
         <div>
             {loginUrl != null && (

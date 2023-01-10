@@ -1,17 +1,19 @@
 import axios from "axios";
 import { useRouter } from "next/router";
 import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
+import { login } from "../../features/userSlice";
 
 function GoogleCallback() {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<any>({});
   const [user, setUser] = useState(null);
   const router = useRouter();
-    console.log(router.query.code);
+  const dispatch = useDispatch();
     
   // On page load, we take "search" parameters
   // and proxy them to /api/auth/callback on our Laravel API
-  useEffect(() => {
+  useEffect(() => {    
     axios
       .get("http://localhost:8000/sanctum/csrf-cookie", {
         withCredentials: true,
@@ -34,8 +36,9 @@ function GoogleCallback() {
             console.log(data);
             
           })
-          .then((data) => {
+          .then((res) => {
             setLoading(false);
+            dispatch(login(res?.data?.user))
             router.push('/');
           });
       });

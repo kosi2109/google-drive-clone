@@ -77,4 +77,18 @@ class UserController extends Controller
     {
         return $this->userRepo->deleteUser($id);
     }
+    
+    /**
+     * UserController : User Show
+     * 
+     * @param int $id
+     * 
+     * @return UserResource
+     */
+    public function show(
+        int $id
+    )
+    {
+        return $this->userRepo->findUserById($id);
+    }
 }
