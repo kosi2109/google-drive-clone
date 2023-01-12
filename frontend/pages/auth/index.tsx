@@ -1,26 +1,27 @@
-import Cookies from 'js-cookie';
-import React, { useEffect, useState } from 'react'
-import { googleLogin } from '../../api/backendApi';
+import React, { useEffect, useState } from "react";
+import { GoogleLogin } from "react-google-login";
+import { googleUserLogin } from "../../api/backendApi";
 
 function Auth() {
-    const [loginUrl, setLoginUrl] = useState(null);
+  const [loginUrl, setLoginUrl] = useState(null);
 
-    const callGoogle = async ()=> {
-        const {data} = await googleLogin();
-        setLoginUrl(data.url)
-    }
+  const responseGoogle = (response: any) => {
+    googleUserLogin(response.profileObj)
+      .then((res) => console.log(res))
+      .catch((error) => console.log(error));
+  };
 
-    useEffect(() => {
-        callGoogle()
-    }, []);
-    
-    return (
-        <div>
-            {loginUrl != null && (
-                <a href={loginUrl}>Google Sign In</a>
-            )}
-        </div>
-    );
+  return (
+    <div>
+      <GoogleLogin
+        clientId="814451914005-v5tqj51ej1vs8nr62nolf3ee2fap5ohn.apps.googleusercontent.com"
+        buttonText="Login"
+        onSuccess={responseGoogle}
+        onFailure={responseGoogle}
+        cookiePolicy={"single_host_origin"}
+      />
+    </div>
+  );
 }
 
-export default Auth
+export default Auth;

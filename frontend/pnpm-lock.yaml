@@ -19,6 +19,7 @@ specifiers:
   postcss: ^8.4.19
   react: 18.2.0
   react-dom: 18.2.0
+  react-google-login: ^5.2.2
   react-icons: ^4.7.1
   react-redux: ^8.0.5
   tailwindcss: ^3.2.4
@@ -39,6 +40,7 @@ dependencies:
   next-themes: 0.2.1_6jx7hpii6hgsrmhxgqrmo3277u
   react: 18.2.0
   react-dom: 18.2.0_react@18.2.0
+  react-google-login: 5.2.2_biqbaboplfbrettd7655fr4n2y
   react-icons: 4.7.1_react@18.2.0
   react-redux: 8.0.5_yqqa5ithnjtlkxisuaub7c4kpa
   typescript: 4.9.4
@@ -2069,6 +2071,19 @@ packages:
       loose-envify: 1.4.0
       react: 18.2.0
       scheduler: 0.23.0
+    dev: false
+
+  /react-google-login/5.2.2_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-JUngfvaSMcOuV0lFff7+SzJ2qviuNMQdqlsDJkUM145xkGPVIfqWXq9Ui+2Dr6jdJWH5KYdynz9+4CzKjI5u6g==}
+    deprecated: Package no longer supported. Contact Support at https://www.npmjs.com/support for more info.
+    peerDependencies:
+      react: ^16 || ^17
+      react-dom: ^16 || ^17
+    dependencies:
+      '@types/react': 18.0.26
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /react-icons/4.7.1_react@18.2.0:

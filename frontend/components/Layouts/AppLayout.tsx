@@ -1,4 +1,5 @@
-import React from "react";
+import { useRouter } from "next/router";
+import React, { useEffect } from "react";
 import { useSelector } from "react-redux";
 import { selectIsOpenDetailView, selectIsOpenMobileMenu } from "../../features/appSlice";
 import Header from "../Header";
@@ -9,6 +10,7 @@ import SideBar from "../SideBar";
 function AppLayout({ children }: any) {
   const isOpenDetail = useSelector(selectIsOpenDetailView);
   const isOpenMobileMenu = useSelector(selectIsOpenMobileMenu);
+  const router = useRouter();
 
   return (
     <div className="h-screen overflow-hidden bg-white dark:bg-dark">

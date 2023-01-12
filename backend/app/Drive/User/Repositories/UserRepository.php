@@ -83,10 +83,10 @@ class UserRepository implements UserRepositoryInterface
     }
 
     /**
-     * 
+     * @param array $params
      */
-    public function firstOrCreateUser(string $email, array $params): User
+    public function firstOrCreateUser(array $params): User
     {
-        return $this->model->firstOrCreate(['email' => $email], $params);
+        return $this->model->firstOrCreate(['email' => $params['email']], $params);
     }
 }
