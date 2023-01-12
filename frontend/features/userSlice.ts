@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { getCookie, hasCookie } from "cookies-next";
-import Cookies from "js-cookie";
+import { deleteCookie, getCookie, hasCookie, setCookie } from "cookies-next";
 import { User } from "../types/data/userType";
 
 interface UserState {
@@ -18,10 +17,14 @@ export const userSlice = createSlice({
   initialState: initialState,
   reducers: {
     login: (state, action) => {
-      state.user = action.payload;
+      state.user = action.payload.user;
+      setCookie('user_data', action.payload.user, {maxAge : 10000 , sameSite : 'lax'});
+      setCookie('access_token', action.payload.access_token, {maxAge : 10000 , sameSite : 'lax'});
     },
-    logout: (state, action) => {
+    logout: (state) => {
       state.user = null;
+      deleteCookie('user_data');
+      deleteCookie('access_token');
     },
   },
 });

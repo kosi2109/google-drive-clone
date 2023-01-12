@@ -5,6 +5,7 @@ import { store } from "../app/store";
 import { ThemeProvider } from "next-themes";
 
 export default function App({ Component, pageProps }: AppProps) {
+  
   return (
     <Provider store={store}>
       <ThemeProvider enableSystem={true} attribute="class">

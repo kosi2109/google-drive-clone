@@ -1,7 +1,6 @@
 import Image from "next/image";
 import React, { useCallback, useRef, useState } from "react";
 import Logo from "../public/assets/driveLogo.png";
-import People from "../public/assets/test.jpg";
 import { GoSettings } from "react-icons/go";
 import { AiOutlineClose, AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
 import RoundedHoverBtn from "./buttons/RoundedHoverBtn";
@@ -33,7 +32,6 @@ function Header() {
     setKeyword("");
     inputRef.current?.focus();
   };
-  console.log(user);
   
   return (
     <div className="py-3 px-4 border-b flex justify-between items-center h-18">
