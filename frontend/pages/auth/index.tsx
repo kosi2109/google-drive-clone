@@ -11,7 +11,7 @@ function Auth() {
     router.push('/drive/my-drive');
   }
 
-  const responseGoogle = async (response: any) => {    
+  const responseGoogle = async (response: any) => {        
     const status = await signIn('credentials' ,{
       callbackUrl : '/',
       redirect : false,

@@ -16,7 +16,7 @@ class GoogleAuthRequest extends BaseRequest
         return [
             'name' => ['required'],
             'email' => ['required', 'email:rfc,dns'],
-            'googleId' => ['required'],
+            'google_id' => ['required'],
             'imageUrl' => ['required']
         ];
     }

@@ -2,12 +2,15 @@
 
 namespace App\Drive\File\Repositories;
 
+use App\Drive\File\Exceptions\FileCreateFailException;
+use App\Drive\File\Exceptions\FileDeleteFailException;
 use App\Drive\File\Exceptions\FileNotFoundException;
+use App\Drive\File\Exceptions\FileUpdateFailException;
 use App\Drive\File\File;
 use App\Drive\File\Repositories\Interfaces\FileRepositoryInterface;
 use App\Drive\Log\Repositories\LogRepository;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\DB;
 
 class FileRepository implements FileRepositoryInterface
 {
@@ -47,20 +50,23 @@ class FileRepository implements FileRepositoryInterface
      * Get File by Id
      * 
      * @param int $id
+     * @param bool $is_make_log
      * 
      * @return File
      */
-    public function findFileById(int $id): File
+    public function findFileById(int $id, bool $is_make_log = true): File
     {
-        try {
-            $file = $this->model->findOrFail($id);
+        return DB::transaction(function() use($id, $is_make_log) {
+            $file = $this->model->find($id);
+            
+            throw_if(!$file, FileNotFoundException::class, 'File Not Found', 404);
 
-            $this->makeLog($file->id, $this->process_types['view']);
+            if ($is_make_log) {
+                $this->makeLog($file->id, $this->process_types['view']);
+            }
 
             return $file;
-        } catch (ModelNotFoundException $th) {
-            throw new FileNotFoundException('File Not Found', 404);
-        }
+        });
     }
 
     /**
@@ -72,11 +78,15 @@ class FileRepository implements FileRepositoryInterface
      */
     public function createFile(array $params): File
     {
-        $file = $this->model->create($params);
+        return DB::transaction(function() use($params) {
+            $file = $this->model->create($params);
+            
+            throw_if(!$file, FileCreateFailException::class, 'File Create Fail', 400);
 
-        $this->makeLog($file->id, $this->process_types['add']);
-
-        return $file;
+            $this->makeLog($file->id, $this->process_types['add']);
+    
+            return $file;
+        });
     }
 
     /**
@@ -89,17 +99,15 @@ class FileRepository implements FileRepositoryInterface
      */
     public function updateFile(int $id, array $params): File
     {
-        try {
-            $file = $file = $this->model->findOrFail($id);;
-    
-            $file->update($params);
+        return DB::transaction(function () use($id, $params) {
+            $file = $this->findFileById($id, false);
+            
+            throw_if(!$file->update($params), FileUpdateFailException::class, 'File Update Fail', 400);
     
             $this->makeLog($file->id, $this->process_types['update']); 
     
-            return $file->fresh();
-        } catch (ModelNotFoundException $th) {
-            throw new FileNotFoundException('File Not Found', 404);
-        }
+            return $file->fresh();  
+        });
     }
 
     /**
@@ -111,14 +119,14 @@ class FileRepository implements FileRepositoryInterface
      */
     public function deleteFile(int $id): bool
     {
-        try {
-            $file = $file = $this->model->findOrFail($id);
-    
+        return DB::transaction(function () use($id) {
+            $file = $this->findFileById($id, false);
+            
+            throw_if(!$file->delete(), FileDeleteFailException::class, 'File Delete Fail', 400);
+
             $this->makeLog($file->id, $this->process_types['delete']); 
     
-            return $file->delete();
-        } catch (ModelNotFoundException $th) {
-            throw new FileNotFoundException('File Not Found', 404);
-        }
+            return true;
+        });
     }
 }

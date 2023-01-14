@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Drive\Auth\Google\Requests\GoogleAuthRequest;
 use App\Drive\User\Repositories\Interfaces\UserRepositoryInterface;
+use Illuminate\Log\Logger;
 
 class ApiAuthController extends Controller
 {
