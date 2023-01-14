@@ -7,31 +7,31 @@ export default [
   {
     icon: BiBookHeart,
     text: "My Drive",
-    url : 'my-drive'
+    url : '/drive/my-drive'
   },
   {
     icon: MdDevices,
     text: "Computers",
-    url : 'computers'
+    url : '/drive/computers'
   },
   {
     icon: MdOutlinePeopleOutline,
     text: "Share with me",
-    url : 'share-with-me'
+    url : '/drive/share-with-me'
   },
   {
     icon: BiTimeFive,
     text: "Recent",
-    url : 'recent'
+    url : '/drive/recent'
   },
   {
     icon: AiOutlineStar,
     text: "Starred",
-    url : 'starred'
+    url : '/drive/starred'
   },
   {
     icon: BsTrash,
     text: "Trash",
-    url : 'trash'
+    url : '/drive/trash'
   },
 ];

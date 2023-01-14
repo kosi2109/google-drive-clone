@@ -5,6 +5,7 @@ namespace App\Drive\User\Repositories;
 use App\Drive\User\Exceptions\UserNotFoundException;
 use App\Drive\User\Repositories\Interfaces\UserRepositoryInterface;
 use App\Drive\User\User;
+use App\Events\NewUserCreated;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class UserRepository implements UserRepositoryInterface
@@ -36,7 +37,7 @@ class UserRepository implements UserRepositoryInterface
      * 
      * @return User
      */
-    public function createUser(array $params) : User
+    public function createUser(array $params): User
     {
         return $this->model->create($params);
     }
@@ -46,9 +47,9 @@ class UserRepository implements UserRepositoryInterface
      * 
      * @return User
      */
-    public function findUserById(int $id) : User
+    public function findUserById(int $id): User
     {
-        try {       
+        try {
             return $this->model->findOrFail($id);
         } catch (ModelNotFoundException $th) {
             throw new UserNotFoundException('User Not Found', 404);
@@ -78,7 +79,25 @@ class UserRepository implements UserRepositoryInterface
     public function deleteUser(int $id): bool
     {
         $user = $this->findUserById($id);
-        
+
         return $user->delete();
+    }
+
+    /**
+     * @param array $params
+     */
+    public function firstOrCreateUser(array $params): User
+    {
+        $user = $this->model->where('email', $params['email'])->first();
+
+        if (!$user) {
+            $params['email_verified_at'] = now();
+
+            $user = $this->model->create($params);
+
+            event(new NewUserCreated($user));
+        }
+
+        return $user;
     }
 }

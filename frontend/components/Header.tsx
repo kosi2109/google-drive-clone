@@ -1,15 +1,16 @@
 import Image from "next/image";
 import React, { useCallback, useRef, useState } from "react";
 import Logo from "../public/assets/driveLogo.png";
-import People from "../public/assets/test.jpg";
 import { GoSettings } from "react-icons/go";
 import { AiOutlineClose, AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
 import RoundedHoverBtn from "./buttons/RoundedHoverBtn";
 import { SearchHistories, AdvanceFilter, FileTypes } from "./search";
 import { useTheme } from "next-themes";
 import { BsMoon, BsSun } from "react-icons/bs";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { changeOpenMobileMenu } from "../features/appSlice";
+import { selectUser } from "../features/userSlice";
+import { useSession } from "next-auth/react";
 
 function Header() {
   const [isFoucs, setIsFoucs] = useState<boolean>(false);
@@ -19,6 +20,8 @@ function Header() {
   const { systemTheme, theme, setTheme } = useTheme();
   const currentTheme = theme === "system" ? systemTheme : theme;
   const dispatch = useDispatch();
+  const { data: session, status } = useSession()
+  
 
   const searchHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -31,7 +34,7 @@ function Header() {
     setKeyword("");
     inputRef.current?.focus();
   };
-
+  
   return (
     <div className="py-3 px-4 border-b flex justify-between items-center h-18">
       {/* logo */}
@@ -124,13 +127,13 @@ function Header() {
       </div>
       <div className="w-12 flex justify-end items-center">
         <div className="w-10 h-10 rounded-full hover:bg-gray-100 p-1 cursor-pointer">
-          <Image
+          {/* <Image
             width={10}
             height={10}
-            src={People.src}
+            src={session?.user?.image as string}
             alt="profile"
             className="w-full h-full rounded-full"
-          />
+          /> */}
         </div>
       </div>
       </div>
