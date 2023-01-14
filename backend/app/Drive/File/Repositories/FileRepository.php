@@ -10,7 +10,6 @@ use App\Drive\File\File;
 use App\Drive\File\Repositories\Interfaces\FileRepositoryInterface;
 use App\Drive\Log\Repositories\LogRepository;
 use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Facades\DB;
 
 class FileRepository implements FileRepositoryInterface
