@@ -20,10 +20,8 @@ function Header() {
   const { systemTheme, theme, setTheme } = useTheme();
   const currentTheme = theme === "system" ? systemTheme : theme;
   const dispatch = useDispatch();
-  const user = useSelector(selectUser);
   const { data: session, status } = useSession()
   
-console.log(session?.user?.image);
 
   const searchHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -129,13 +127,13 @@ console.log(session?.user?.image);
       </div>
       <div className="w-12 flex justify-end items-center">
         <div className="w-10 h-10 rounded-full hover:bg-gray-100 p-1 cursor-pointer">
-          <Image
+          {/* <Image
             width={10}
             height={10}
             src={session?.user?.image as string}
             alt="profile"
             className="w-full h-full rounded-full"
-          />
+          /> */}
         </div>
       </div>
       </div>

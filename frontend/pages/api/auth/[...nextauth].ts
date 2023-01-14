@@ -12,30 +12,26 @@ export default NextAuth({
         imageUrl : {type : 'text'},
         name : {type : 'text'},
       },
-      async authorize(credentials, req) {
-        try {
-          const u = (await googleUserLogin({
-            email: credentials?.email,
-            googleId: credentials?.googleId,
-            imageUrl: credentials?.imageUrl,
-            name: credentials?.name,
-          }));        
-          const user = {
-            name: u?.data?.user?.name,
-            access_token: u?.data?.access_token,
-            email : u?.data?.user?.email,
-            image : u?.data?.user?.avatar
-          };
-  
-          if (!user) {
-            return null;
-          }
+      async authorize(credentials, req) {                
+        const u = (await googleUserLogin({
+          email: credentials?.email,
+          google_id: credentials?.googleId,
+          imageUrl: credentials?.imageUrl,
+          name: credentials?.name,
+        }));   
+             
+        const user = {
+          name: u?.data?.user?.name,
+          access_token: u?.data?.access_token,
+          email : u?.data?.user?.email,
+          image : u?.data?.user?.avatar
+        };
 
-          return user as any;
-        } catch (error : any) {
-          return null
+        if (!user) {
+          return null;
         }
-        
+
+        return user as any;
       },
     }),
   ],
