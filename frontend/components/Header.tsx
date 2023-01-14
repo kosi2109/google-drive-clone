@@ -10,6 +10,7 @@ import { BsMoon, BsSun } from "react-icons/bs";
 import { useDispatch, useSelector } from "react-redux";
 import { changeOpenMobileMenu } from "../features/appSlice";
 import { selectUser } from "../features/userSlice";
+import { useSession } from "next-auth/react";
 
 function Header() {
   const [isFoucs, setIsFoucs] = useState<boolean>(false);
@@ -20,6 +21,9 @@ function Header() {
   const currentTheme = theme === "system" ? systemTheme : theme;
   const dispatch = useDispatch();
   const user = useSelector(selectUser);
+  const { data: session, status } = useSession()
+  
+console.log(session?.user?.image);
 
   const searchHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -128,7 +132,7 @@ function Header() {
           <Image
             width={10}
             height={10}
-            src={user?.avatar}
+            src={session?.user?.image as string}
             alt="profile"
             className="w-full h-full rounded-full"
           />
