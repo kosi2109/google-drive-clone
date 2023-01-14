@@ -15,7 +15,7 @@ function LinkList() {
           Icon={link.icon}
           text={link.text}
           url={link.url}
-          active={router.query.slug === link.url}
+          active={router.asPath.split("?")[0] === link.url}
         />
       ))}
     </div>

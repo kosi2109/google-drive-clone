@@ -7,7 +7,7 @@ function SideBarBtn({ Icon, text, url, active = false }: SideBarBtnType) {
 
   return (
     <button
-      onClick={() => router.push(`/drive/${url}`)}
+      onClick={() => router.push(`${url}`)}
       className={`flex items-center w-full h-10 rounded-r-full px-6 ${
         active ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100 dark:hover:bg-gray-800"
       }`}

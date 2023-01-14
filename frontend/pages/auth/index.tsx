@@ -1,48 +1,42 @@
-import React, { useEffect, useState } from 'react'
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/router";
+import { GoogleLogin } from "react-google-login";
 
 function Auth() {
-    const [loginUrl, setLoginUrl] = useState(null);
+  const router = useRouter();
 
-    useEffect(() => {
-        fetch('http://localhost:8000/api/auth/google', {
-            headers : {
-                'Content-Type': 'application/json',
-                'Accept': 'application/json'
-            }
-        })
-            .then((response) => {
-                if (response.ok) {
-                    return response.json();
-                }
-                throw new Error('Something went wrong!');
-            })
-            .then((data) => setLoginUrl( data.url ))
-            .catch((error) => console.error(error));
-    }, []);
-    // useEffect(() => {
-    //     fetch('http://localhost:8000/api/auth/google', {
-    //         headers : {
-    //             'Content-Type': 'application/json',
-    //             'Accept': 'application/json'
-    //         }
-    //     })
-    //         .then((response) => {
-    //             if (response.ok) {
-    //                 return response.json();
-    //             }
-    //             throw new Error('Something went wrong!');
-    //         })
-    //         .then((data) => setLoginUrl( data.url ))
-    //         .catch((error) => console.error(error));
-    // }, []);
+  const { status } = useSession();
+  
+  if (status === 'authenticated') {
+    router.push('/drive/my-drive');
+  }
 
-    return (
-        <div>
-            {loginUrl != null && (
-                <a href={loginUrl}>Google Sign In</a>
-            )}
-        </div>
-    );
+  const responseGoogle = async (response: any) => {    
+    const status = await signIn('credentials' ,{
+      callbackUrl : '/',
+      redirect : false,
+      email : response?.profileObj?.email,
+      googleId : response?.profileObj?.googleId,
+      imageUrl : response?.profileObj?.imageUrl,
+      name : response?.profileObj?.name,
+    });
+
+    if (status?.ok) router.push('/drive/my-drive');
+  };
+
+  return ( status === 'unauthenticated' &&
+    <div className="w-screen h-screen flex items-center justify-center bg-gray-400">
+      <GoogleLogin
+        clientId="814451914005-v5tqj51ej1vs8nr62nolf3ee2fap5ohn.apps.googleusercontent.com"
+        buttonText="Login"
+        onSuccess={responseGoogle}
+        onFailure={responseGoogle}
+        cookiePolicy={"single_host_origin"}
+      >
+        Google
+      </GoogleLogin>
+    </div>
+  );
 }
 
-export default Auth
+export default Auth;
