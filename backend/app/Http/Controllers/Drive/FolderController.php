@@ -76,7 +76,9 @@ class FolderController extends Controller
         int $id
     )
     {
-        return $this->folderRepo->deleteFolder($id);
+        $this->folderRepo->deleteFolder($id);
+
+        return response('Folder was successfully deleted.');
     }
 
     /**

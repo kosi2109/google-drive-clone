@@ -122,7 +122,7 @@ class FileRepository implements FileRepositoryInterface
         return DB::transaction(function () use($id) {
             $file = $this->findFileById($id, false);
             
-            throw_if($file->delete(), FileDeleteFailException::class, 'File Delete Fail', 400);
+            throw_if(!$file->delete(), FileDeleteFailException::class, 'File Delete Fail', 400);
 
             $this->makeLog($file->id, $this->process_types['delete']); 
     

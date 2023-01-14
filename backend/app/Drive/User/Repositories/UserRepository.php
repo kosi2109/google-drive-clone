@@ -94,11 +94,10 @@ class UserRepository implements UserRepositoryInterface
             $params['email_verified_at'] = now();
 
             $user = $this->model->create($params);
-            
+
             event(new NewUserCreated($user));
         }
 
-        
         return $user;
     }
 }

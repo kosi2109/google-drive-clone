@@ -77,7 +77,9 @@ class FileController extends Controller
         int $id
     )
     {
-        return $this->fileRepo->deleteFile($id);
+        $this->fileRepo->deleteFile($id);
+        
+        return response('File was successfully deleted', 201);
     }
 
     /**
