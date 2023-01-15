@@ -26,9 +26,5 @@ class AuthServiceProvider extends ServiceProvider
     public function boot()
     {
         $this->registerPolicies();
-
-        if (request()->hasCookie('access_token')) {
-            request()->headers->set('Authorization', 'Bearer ' . request()->cookie('access_token'));
-        }
     }
 }
