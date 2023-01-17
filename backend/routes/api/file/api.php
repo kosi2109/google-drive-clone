@@ -9,4 +9,4 @@ Route::put('/update/{id}', [FileController::class, 'update']);
 Route::delete('/delete/{id}', [FileController::class, 'destroy']);
 Route::get('/{id}', [FileController::class, 'show']);
 
-Route::post('/uploadLargeFiles', [FileController::class, 'upload']);
+Route::post('/uploadLargeFiles', [FileController::class, 'uploadFile'])->withoutMiddleware('throttle');
