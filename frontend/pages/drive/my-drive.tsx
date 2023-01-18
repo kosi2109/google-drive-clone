@@ -4,7 +4,7 @@ import Uploady, { useBatchFinishListener, useBatchProgressListener, useRequestPr
 import UploadButton from "@rpldy/upload-button";
 import ChunkedUploady from "@rpldy/chunked-uploady";
 
-const chunkSize = 1000 * 1024;
+const chunkSize = 10 * 1024 * 1024;
 
 function MyDrive() {
 

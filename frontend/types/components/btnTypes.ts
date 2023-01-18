@@ -13,6 +13,7 @@ type RoundedBtnType = {
   onClickHandle?: any;
   size?: number;
   text: string;
+  textPosition?: string;
 };
 
 export type { 

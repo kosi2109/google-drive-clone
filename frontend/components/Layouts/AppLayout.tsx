@@ -1,8 +1,13 @@
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
+  changeDownloadController,
+  selectDownloadControll,
   selectIsOpenDetailView,
   selectIsOpenMobileMenu,
 } from "../../features/appSlice";
+import { selectDownloadQueue } from "../../features/downloadQueueSlice";
+import DownloadCard from "../downloadCard";
 import Header from "../Header";
 import ItemDetail from "../ItemDetail";
 import PageNavigator from "../PageNavigator";
@@ -12,6 +17,16 @@ import AuthGuard from "./AuthGuard";
 function AppLayout({ children }: any) {
   const isOpenDetail = useSelector(selectIsOpenDetailView);
   const isOpenMobileMenu = useSelector(selectIsOpenMobileMenu);
+  const { isOpen } = useSelector(selectDownloadControll);
+  const downloadItems = useSelector(selectDownloadQueue);
+
+  const dispatch = useDispatch();
+  
+  useEffect(() => {
+    if (downloadItems.length > 0) {
+      dispatch(changeDownloadController({ isOpen: true, isMinimize: false }));
+    }
+  }, []);
 
   return (
     <AuthGuard>
@@ -46,6 +61,8 @@ function AppLayout({ children }: any) {
           </div>
         </div>
       </div>
+
+      {isOpen && <DownloadCard />}
     </AuthGuard>
   );
 }
