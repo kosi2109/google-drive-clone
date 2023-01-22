@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useEffect } from "react";
+import React from "react";
 import { SideBarBtnType } from "../../types/components";
 
 function SideBarBtn({ Icon, text, url, active = false }: SideBarBtnType) {
@@ -9,7 +9,9 @@ function SideBarBtn({ Icon, text, url, active = false }: SideBarBtnType) {
     <button
       onClick={() => router.push(`${url}`)}
       className={`flex items-center w-full h-10 rounded-r-full px-6 ${
-        active ? "bg-blue-100 text-blue-700" : "hover:bg-gray-100 dark:hover:bg-gray-800"
+        active
+          ? "bg-blue-100 text-blue-700"
+          : "hover:bg-gray-100 dark:hover:bg-gray-800"
       }`}
     >
       <Icon size={20} />

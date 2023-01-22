@@ -1,8 +1,23 @@
-import { useSelector } from "react-redux";
 import {
+  useItemFinishListener,
+  useItemProgressListener,
+  useItemStartListener,
+  useRequestPreSend,
+} from "@rpldy/uploady";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  changeDownloadController,
+  selectDownloadControll,
   selectIsOpenDetailView,
   selectIsOpenMobileMenu,
 } from "../../features/appSlice";
+import {
+  addToQeue,
+  selectDownloadQueue,
+  updateProgessById,
+} from "../../features/downloadQueueSlice";
+import DownloadCard from "../downloadCard";
 import Header from "../Header";
 import ItemDetail from "../ItemDetail";
 import PageNavigator from "../PageNavigator";
@@ -12,6 +27,58 @@ import AuthGuard from "./AuthGuard";
 function AppLayout({ children }: any) {
   const isOpenDetail = useSelector(selectIsOpenDetailView);
   const isOpenMobileMenu = useSelector(selectIsOpenMobileMenu);
+  const { isOpen } = useSelector(selectDownloadControll);
+  const downloadItems = useSelector(selectDownloadQueue);
+
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    if (downloadItems.length > 0) {
+      dispatch(changeDownloadController({ isOpen: true, isMinimize: false }));
+    }
+  }, [downloadItems.length]);
+
+  //upload progess handler
+  useItemStartListener((item) => {
+    dispatch(
+      addToQeue({
+        id: item.id,
+        name: item.file.name,
+        completed: item.completed,
+        state: item.state,
+      })
+    );
+  });
+
+  useItemProgressListener((item) => {
+    dispatch(
+      updateProgessById({
+        id: item.id,
+        name: item.file.name,
+        completed: item.completed,
+        state: item.state,
+      })
+    );
+  });
+
+  useItemFinishListener((item) => {
+    dispatch(
+      updateProgessById({
+        id: item.id,
+        name: item.file.name,
+        completed: item.completed,
+        state: item.state,
+      })
+    );
+  });
+
+  useRequestPreSend(({ items, options }) => {
+    return {
+      options: {
+        params: {},
+      },
+    };
+  });
 
   return (
     <AuthGuard>
@@ -46,6 +113,8 @@ function AppLayout({ children }: any) {
           </div>
         </div>
       </div>
+
+      {isOpen && <DownloadCard />}
     </AuthGuard>
   );
 }

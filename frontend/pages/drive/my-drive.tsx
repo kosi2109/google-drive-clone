@@ -1,8 +1,7 @@
-import React from "react";
 import AppLayout from "../../components/layouts/AppLayout";
 
 function MyDrive() {
-  return <AppLayout>MyDrive</AppLayout>;
+  return <AppLayout>my-drive</AppLayout>;
 }
 
 export default MyDrive;
