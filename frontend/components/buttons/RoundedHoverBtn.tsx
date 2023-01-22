@@ -7,7 +7,7 @@ function RoundedHoverBtn({
   onClickHandle,
   size = 23,
   text,
-  textPosition = "bottom"
+  textPosition = "bottom",
 }: RoundedBtnType) {
   return (
     <button
@@ -17,8 +17,16 @@ function RoundedHoverBtn({
       }`}
     >
       <Icon size={size} />
-      <div className={`z-[1000] absolute ${ textPosition === 'bottom' ? 'top-[100%]' : ''} ${ textPosition === 'top' ? 'bottom-[100%]' : ''} p-1 z-[100] bg-gray-600 rounded-sm opacity-0 group-hover:opacity-100 group-hover:transition-all delay-300`}>
-        <p className="text-xs text-white font-semibold capitalize whitespace-nowrap">{text}</p>
+      <div
+        className={`z-[1000] absolute ${
+          textPosition === "bottom" ? "top-[100%]" : ""
+        } ${
+          textPosition === "top" ? "bottom-[100%]" : ""
+        } p-1 z-[100] bg-gray-600 rounded-sm opacity-0 group-hover:opacity-100 group-hover:transition-all delay-300`}
+      >
+        <p className="text-xs text-white font-semibold capitalize whitespace-nowrap">
+          {text}
+        </p>
       </div>
     </button>
   );

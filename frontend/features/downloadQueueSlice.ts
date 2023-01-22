@@ -1,30 +1,33 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { ItemType } from "../types/data/itemTypes";
 
 export type DownQueueState = {
-    name : string,
-    is_complete : boolean,
-    percentage : number 
-}
-  
-const initialState: DownQueueState[] = [
-    {
-        name : 'test',
-        is_complete : false,
-        percentage : 60
-    }
-]
+  id: string;
+  name: string;
+  completed: number;
+  state: string;
+};
+
+const initialState: DownQueueState[] = [];
 
 export const downloadQueueSlice = createSlice({
   name: "downloadQueue",
   initialState,
   reducers: {
-    
+    addToQeue: (state, action) => {
+      state.push(action.payload);
+    },
+    updateProgessById: (state, action) => {
+      let item = state.find((i) => i.id === action.payload?.id);
+      if (item) {
+        item.completed = action.payload.completed;
+        item.state = action.payload.state;
+      }
+    },
   },
 });
 
-export const { } = downloadQueueSlice.actions;
+export const { addToQeue, updateProgessById } = downloadQueueSlice.actions;
 
-export const selectDownloadQueue = (state : any) => state.downloadQueueSlice;
+export const selectDownloadQueue = (state: any) => state.downloadQueueSlice;
 
 export default downloadQueueSlice.reducer;

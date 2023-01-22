@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { BsChevronDown, BsChevronUp } from "react-icons/bs";
 import { MdOutlineClose } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
@@ -6,7 +6,10 @@ import {
   changeDownloadController,
   selectDownloadControll,
 } from "../../features/appSlice";
-import { DownQueueState, selectDownloadQueue } from "../../features/downloadQueueSlice";
+import {
+  DownQueueState,
+  selectDownloadQueue,
+} from "../../features/downloadQueueSlice";
 import { RoundedHoverBtn } from "../buttons";
 import DownloadItem from "./DownloadItem";
 
@@ -46,9 +49,9 @@ function DownloadCard() {
       </div>
       {!isMinimize && (
         <div className="px-4 bg-white">
-            {downloadItems.map((item : DownQueueState,i : number) => (
-                <DownloadItem key={i} item={item} />
-            ))}
+          {downloadItems.map((item: DownQueueState, i: number) => (
+            <DownloadItem key={i} item={item} />
+          ))}
         </div>
       )}
     </div>
