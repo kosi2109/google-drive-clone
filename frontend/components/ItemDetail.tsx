@@ -5,7 +5,7 @@ import Detail from "./itemDetail/Detail";
 
 function ItemDetail() {
   const item = useSelector(selectSelectedItem);
-
+  
   return (
     <div className="w-full">
       {item ? (

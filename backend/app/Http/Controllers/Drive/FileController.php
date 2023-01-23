@@ -111,9 +111,6 @@ class FileController extends Controller
      */
     public function uploadFile(Request $request)
     {
-        Logger($request);
-        //Turn Off The Throttle API
-        //from web route
         // create the file receiver
         $receiver = new FileReceiver("file", $request, HandlerFactory::classFromRequest($request));
 
@@ -151,7 +148,7 @@ class FileController extends Controller
      */
     protected function saveFile(UploadedFile $file, Request $request)
     {
-        $user_obj = User::find('1'); //auth()->user();
+        $user_obj = auth()->user();
         $fileName = $this->createFilename($file);
 
         $folder  = $request->folder_name ?  "/$request->folder_name/" : '/' ;
@@ -165,10 +162,11 @@ class FileController extends Controller
         $url_base = env('APP_URL') . '/storage/upload/users/' . $user_obj->id . "/my-drive{$folder}" . $fileName;
 
         return new FileResource($this->fileRepo->createFile([
-            'ower_id' => 1, //user id,
+            'owner_id' => $user_obj->id,
             'name' => $file->getClientOriginalName(),
             'size' => $fileSize,
-            'file_path' => $url_base
+            'file_path' => $url_base,
+            'mime_type' => $file->getClientMimeType()
         ]));
     }
 

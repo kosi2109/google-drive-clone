@@ -32,8 +32,7 @@ class LogRepository implements LogRepositoryInterface
             'process_name' => $process_name,
             'process_id' => $process_id,
             'process_type' => $process_type,
-            // 'process_by' => auth()->id()
-            'process_by' => 3
+            'process_by' => auth()->user()->id
         ]);
     }
 

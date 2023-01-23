@@ -12,7 +12,7 @@ return [
     ],
     'process_types' => [
         'add' => 1,
-        'view' => 1,
+        'view' => 2,
         'update' => 3,
         'delete' => 4
     ],

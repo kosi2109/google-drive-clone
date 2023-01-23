@@ -13,7 +13,7 @@ export const itemSlice = createSlice({
   name: "item",
   initialState,
   reducers: {
-    changeSelectItem: (state, action) => {
+    changeSelectItem: (state, action) => {      
       state.selected = action.payload;
     },
   },

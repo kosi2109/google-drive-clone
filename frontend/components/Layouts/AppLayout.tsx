@@ -4,6 +4,7 @@ import {
   useItemStartListener,
   useRequestPreSend,
 } from "@rpldy/uploady";
+import { useSession } from "next-auth/react";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -29,6 +30,7 @@ function AppLayout({ children }: any) {
   const isOpenMobileMenu = useSelector(selectIsOpenMobileMenu);
   const { isOpen } = useSelector(selectDownloadControll);
   const downloadItems = useSelector(selectDownloadQueue);
+  const { data } = useSession();
 
   const dispatch = useDispatch();
 
@@ -71,11 +73,19 @@ function AppLayout({ children }: any) {
       })
     );
   });
-
+  
   useRequestPreSend(({ items, options }) => {
+    
     return {
       options: {
-        params: {},
+        destination : {
+          headers : {
+            Authorization : `Bearer ${data?.token?.access_token}`
+          }
+        },
+        params: {
+          test : 'aaa'
+        }
       },
     };
   });

@@ -12,7 +12,7 @@ export interface DownloadItem {
 }
 
 function DownloadItem({ item }: DownloadItem) {
-  const { Icon, color } = getIconByType["folder"];
+  const { Icon, color } = getIconByType("folder");
 
   return (
     <div className="flex items-center justify-between h-14 cursor-pointer group">

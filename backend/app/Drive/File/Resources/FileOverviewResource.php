@@ -22,8 +22,11 @@ class FileOverviewResource extends BaseResource
             'access' => $this->access,
             'size' => $this->size,
             'file_path' => $this->file_path,
-            'lastView' => new LogResource($this->lastView),
+            'mime_type' => $this->mime_type,
             'ownBy' => new UserResource($this->ownBy),
+            'lastModify' => new LogResource($this->lastModify),
+            'lastView' => new LogResource($this->lastView),
+            'created' => $this->created_at,
         ];
     }
 }

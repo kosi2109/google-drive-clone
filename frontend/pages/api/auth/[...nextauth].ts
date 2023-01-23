@@ -46,7 +46,7 @@ export default NextAuth({
       return token;
     },
     async session({ session, token }) {
-      return { ...session };
+      return { ...session, token : token?.account };
     },
   },
   secret : process.env.SESSION_SECRET,

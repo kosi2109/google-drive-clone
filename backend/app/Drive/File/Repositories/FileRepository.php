@@ -43,7 +43,7 @@ class FileRepository implements FileRepositoryInterface
      */
     public function getOuterFiles(): Collection
     {
-        return $this->model->whereNull('folder_id')->get();
+        return $this->model->where('owner_id', auth()->user()->id)->whereNull('folder_id')->get();
     }
 
     /**
