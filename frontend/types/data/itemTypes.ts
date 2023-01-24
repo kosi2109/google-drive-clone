@@ -12,7 +12,7 @@ type BaseLog = {
 type ItemType = {
   id: number;
   name: string;
-  access: string;
+  access: number;
   size: string;
   file_path: string;
   mime_type: string;

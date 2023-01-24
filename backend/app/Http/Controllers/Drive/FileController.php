@@ -178,14 +178,8 @@ class FileController extends Controller
     protected function createFilename(UploadedFile $file)
     {
         $extension = $file->getClientOriginalExtension();
-        $filename = str_replace("." . $extension, "", $file->getClientOriginalName()); // Filename without extension
+        $filename = rand(1,9) . time() . 'drive' .today();
 
-        //delete timestamp from file name
-        $temp_arr = explode('_', $filename);
-        if (isset($temp_arr[0])) unset($temp_arr[0]);
-        $filename = implode('_', $temp_arr);
-
-        //here you can manipulate with file name e.g. HASHED
         return $filename . "." . $extension;
     }
 }
