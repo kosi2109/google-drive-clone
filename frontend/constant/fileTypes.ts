@@ -9,25 +9,6 @@ export enum IconType {
   document = "document",
 }
 
-// const getIconByType = {
-//     "pdf" : {
-//         Icon : MdPictureAsPdf,
-//         color : 'red'
-//     },
-//     "folder" : {
-//         Icon : MdFolderShared,
-//         color : 'red'
-//     },
-//     "excel" : {
-//         Icon : BsFillFileEarmarkExcelFill,
-//         color : 'green'
-//     },
-//     "document" : {
-//         Icon : HiDocumentText,
-//         color : 'blue'
-//     },
-// }
-
 const getIconByType = (mime_type: string) => {
   let typeObj = {
     Icon: MdPictureAsPdf,
@@ -59,9 +40,13 @@ const getIconByType = (mime_type: string) => {
       Icon: HiDocumentText,
       color: "blue",
     };
+  } else if (mime_type.includes("folder")) {
+    typeObj = {
+      Icon: MdFolderShared,
+      color: "blue",
+    };
   }
 
-  
   return typeObj;
 };
 

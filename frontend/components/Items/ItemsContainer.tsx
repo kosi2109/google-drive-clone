@@ -50,7 +50,7 @@ function ItemsContainer({ title, files }: ItemsContainerType) {
           isListView ? "flex flex-col" : `flex flex-wrap justify-center sm:justify-start gap-2 transition-all`
         }
       >
-        {files?.data?.map((d: any) => (
+        {files?.map((d: any) => (
           <Item
             key={d.id}
             item={d}

@@ -10,14 +10,14 @@ import { FaPlay } from "react-icons/fa";
 
 const styleFunction = (isList: boolean) => {
   const itemClass = isList
-    ? "flex items-center h-10 px-4 py-6 select-none"
-    : "flex flex-col border-2 rounded-md overflow-hidden w-60 h-60 group select-none";
+    ? "flex items-center h-10 px-4 py-6 select-none z-0"
+    : "flex flex-col border-2 rounded-md overflow-hidden w-60 h-60 group select-none z-0";
   const itemClassOnFocus = isList
-    ? "border border-blue-700 text-blue-900 bg-blue-50 dark:text-white dark:bg-gray-600"
-    : "border-blue-400";
+    ? "border border-blue-700 text-blue-900 bg-blue-50 dark:text-white dark:bg-gray-600 z-0"
+    : "border-blue-400 z-0";
   const itemClassNotOnFocus = isList
-    ? "border-b-2 hover:bg-gray-100 dark:hover:bg-gray-800"
-    : "";
+    ? "border-b-2 hover:bg-gray-100 dark:hover:bg-gray-800 z-0"
+    : "z-1";
 
   const contentClass = isList
     ? "flex items-center w-4/6 h-full"
@@ -37,28 +37,29 @@ const styleFunction = (isList: boolean) => {
   };
 };
 
-const renderByType = (mime_type: string, file_path: string) => {
+const renderByType = (mime_type: string, id: number) => {
+  
   if (mime_type.includes("image")) {
     return (
       <img
         className="w-full h-full object-cover"
-        src={file_path}
+        src={`http://localhost:8000/api/files/d/${id}`}
         alt="sample img"
       />
     );
   } else if (mime_type.includes("video")) {
     return (
-      <div className="w-full h-full overflow-hidden relative">
+      <div className="w-full h-full overflow-hidden relative z-0">
         <div className="inset-x-0 mx-auto inset-y-0 my-auto w-10 h-10 absolute rounded-full flex items-center justify-center overflow-hidden">
           <div className="w-full h-full absolute bg-gray-800 opacity-50">
 
           </div>
-          <FaPlay color="white" className="z-[10]" />
+          <FaPlay color="white" className="z-10" />
         </div>
         <video
           className="w-full h-full object-cover"
-          src={file_path}
-        ></video>
+          src={`http://localhost:8000/api/files/d/${id}`}
+          ></video>
       </div>
     );
   } else {
@@ -97,8 +98,8 @@ function Item({ item, isListItem = false }: ItemType) {
       ${focus ? style.itemClassOnFocus : style.itemClassNotOnFocus}`}
     >
       {!isListItem && (
-        <div className="w-full h-48">
-          {renderByType(item.mime_type, item.file_path)}
+        <div className="w-full h-48 z-0">
+          {renderByType(item.mime_type, item.id)}
         </div>
       )}
 

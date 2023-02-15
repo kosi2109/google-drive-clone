@@ -6,7 +6,6 @@ import { ThemeProvider } from "next-themes";
 import { SessionProvider } from "next-auth/react";
 import ChunkedUploady from "@rpldy/chunked-uploady";
 import { useEffect, useState } from "react";
-
 const chunkSize = 10 * 1024 * 1024;
 
 export default function App({

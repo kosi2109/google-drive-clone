@@ -40,7 +40,7 @@ function GeneralAccessDialog({
 
   useEffect(() => {
     setSelectedMenu(accessOption.find((a) => item.access === a.code));
-  }, [item.id]);
+  }, [item.id, item.access]);
 
   const copyClipboard = () => {
     setCopied(true);
@@ -54,7 +54,7 @@ function GeneralAccessDialog({
     <Dialog setIsOpen={openHandler} width="30%" height="auto">
       <div className="p-4 dark:text-black relative">
         <h1 className="text-xl mb-1">Share</h1>
-        <h1 className="text-xl mb-3 break-words">"{item.name}"</h1>
+        <h1 className="text-xl mb-3 break-words">{item.name}</h1>
         <input
           type="text"
           className="w-full border-2 h-12 rounded-md hover:border-gray-500 focus:border-red-800 p-4 mb-3 dark:text-white"

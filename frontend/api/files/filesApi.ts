@@ -1,11 +1,17 @@
 import axioInstance from "../axioInstance";
 
-export const filesApiEndPoint = 'files';
+export const filesApiEndPoint = "files";
 
-export const getFiles = async (token : string) => {
-    const response = await axioInstance.get(`${filesApiEndPoint}`, {headers : {
-        "Authorization" : `Bearer ${token}`
-    }})
+export const getFiles = (token: string) => token ? axioInstance.get(`${filesApiEndPoint}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => res.data) : [];
 
-    return response.data;
-};
+export const getDFiles = (id : number, token: string) => axioInstance.get(`${filesApiEndPoint}/d/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    })
+    .then((res) => res.data)

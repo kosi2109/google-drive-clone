@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Log\Logger;
+use Illuminate\Support\Facades\Storage;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
@@ -150,23 +151,21 @@ class FileController extends Controller
     {
         $user_obj = auth()->user();
         $fileName = $this->createFilename($file);
-
-        $folder  = $request->folder_name ?  "/$request->folder_name/" : '/' ;
-        $filePath = "public/upload/users/{$user_obj->id}/my-drive{$folder}";
-        $finalPath = storage_path("app/" . $filePath);
+        $folder  = $request->folder_name ?  "/$request->folder_name/" : '/';
+        $filePath = "/upload/users/{$user_obj->id}/my-drive{$folder}";
+        $finalPath = storage_path("app/public" . $filePath);
 
         $fileSize = $file->getSize();
         // move the file name
         $file->move($finalPath, $fileName);
 
-        $url_base = env('APP_URL') . '/storage/upload/users/' . $user_obj->id . "/my-drive{$folder}" . $fileName;
-
-        return new FileResource($this->fileRepo->createFile([
+        return new FileOverviewResource($this->fileRepo->createFile([
             'owner_id' => $user_obj->id,
             'name' => $file->getClientOriginalName(),
             'size' => $fileSize,
-            'file_path' => $url_base,
-            'mime_type' => $file->getClientMimeType()
+            'file_path' => $filePath . $fileName ,
+            'mime_type' => $file->getClientMimeType(),
+            'folder_id' => $request->folder_id
         ]));
     }
 
@@ -178,8 +177,17 @@ class FileController extends Controller
     protected function createFilename(UploadedFile $file)
     {
         $extension = $file->getClientOriginalExtension();
-        $filename = rand(1,9) . time() . 'drive' .today();
+        $filename = rand(1, 9) . time() . 'drive';
 
         return $filename . "." . $extension;
+    }
+
+    public function getFile(
+        $id
+    )
+    {
+        $file = $this->fileRepo->findFileById($id, false);
+
+        return response()->file(Storage::disk('public')->path($file->file_path));
     }
 }

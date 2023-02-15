@@ -1,31 +1,20 @@
 import { useItemFinishListener } from "@rpldy/uploady";
 import { useSession } from "next-auth/react";
-import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getFiles } from "../../api/backendApi";
 import ItemsContainer from "../../components/items/ItemsContainer";
 import AppLayout from "../../components/layouts/AppLayout";
 import { updateProgessById } from "../../features/downloadQueueSlice";
-import { ItemType } from "../../types/data/itemTypes";
+import useSWR from 'swr'
+import { getPageData } from "../../api/pages/pagesApi";
 
 function MyDrive() {
-  const { data, status } = useSession();
-  const [files, setFiles] = useState<ItemType[]>([]);
+  const { data : session, status } : any = useSession();
   const dispatch = useDispatch();
+  const token = session?.token?.access_token;
+  const page = 'my-drive';
+  const { data , mutate, isLoading} = useSWR([page, token], ([page, token]) => getPageData(page, token))
 
-  const fetchFiles = () => {
-    getFiles(data?.token?.access_token)
-      .then((res) => setFiles(res.data))
-      .catch((res) => console.log(res));
-  };
-
-  useEffect(() => {
-    if (status !== "loading") {
-      fetchFiles();
-    }
-  }, [status]);
-
-  useItemFinishListener((item) => {
+  useItemFinishListener(async (item) => {    
     dispatch(
       updateProgessById({
         id: item.id,
@@ -34,12 +23,12 @@ function MyDrive() {
         state: item.state,
       })
     );
-    fetchFiles();
   });
-
+  
   return (
-    <AppLayout>
-      <ItemsContainer title="Test" files={files} />
+    <AppLayout isLoading={isLoading}>
+      <ItemsContainer title="Folder" files={data?.folders} />
+      <ItemsContainer title="Files" files={data?.files} />
     </AppLayout>
   );
 }
