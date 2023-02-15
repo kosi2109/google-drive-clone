@@ -4,6 +4,8 @@ import {
   useItemStartListener,
   useRequestPreSend,
 } from "@rpldy/uploady";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -17,6 +19,7 @@ import {
   selectDownloadQueue,
   updateProgessById,
 } from "../../features/downloadQueueSlice";
+import SkeletonLoading from "../Common/SkeletonLoading";
 import DownloadCard from "../downloadCard";
 import Header from "../Header";
 import ItemDetail from "../ItemDetail";
@@ -24,11 +27,15 @@ import PageNavigator from "../PageNavigator";
 import SideBar from "../SideBar";
 import AuthGuard from "./AuthGuard";
 
-function AppLayout({ children }: any) {
+function AppLayout({ children, isLoading = false }: any) {
   const isOpenDetail = useSelector(selectIsOpenDetailView);
   const isOpenMobileMenu = useSelector(selectIsOpenMobileMenu);
   const { isOpen } = useSelector(selectDownloadControll);
   const downloadItems = useSelector(selectDownloadQueue);
+  const { data }: any = useSession();
+  const {
+    query: { id },
+  } = useRouter();
 
   const dispatch = useDispatch();
 
@@ -40,12 +47,14 @@ function AppLayout({ children }: any) {
 
   //upload progess handler
   useItemStartListener((item) => {
+    console.log(item);
     dispatch(
       addToQeue({
         id: item.id,
         name: item.file.name,
         completed: item.completed,
         state: item.state,
+        mime_type : item.file.type
       })
     );
   });
@@ -54,7 +63,6 @@ function AppLayout({ children }: any) {
     dispatch(
       updateProgessById({
         id: item.id,
-        name: item.file.name,
         completed: item.completed,
         state: item.state,
       })
@@ -65,7 +73,6 @@ function AppLayout({ children }: any) {
     dispatch(
       updateProgessById({
         id: item.id,
-        name: item.file.name,
         completed: item.completed,
         state: item.state,
       })
@@ -75,7 +82,14 @@ function AppLayout({ children }: any) {
   useRequestPreSend(({ items, options }) => {
     return {
       options: {
-        params: {},
+        destination: {
+          headers: {
+            Authorization: `Bearer ${data?.token?.access_token}`,
+          },
+        },
+        params: {
+          folder_id: id,
+        },
       },
     };
   });
@@ -86,7 +100,7 @@ function AppLayout({ children }: any) {
         <Header />
         <div className="flex">
           <div
-            className={`w-5/6 transition-transform fixed top-18 bg-white dark:bg-gray-900 dark:md:bg-transparent h-full lg:relative lg:w-1/6 lg:block lg:translate-x-0 ${
+            className={`z-50 w-5/6 transition-transform fixed top-18 bg-white dark:bg-gray-900 dark:md:bg-transparent h-full lg:relative lg:w-1/6 lg:block lg:translate-x-0 ${
               isOpenMobileMenu ? "translate-x-0" : "-translate-x-full"
             }`}
           >
@@ -100,7 +114,7 @@ function AppLayout({ children }: any) {
                   isOpenDetail ? "w-4/6" : "w-full"
                 } h-screen overflow-scroll pb-32 transition-all ease-in-out`}
               >
-                {children}
+                {isLoading ? <SkeletonLoading /> : children}
               </div>
               <div
                 className={`${

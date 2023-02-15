@@ -14,7 +14,7 @@ class Folder extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'ower_id',
+        'owner_id',
         'parent_folder_id',
         'name',
         'access'
@@ -27,7 +27,7 @@ class Folder extends Model
 
     public function ownBy()
     {
-        return $this->belongsTo(User::class, 'ower_id');
+        return $this->belongsTo(User::class, 'owner_id');
     }
 
     public function files()

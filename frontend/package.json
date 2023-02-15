@@ -30,6 +30,7 @@
     "react-google-login": "^5.2.2",
     "react-icons": "^4.7.1",
     "react-redux": "^8.0.5",
+    "swr": "^2.0.3",
     "tus-js-client": "^3.0.1",
     "typescript": "4.9.4",
     "use-tus": "^0.7.1"

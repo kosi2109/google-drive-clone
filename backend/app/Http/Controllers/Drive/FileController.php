@@ -11,6 +11,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Log\Logger;
+use Illuminate\Support\Facades\Storage;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
 use Pion\Laravel\ChunkUpload\Receiver\FileReceiver;
@@ -111,9 +112,6 @@ class FileController extends Controller
      */
     public function uploadFile(Request $request)
     {
-        Logger($request);
-        //Turn Off The Throttle API
-        //from web route
         // create the file receiver
         $receiver = new FileReceiver("file", $request, HandlerFactory::classFromRequest($request));
 
@@ -151,24 +149,23 @@ class FileController extends Controller
      */
     protected function saveFile(UploadedFile $file, Request $request)
     {
-        $user_obj = User::find('1'); //auth()->user();
+        $user_obj = auth()->user();
         $fileName = $this->createFilename($file);
-
-        $folder  = $request->folder_name ?  "/$request->folder_name/" : '/' ;
-        $filePath = "public/upload/users/{$user_obj->id}/my-drive{$folder}";
-        $finalPath = storage_path("app/" . $filePath);
+        $folder  = $request->folder_name ?  "/$request->folder_name/" : '/';
+        $filePath = "/upload/users/{$user_obj->id}/my-drive{$folder}";
+        $finalPath = storage_path("app/public" . $filePath);
 
         $fileSize = $file->getSize();
         // move the file name
         $file->move($finalPath, $fileName);
 
-        $url_base = env('APP_URL') . '/storage/upload/users/' . $user_obj->id . "/my-drive{$folder}" . $fileName;
-
-        return new FileResource($this->fileRepo->createFile([
-            'ower_id' => 1, //user id,
+        return new FileOverviewResource($this->fileRepo->createFile([
+            'owner_id' => $user_obj->id,
             'name' => $file->getClientOriginalName(),
             'size' => $fileSize,
-            'file_path' => $url_base
+            'file_path' => $filePath . $fileName ,
+            'mime_type' => $file->getClientMimeType(),
+            'folder_id' => $request->folder_id
         ]));
     }
 
@@ -180,14 +177,17 @@ class FileController extends Controller
     protected function createFilename(UploadedFile $file)
     {
         $extension = $file->getClientOriginalExtension();
-        $filename = str_replace("." . $extension, "", $file->getClientOriginalName()); // Filename without extension
+        $filename = rand(1, 9) . time() . 'drive';
 
-        //delete timestamp from file name
-        $temp_arr = explode('_', $filename);
-        if (isset($temp_arr[0])) unset($temp_arr[0]);
-        $filename = implode('_', $temp_arr);
-
-        //here you can manipulate with file name e.g. HASHED
         return $filename . "." . $extension;
+    }
+
+    public function getFile(
+        $id
+    )
+    {
+        $file = $this->fileRepo->findFileById($id, false);
+
+        return response()->file(Storage::disk('public')->path($file->file_path));
     }
 }

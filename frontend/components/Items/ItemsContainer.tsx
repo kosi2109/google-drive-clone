@@ -9,11 +9,11 @@ import {
 import { ItemsContainerType } from "../../types/components/cardTypes";
 import Item from "./Item";
 
-function ItemsContainer({ title, data }: ItemsContainerType) {
+function ItemsContainer({ title, files }: ItemsContainerType) {
   const isListView = useSelector(selectListView);
   const sortBy = useSelector(selectSortBy);
   const dispatch = useDispatch();
-
+  
   return (
     <div>
       <div className="py-4 px-2">
@@ -50,13 +50,10 @@ function ItemsContainer({ title, data }: ItemsContainerType) {
           isListView ? "flex flex-col" : `flex flex-wrap justify-center sm:justify-start gap-2 transition-all`
         }
       >
-        {data.map((d: any) => (
+        {files?.map((d: any) => (
           <Item
             key={d.id}
-            id={d.id}
-            type={d.type}
-            image={d.image}
-            title={d.title}
+            item={d}
             isListItem={isListView}
           />
         ))}

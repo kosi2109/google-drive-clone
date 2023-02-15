@@ -19,6 +19,7 @@ class FolderOveviewResource extends BaseResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'mime_type' => 'folder',
             'lastView' => new LogResource($this->lastView),
             'ownBy' => new UserResource($this->ownBy),
             'created_at' => $this->created_at

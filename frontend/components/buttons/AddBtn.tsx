@@ -30,6 +30,17 @@ function LinkBtn({
   );
 }
 
+
+const Test = forwardRef((props, ref: any) => (
+  <div {...props} style={{ cursor: "pointer" }} ref={ref}>
+    <LinkBtn Icon={BsFileEarmarkArrowUp} text="file upload" />
+  </div>
+))
+Test.displayName = "Test";
+export const CustomUploadButton = asUploadButton(Test);
+
+
+
 function AddBtn() {
   const [open, setOpen] = useState(false);
   const btnRef = useRef<any>();
@@ -45,7 +56,7 @@ function AddBtn() {
         <span className="ml-4 text-md font-semibold text-black">New</span>
       </button>
       <div
-        className={`pointer-events-none overflow-hidden py-2 absolute bg-white dark:text-black shadow-lg drop-shadow-md z-[50] w-80 h-1 opacity-0 top-0 left-4 rounded-md transition-all duration-200 ${
+        className={`pointer-events-none overflow-hidden py-2 absolute bg-white dark:text-black shadow-lg drop-shadow-md w-80 h-1 opacity-0 top-0 left-4 rounded-md transition-all duration-200 z-20 ${
           open ? "h-fit opacity-100 pointer-events-auto" : ""
         }`}
       >
@@ -59,11 +70,3 @@ function AddBtn() {
 }
 
 export default AddBtn;
-
-const CustomUploadButton = asUploadButton(
-  forwardRef((props, ref: any) => (
-    <div {...props} style={{ cursor: "pointer" }} ref={ref}>
-      <LinkBtn Icon={BsFileEarmarkArrowUp} text="file upload" />
-    </div>
-  ))
-);

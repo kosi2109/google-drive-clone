@@ -19,7 +19,7 @@ function DownloadCard() {
   const dispatch = useDispatch();
 
   return (
-    <div className="fixed bottom-0 right-14 w-96 shadow-2xl rounded-sm">
+    <div className="fixed bottom-0 right-14 w-96 shadow-2xl rounded-sm z-50">
       <div className="h-14 bg-gray-900 flex items-center justify-between text-white px-4">
         <h5>Text</h5>
         <div className="flex items-center justify-center">

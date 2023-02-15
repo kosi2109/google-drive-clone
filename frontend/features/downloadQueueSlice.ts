@@ -5,6 +5,7 @@ export type DownQueueState = {
   name: string;
   completed: number;
   state: string;
+  mime_type : string;
 };
 
 const initialState: DownQueueState[] = [];
