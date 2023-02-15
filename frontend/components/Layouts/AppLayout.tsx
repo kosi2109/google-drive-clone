@@ -11,6 +11,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   changeDownloadController,
   selectDownloadControll,
+  selectFolderCreate,
   selectIsOpenDetailView,
   selectIsOpenMobileMenu,
 } from "../../features/appSlice";
@@ -20,6 +21,7 @@ import {
   updateProgessById,
 } from "../../features/downloadQueueSlice";
 import SkeletonLoading from "../Common/SkeletonLoading";
+import CreateFolderDialog from "../dialogs/CreateFolderDialog";
 import DownloadCard from "../downloadCard";
 import Header from "../Header";
 import ItemDetail from "../ItemDetail";
@@ -32,6 +34,7 @@ function AppLayout({ children, isLoading = false }: any) {
   const isOpenMobileMenu = useSelector(selectIsOpenMobileMenu);
   const { isOpen } = useSelector(selectDownloadControll);
   const downloadItems = useSelector(selectDownloadQueue);
+  const isOpenFolderCreate = useSelector(selectFolderCreate);
   const { data }: any = useSession();
   const {
     query: { id },
@@ -129,6 +132,7 @@ function AppLayout({ children, isLoading = false }: any) {
       </div>
 
       {isOpen && <DownloadCard />}
+      {isOpenFolderCreate && <CreateFolderDialog />}
     </AuthGuard>
   );
 }

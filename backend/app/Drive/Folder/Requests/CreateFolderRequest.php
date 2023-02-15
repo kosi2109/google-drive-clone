@@ -13,6 +13,8 @@ class CreateFolderRequest extends BaseRequest
      */
     public function rules()
     {
-        return [];
+        return [
+            'name' => 'required'
+        ];
     }
 }

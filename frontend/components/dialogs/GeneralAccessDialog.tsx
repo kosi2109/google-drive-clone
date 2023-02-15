@@ -50,8 +50,12 @@ function GeneralAccessDialog({
     }, 1000);
   };
 
+  const close = () => {
+    openHandler(false)
+  }
+
   return (
-    <Dialog setIsOpen={openHandler} width="30%" height="auto">
+    <Dialog setIsOpen={close} width="30%" height="auto">
       <div className="p-4 dark:text-black relative">
         <h1 className="text-xl mb-1">Share</h1>
         <h1 className="text-xl mb-3 break-words">{item.name}</h1>

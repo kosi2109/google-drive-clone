@@ -83,7 +83,7 @@ function Item({ item, isListItem = false }: ItemType) {
   const router = useRouter();
 
   useEffect(() => {
-    setFocus(selectItem?.id === item.id);
+    setFocus(selectItem?.id === item.id && selectItem.name === item.name && selectItem.mime_type === item.mime_type);
   }, [selectItem, item.id]);
 
   const changeRoute = () => {

@@ -46,7 +46,11 @@ class FolderController extends Controller
         CreateFolderRequest $request
     )
     {
-        return new FolderResource($this->folderRepo->createFolder($request->all()));
+        $params = $request->all();
+
+        $params['owner_id'] = auth()->user()->id;
+
+        return new FolderResource($this->folderRepo->createFolder($params));
     }
     
     /**

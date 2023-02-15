@@ -11,7 +11,8 @@ interface AppState {
   downloadContainer : {
     isMinimize : boolean,
     isOpen : boolean
-  }
+  },
+  isOpenFolderCreate : boolean
 } 
 
 const initialState : AppState = {
@@ -25,7 +26,8 @@ const initialState : AppState = {
   downloadContainer : {
     isMinimize : false,
     isOpen : false
-  }
+  },
+  isOpenFolderCreate : false
 }
 
 export const appSlice = createSlice({
@@ -50,16 +52,20 @@ export const appSlice = createSlice({
     },
     changeDownloadController: (state, action) => {
       state.downloadContainer = action.payload;
+    },
+    changeFolderCreate: (state, action) => {      
+      state.isOpenFolderCreate = action.payload;
     }
   },
 });
 
-export const { changeListView, changeSortBy, changeOpenDetailView, changeOpenMobileMenu, changeDownloadController } = appSlice.actions;
+export const { changeListView, changeSortBy, changeOpenDetailView, changeOpenMobileMenu, changeDownloadController, changeFolderCreate } = appSlice.actions;
 
 export const selectListView = (state : any) => state.app.isListView;
 export const selectSortBy = (state : any) => state.app.sortBy;
 export const selectIsOpenDetailView = (state : any) => state.app.isOpenDetailView;
 export const selectIsOpenMobileMenu = (state : any) => state.app.isOpenMobileMenu;
 export const selectDownloadControll = (state : any) => state.app.downloadContainer;
+export const selectFolderCreate = (state : any) => state.app.isOpenFolderCreate;
 
 export default appSlice.reducer;

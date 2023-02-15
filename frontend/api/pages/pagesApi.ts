@@ -23,3 +23,13 @@ export const getFolderById = (id: any, token: string) =>
         })
         .then((res) => res.data)
     : [];
+    
+export const createFolder = (name: any, token: string) =>
+   axioInstance
+        .post(`folders/create`, {name},{
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((res) => res.data)
+    ;
