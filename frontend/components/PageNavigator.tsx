@@ -14,7 +14,6 @@ import {
 } from "../features/appSlice";
 import { selectSelectedItem } from "../features/itemSlice";
 import { RoundedHoverBtn } from "./buttons";
-import GeneralAccessDialog from "./dialogs/GeneralAccessDialog";
 import ItemSettings from "./settings/ItemSettings";
 
 
@@ -26,7 +25,6 @@ function PageNavigator() {
   const router = useRouter();
   const {slug} : any = router.query;
   const [pageName, setPageName] = useState("");
-  const [isOpen, setIsOpen] = useState(false);
 
   useEffect(() => {
     if (slug) {
@@ -36,12 +34,11 @@ function PageNavigator() {
   
   return (
     <div className="border-b flex items-center justify-between px-4 py-1">
-      {isOpen && <GeneralAccessDialog openHandler={setIsOpen}  /> }
       <div>
         <p className="text-lg capitalize">{pageName} &gt; {item?.title}</p>
       </div>
       <div className="items-center hidden lg:flex">
-        {item && <ItemSettings openHandler={setIsOpen} /> }
+        {item && <ItemSettings /> }
         <div className="flex">
           <RoundedHoverBtn
             text={isListView ? "grid layout" : "list layout"}

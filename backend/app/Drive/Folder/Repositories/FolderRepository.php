@@ -32,7 +32,7 @@ class FolderRepository implements FolderRepositoryInterface
     /**
      * Log For All DB Transitions
      */
-    private function makeLog(int $process_id, int $process_type)
+    private function makeLog(string $process_id, int $process_type)
     {
         $this->logRepo->createLog($this->process_name, $process_id, $process_type);
     }
@@ -47,14 +47,23 @@ class FolderRepository implements FolderRepositoryInterface
     }
 
     /**
+     * Get Folders from trash
+     * 
+     */
+    public function getTrashedFolders(): Collection
+    {
+        return $this->model->onlyTrashed()->get();
+    }
+
+    /**
      * Get Folder by Id
      * 
-     * @param int $id
+     * @param string $id
      * @param bool $is_make_log
      * 
      * @return Folder
      */
-    public function findFolderById(int $id, bool $is_make_log = true): Folder
+    public function findFolderById(string $id, bool $is_make_log = true): Folder
     {
         return DB::transaction(function () use($id, $is_make_log) {
             $file = $this->model->find($id);
@@ -92,12 +101,12 @@ class FolderRepository implements FolderRepositoryInterface
     /**
      * Update Folder by Id
      * 
-     * @param int $id
+     * @param string $id
      * @param array $params
      * 
      * @return Folder
      */
-    public function updateFolder(int $id, array $params): Folder
+    public function updateFolder(string $id, array $params): Folder
     {
         return DB::transaction(function () use($id, $params) {
             $file = $this->findFolderById($id, false);
@@ -113,11 +122,11 @@ class FolderRepository implements FolderRepositoryInterface
     /**
      * Delete Folder by Id
      * 
-     * @param int $id
+     * @param string $id
      * 
      * @return bool
      */
-    public function deleteFolder(int $id): bool
+    public function deleteFolder(string $id): bool
     {
         return DB::transaction(function () use($id) {
             $file = $this->findFolderById($id, false);  

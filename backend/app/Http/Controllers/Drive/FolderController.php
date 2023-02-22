@@ -30,9 +30,19 @@ class FolderController extends Controller
      * 
      * @return Collection
      */
-    public function index()
+    public function index(
+        Request $request
+    )
     {
-        return FolderOveviewResource::collection($this->folderRepo->getOuterFolders());
+        $params = $request->all();
+
+        if (isset($params['trashed']) && $params['trashed'] == true) {
+            $folders = $this->folderRepo->getTrashedFolders();
+        } else {
+            $folders = $this->folderRepo->getOuterFolders();
+        }
+        
+        return FolderOveviewResource::collection($folders);
     }
 
     /**
@@ -40,7 +50,7 @@ class FolderController extends Controller
      * 
      * @param CreateFolderRequest $request
      * 
-     * @return FolderResource
+     * @return FolderOveviewResource
      */
     public function create(
         CreateFolderRequest $request
@@ -50,34 +60,34 @@ class FolderController extends Controller
 
         $params['owner_id'] = auth()->user()->id;
 
-        return new FolderResource($this->folderRepo->createFolder($params));
+        return new FolderOveviewResource($this->folderRepo->createFolder($params));
     }
     
     /**
      * FolderController : Folder Update
      * 
      * @param Request $request
-     * @param int $id
+     * @param string $id
      * 
-     * @return FolderResource
+     * @return FolderOveviewResource
      */
     public function update(
         Request $request,
-        int $id
+        string $id
     )
     {
-        return new FolderResource($this->folderRepo->updateFolder($id, $request->all()));
+        return new FolderOveviewResource($this->folderRepo->updateFolder($id, $request->all()));
     }
     
     /**
      * FolderController : Folder Delete
      * 
-     * @param int $id
+     * @param string $id
      * 
      * @return bool
      */
     public function destroy(
-        int $id
+        string $id
     )
     {
         $this->folderRepo->deleteFolder($id);
@@ -88,12 +98,12 @@ class FolderController extends Controller
     /**
      * FolderController : Folder Detail
      * 
-     * @param int $id
+     * @param string $id
      * 
      * @return FolderResource
      */
     public function show(
-        int $id
+        string $id
     )
     {
         return new FolderResource($this->folderRepo->findFolderById($id));

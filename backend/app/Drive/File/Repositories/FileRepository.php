@@ -32,7 +32,7 @@ class FileRepository implements FileRepositoryInterface
     /**
      * Log For All DB Transitions
      */
-    private function makeLog(int $process_id, int $process_type)
+    private function makeLog(string $process_id, int $process_type)
     {
         $this->logRepo->createLog($this->process_name, $process_id, $process_type);
     }

@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->string('process_name');
 
-            $table->foreignId('process_id');
+            $table->foreignUuid('process_id');
 
             $table->integer('process_type');
 

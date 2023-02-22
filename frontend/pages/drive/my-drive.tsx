@@ -5,14 +5,14 @@ import ItemsContainer from "../../components/items/ItemsContainer";
 import AppLayout from "../../components/layouts/AppLayout";
 import { updateProgessById } from "../../features/downloadQueueSlice";
 import useSWR from 'swr'
-import { getPageData } from "../../api/pages/pagesApi";
+import { foldersApiEndPoint, getFolders } from "../../api/folders/foldersApi";
 
 function MyDrive() {
   const { data : session, status } : any = useSession();
   const dispatch = useDispatch();
   const token = session?.token?.access_token;
   const page = 'my-drive';
-  const { data , mutate, isLoading} = useSWR([page, token], ([page, token]) => getPageData(page, token))
+  const { data : folderData, isLoading : folderLoading} = useSWR(foldersApiEndPoint, getFolders)
 
   useItemFinishListener(async (item) => {    
     dispatch(
@@ -26,9 +26,9 @@ function MyDrive() {
   });
   
   return (
-    <AppLayout isLoading={isLoading}>
-      <ItemsContainer title="Folder" files={data?.folders} />
-      <ItemsContainer title="Files" files={data?.files} />
+    <AppLayout isLoading={folderLoading}>
+      <ItemsContainer title="Folder" files={folderData?.data} />
+      {/* <ItemsContainer title="Files" files={data?.files} /> */}
     </AppLayout>
   );
 }

@@ -1,29 +1,36 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { createFolder, foldersApiEndPoint } from "../../api/folders/foldersApi";
-import { changeFolderCreate } from "../../features/appSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { foldersApiEndPoint, updateFolders } from "../../api/folders/foldersApi";
+import { changeFolderRename } from "../../features/appSlice";
 import Dialog from "../Common/Dialog";
 import useSWR from "swr";
-import { createFolderOptions } from "../../api/folders/foldersSWROptions";
+import { selectSelectedItem } from "../../features/itemSlice";
+import { ItemType } from "../../types/data/itemTypes";
+import { updateFolderOptions } from "../../api/folders/foldersSWROptions";
 
-function CreateFolderDialog() {
+function RenameFolderDialog() {
   const { mutate } = useSWR(foldersApiEndPoint);
-  const [name, setName] = useState("");
+  const item = useSelector(selectSelectedItem) as ItemType;
   const dispatch = useDispatch();
+  const [name, setName] = useState(item.name);
 
   const close = () => {
-    dispatch(changeFolderCreate(false));
+    dispatch(changeFolderRename(false));
   };
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await mutate(createFolder(name), createFolderOptions(name));
+    await mutate(updateFolders(item.id, {
+      name
+    }), updateFolderOptions(item.id, {
+      name
+    }));
   };
 
   return (
     <Dialog setIsOpen={close} width="25%" height="auto">
       <form onSubmit={handleSubmit} className="p-4">
-        <h3 className="font-semibold text-xl mb-3">New Folder</h3>
+        <h3 className="font-semibold text-xl mb-3">Rename</h3>
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -39,7 +46,7 @@ function CreateFolderDialog() {
             Cancel
           </button>
           <button className="px-2 py-1 hover:bg-sky-50 text-blue-900 rounded mx-1">
-            Create
+            OK
           </button>
         </div>
       </form>
@@ -47,4 +54,4 @@ function CreateFolderDialog() {
   );
 }
 
-export default CreateFolderDialog;
+export default RenameFolderDialog;
