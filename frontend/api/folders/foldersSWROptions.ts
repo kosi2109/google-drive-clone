@@ -48,14 +48,14 @@ export const deleteFolderOptions = (id : number) => {
         // optimistic data displays until we populate cache
         // param is previous data
         optimisticData: (folders : any) => {   
-            folders.data = folders.data.filter((d : any) => d.id !== id); 
+            folders.data = folders?.data.filter((d : any) => d.id !== id); 
             
             // folders.data = [...folders.data, data]
             return folders
         },
         rollbackOnError: true,
         populateCache: (empty : any, folders : any) => {
-            folders.data = folders.data.filter((d : any) => d.id !== id); 
+            folders.data = folders?.data.filter((d : any) => d.id !== id); 
             
             return folders
         },

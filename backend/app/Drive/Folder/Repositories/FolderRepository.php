@@ -5,6 +5,7 @@ namespace App\Drive\Folder\Repositories;
 use App\Drive\Folder\Exceptions\FolderCreateFailException;
 use App\Drive\Folder\Exceptions\FolderDeleteFailException;
 use App\Drive\Folder\Exceptions\FolderNotFoundException;
+use App\Drive\Folder\Exceptions\FolderRestoreFailException;
 use App\Drive\Folder\Exceptions\FolderUpdateFailException;
 use App\Drive\Folder\Folder;
 use App\Drive\Folder\Repositories\Interfaces\FolderRepositoryInterface;
@@ -52,7 +53,7 @@ class FolderRepository implements FolderRepositoryInterface
      */
     public function getTrashedFolders(): Collection
     {
-        return $this->model->onlyTrashed()->get();
+        return $this->model->onlyTrashed()->whereNull('parent_folder_id')->get();
     }
 
     /**
@@ -60,17 +61,24 @@ class FolderRepository implements FolderRepositoryInterface
      * 
      * @param string $id
      * @param bool $is_make_log
+     * @param bool $deleted
      * 
      * @return Folder
      */
-    public function findFolderById(string $id, bool $is_make_log = true): Folder
+    public function findFolderById(string $id, bool $is_make_log = true, bool $deleted = false): Folder
     {
-        return DB::transaction(function () use($id, $is_make_log) {
-            $file = $this->model->find($id);
+        return DB::transaction(function () use($id, $is_make_log, $deleted) {
+            if ($deleted) {
+                $file = $this->model->withTrashed()->find($id);
+
+            } else {
+                $file = $this->model->find($id);
+
+            }
             
             throw_if(!$file, FolderNotFoundException::class, 'Folder Not Found', 404);
 
-            if ($is_make_log) {
+            if ($is_make_log && !$deleted) {
                 $this->makeLog($file->id, $this->process_types['view']);
             }
     
@@ -129,12 +137,54 @@ class FolderRepository implements FolderRepositoryInterface
     public function deleteFolder(string $id): bool
     {
         return DB::transaction(function () use($id) {
-            $file = $this->findFolderById($id, false);  
+            $folder = $this->findFolderById($id, false);  
             
-            throw_if(!$file->delete(), FolderDeleteFailException::class, 'Folder Delete Fail', 400);
+            throw_if(!$folder->delete() , FolderDeleteFailException::class, 'Folder Delete Fail', 400);
             
-            $this->makeLog($file->id, $this->process_types['delete']); 
+            $this->makeLog($folder->id, $this->process_types['delete']); 
             
+            return true;
+        });
+    }
+
+    /**
+     * Delete Permenent Folder by Id
+     * 
+     * @param string $id
+     * 
+     * @return bool
+     */
+    public function deletePermenentFolder(string $id): bool
+    {
+        return DB::transaction(function () use($id) {
+            $folder = $this->model->withTrashed()->find($id);  
+
+            throw_if(!$folder, FolderNotFoundException::class, 'Folder Not Found', 404);
+             
+            throw_if(!$folder->forceDelete(), FolderDeleteFailException::class, 'Folder Delete Fail', 400);
+            
+            $this->makeLog($folder->id, $this->process_types['delete_permanent']); 
+            
+            return true;
+        });
+    }
+
+    /**
+     * Restore Permenent Folder by Id
+     * 
+     * @param string $id
+     * 
+     * @return bool
+     */
+    public function restoreFolder(string $id): bool
+    {
+        return DB::transaction(function () use($id) {
+            $folder = $this->model->withTrashed()->find($id);  
+
+            throw_if(!$folder, FolderNotFoundException::class, 'Folder Not Found', 404);
+             
+            throw_if(!$folder->restore(), FolderRestoreFailException::class, 'Folder Restore Fail', 400);
+                        
             return true;
         });
     }

@@ -13,3 +13,9 @@ export const updateFolders = (id : number, data : any) =>
 
 export const deleteFolders = (id : number) =>
   axioInstance.delete(`${foldersApiEndPoint}/delete/${id}`).then((res) => res.data);
+
+export const deleteFoldersPermanent = (id : number) =>
+  axioInstance.delete(`${foldersApiEndPoint}/delete/permanent/${id}`).then((res) => res.data);
+
+export const restoreFolders = (id : number) =>
+  axioInstance.delete(`${foldersApiEndPoint}/restore/${id}`).then((res) => res.data);

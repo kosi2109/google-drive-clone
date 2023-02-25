@@ -22,7 +22,8 @@ class FolderOveviewResource extends BaseResource
             'mime_type' => 'folder',
             'lastView' => new LogResource($this->lastView),
             'ownBy' => new UserResource($this->ownBy),
-            'created_at' => $this->created_at
+            'created_at' => $this->created_at,
+            'deleted_at' => $this->deleted_at,
         ];
     }
 }

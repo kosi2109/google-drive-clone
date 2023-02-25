@@ -20,6 +20,7 @@ type ItemType = {
   lastModify: BaseLog;
   lastView: BaseLog;
   created: string;
+  deleted_at: string;
 };
 
 export type { ItemType };

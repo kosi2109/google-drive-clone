@@ -18,7 +18,7 @@ return new class extends Migration
 
             $table->foreignId('owner_id');
 
-            $table->foreignId('folder_id')->nullable();
+            $table->foreignUuid('folder_id')->nullable();
 
             $table->string('name');
 

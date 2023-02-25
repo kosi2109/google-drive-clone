@@ -8,8 +8,10 @@ use Illuminate\Database\Eloquent\Collection;
 interface FileRepositoryInterface
 {
     public function getOuterFiles() : Collection;
-    public function findFileById(int $id, bool $is_make_log) : File;
+    public function findFileById(string $id, bool $is_make_log) : File;
     public function createFile(array $params) : File;
-    public function updateFile(int $id,array $params) : File;
-    public function deleteFile(int $id) : bool;
+    public function updateFile(string $id,array $params) : File;
+    public function deleteFile(string $id) : bool;
+    public function deleteFilesByFolderId(string $folderId) : bool;
+    public function restoreFilesByFolderId(string $folderId) : bool;
 }
