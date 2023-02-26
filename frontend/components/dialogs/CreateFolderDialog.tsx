@@ -1,17 +1,26 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createFolder, foldersApiEndPoint } from "../../api/folders/foldersApi";
 import { changeFolderCreate } from "../../features/appSlice";
 import Dialog from "../Common/Dialog";
 import useSWRMutation from "swr/mutation";
+import { useRouter } from "next/router";
 
 function CreateFolderDialog() {
   const [name, setName] = useState("");
+  const [parentFolderId, setParentFolderId] = useState("");
   const dispatch = useDispatch();
+  const router = useRouter();
   const { trigger, isMutating } = useSWRMutation(
     foldersApiEndPoint,
     (key, { arg }) => createFolder(arg.data)
   );
+
+  useEffect(() => {
+    if (router.pathname === "/drive/folders/[id]") {
+      setParentFolderId(router?.query?.id as string);
+    }
+  }, [router.pathname, router.query.id]);
 
   const close = () => {
     dispatch(changeFolderCreate(false));
@@ -19,7 +28,7 @@ function CreateFolderDialog() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await trigger({ data: { name: name } });
+    await trigger({ data: { name: name, parent_folder_id: parentFolderId } });
     close();
   };
 

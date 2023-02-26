@@ -26,7 +26,7 @@ function MyDrive() {
   });
   
   return (
-    <AppLayout isLoading={folderLoading}>
+    <AppLayout breadcrumb={["My Drive"]} isLoading={folderLoading}>
       <ItemsContainer title="Folder" files={folderData?.data} />
       {/* <ItemsContainer title="Files" files={data?.files} /> */}
     </AppLayout>

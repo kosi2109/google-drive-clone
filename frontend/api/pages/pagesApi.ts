@@ -4,14 +4,3 @@ export const filesApiEndPoint = "pages";
 
 export const getPageData = (page: string) =>
   axioInstance.get(`${filesApiEndPoint}/${page}`).then((res) => res.data);
-
-export const getFolderById = (id: any, token: string) =>
-  token
-    ? axioInstance
-        .get(`${filesApiEndPoint}/folder/${id}`, {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        })
-        .then((res) => res.data)
-    : [];

@@ -152,7 +152,7 @@ class FileController extends Controller
         $user_obj = auth()->user();
         $fileName = $this->createFilename($file);
         $folder  = $request->folder_name ?  "/$request->folder_name/" : '/';
-        $filePath = "/upload/users/{$user_obj->id}/my-drive{$folder}";
+        $filePath = "/upload/users/{$user_obj->id}/my drive{$folder}";
         $finalPath = storage_path("app/public" . $filePath);
 
         $fileSize = $file->getSize();

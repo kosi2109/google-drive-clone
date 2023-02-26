@@ -6,7 +6,7 @@ import {
 } from "@rpldy/uploady";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/router";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   changeDownloadController,
@@ -33,7 +33,7 @@ import PageNavigator from "../PageNavigator";
 import SideBar from "../SideBar";
 import AuthGuard from "./AuthGuard";
 
-function AppLayout({ children, isLoading = false }: any) {
+function AppLayout({ children, breadcrumb, isLoading = false }: any) {
   const isOpenDetail = useSelector(selectIsOpenDetailView);
   const isOpenMobileMenu = useSelector(selectIsOpenMobileMenu);
   const { isOpen } = useSelector(selectDownloadControll);
@@ -42,9 +42,8 @@ function AppLayout({ children, isLoading = false }: any) {
   const isOpenFolderRename = useSelector(selectFolderRename);
   const isOpenGeneralAccess = useSelector(selectGeneralAccess);
   const { data }: any = useSession();
-  const {
-    query: { id },
-  } = useRouter();
+  const [parentFolderId, setParentFolderId] = useState("");
+  const router = useRouter();
 
   const dispatch = useDispatch();
 
@@ -53,6 +52,12 @@ function AppLayout({ children, isLoading = false }: any) {
       dispatch(changeDownloadController({ isOpen: true, isMinimize: false }));
     }
   }, [downloadItems.length]);
+
+  useEffect(() => {
+    if (router.pathname === "/drive/folders/[id]") {
+      setParentFolderId(router?.query?.id as string);
+    }
+  }, [router.pathname, router.query.id]);
 
   //upload progess handler
   useItemStartListener((item) => {
@@ -97,7 +102,7 @@ function AppLayout({ children, isLoading = false }: any) {
           },
         },
         params: {
-          folder_id: id,
+          folder_id: parentFolderId,
         },
       },
     };
@@ -116,7 +121,7 @@ function AppLayout({ children, isLoading = false }: any) {
             <SideBar />
           </div>
           <div className="w-full lg:w-5/6">
-            <PageNavigator />
+            <PageNavigator breadcrumb={breadcrumb} />
             <div className="w-full flex">
               <div
                 className={`${

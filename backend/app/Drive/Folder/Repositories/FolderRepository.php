@@ -13,7 +13,7 @@ use App\Drive\Log\Repositories\LogRepository;
 use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
-use File;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 
 class FolderRepository implements FolderRepositoryInterface
@@ -106,7 +106,7 @@ class FolderRepository implements FolderRepositoryInterface
                 $params['folder_path'] =  $parent_folder->folder_path . '/' . $params['name'];
                 
             } else {
-                $params['folder_path'] =  "/upload/users/{$user_obj->id}/my-drive" . '/' . $params['name'];
+                $params['folder_path'] =  "/upload/users/{$user_obj->id}/my drive" . '/' . $params['name'];
             }
             Storage::disk('public')->makeDirectory($params['folder_path']);
 
@@ -132,9 +132,17 @@ class FolderRepository implements FolderRepositoryInterface
     {
         return DB::transaction(function () use($id, $params) {
             $file = $this->findFolderById($id, false);
-    
+            
+            if(isset($params['name'])) {
+                // if folder name is change real directory name also change 
+                $absolute = storage_path('app/public');
+                $new_path = str_replace($file->name, $params['name'], $file->folder_path);
+                File::move($absolute . $file->folder_path, $absolute . $new_path);
+                $params['folder_path'] = $new_path;
+            }
+            
             throw_if(!$file->update($params), FolderUpdateFailException::class, 'Folder Update Fail', 400);
-    
+
             $this->makeLog($file->id, $this->process_types['update']); 
     
             return $file->fresh();

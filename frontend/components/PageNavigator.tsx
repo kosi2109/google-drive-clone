@@ -1,5 +1,4 @@
-import { useRouter } from "next/router";
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import {
   AiOutlineInfoCircle,
   AiOutlineUnorderedList,
@@ -17,25 +16,23 @@ import { RoundedHoverBtn } from "./buttons";
 import ItemSettings from "./settings/ItemSettings";
 
 
-function PageNavigator() {
+function PageNavigator(
+  {breadcrumb} : {breadcrumb : string[]}
+) {
   const isListView = useSelector(selectListView);
   const isOpenDetail = useSelector(selectIsOpenDetailView);
   const dispatch = useDispatch();
   const item = useSelector(selectSelectedItem);
-  const router = useRouter();
-  const {slug} : any = router.query;
-  const [pageName, setPageName] = useState("");
 
-  useEffect(() => {
-    if (slug) {
-      setPageName(slug.split('-').join(' '));
-    }
-  }, [slug])  
-  
   return (
     <div className="border-b flex items-center justify-between px-4 py-1">
       <div>
-        <p className="text-lg capitalize">{pageName} &gt; {item?.title}</p>
+        <p className="text-lg capitalize">{ breadcrumb ? breadcrumb?.map((s,i) => {
+          if (i === 0) return <span key={i}>{s}</span>;
+          return <span key={i}>
+           <span className="text-gray-400"> &gt; </span> {s}
+          </span>
+        }) : 'Loading'} </p>
       </div>
       <div className="items-center hidden lg:flex">
         {item && <ItemSettings /> }
