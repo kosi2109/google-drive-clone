@@ -24,6 +24,8 @@ return new class extends Migration
 
             $table->integer('access')->default(2);
 
+            $table->string('folder_path');
+
             $table->softDeletes();
 
             $table->timestamps();

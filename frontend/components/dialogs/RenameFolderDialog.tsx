@@ -3,13 +3,12 @@ import { useDispatch, useSelector } from "react-redux";
 import { foldersApiEndPoint, updateFolders } from "../../api/folders/foldersApi";
 import { changeFolderRename } from "../../features/appSlice";
 import Dialog from "../Common/Dialog";
-import useSWR from "swr";
+import useSWRMutation from "swr/mutation";
 import { selectSelectedItem } from "../../features/itemSlice";
 import { ItemType } from "../../types/data/itemTypes";
-import { updateFolderOptions } from "../../api/folders/foldersSWROptions";
 
 function RenameFolderDialog() {
-  const { mutate } = useSWR(foldersApiEndPoint);
+  const { trigger, isMutating } = useSWRMutation(foldersApiEndPoint,(key, {arg}) => updateFolders(arg.id, arg.data));
   const item = useSelector(selectSelectedItem) as ItemType;
   const dispatch = useDispatch();
   const [name, setName] = useState(item.name);
@@ -20,11 +19,11 @@ function RenameFolderDialog() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await mutate(updateFolders(item.id, {
-      name
-    }), updateFolderOptions(item.id, {
-      name
-    }));
+    await trigger({
+      id : item.id,
+      data : {name}
+    });
+    close();
   };
 
   return (
@@ -46,7 +45,7 @@ function RenameFolderDialog() {
             Cancel
           </button>
           <button className="px-2 py-1 hover:bg-sky-50 text-blue-900 rounded mx-1">
-            OK
+            {isMutating ? 'Renaming' : 'OK' }
           </button>
         </div>
       </form>

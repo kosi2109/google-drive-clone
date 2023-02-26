@@ -3,13 +3,15 @@ import { useDispatch } from "react-redux";
 import { createFolder, foldersApiEndPoint } from "../../api/folders/foldersApi";
 import { changeFolderCreate } from "../../features/appSlice";
 import Dialog from "../Common/Dialog";
-import useSWR from "swr";
-import { createFolderOptions } from "../../api/folders/foldersSWROptions";
+import useSWRMutation from "swr/mutation";
 
 function CreateFolderDialog() {
-  const { mutate } = useSWR(foldersApiEndPoint);
   const [name, setName] = useState("");
   const dispatch = useDispatch();
+  const { trigger, isMutating } = useSWRMutation(
+    foldersApiEndPoint,
+    (key, { arg }) => createFolder(arg.data)
+  );
 
   const close = () => {
     dispatch(changeFolderCreate(false));
@@ -17,7 +19,8 @@ function CreateFolderDialog() {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    await mutate(createFolder(name), createFolderOptions(name));
+    await trigger({ data: { name: name } });
+    close();
   };
 
   return (
@@ -39,7 +42,7 @@ function CreateFolderDialog() {
             Cancel
           </button>
           <button className="px-2 py-1 hover:bg-sky-50 text-blue-900 rounded mx-1">
-            Create
+            {isMutating ? "Creating" : "Create"}
           </button>
         </div>
       </form>

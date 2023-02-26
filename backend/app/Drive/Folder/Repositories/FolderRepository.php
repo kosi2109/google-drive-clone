@@ -10,8 +10,11 @@ use App\Drive\Folder\Exceptions\FolderUpdateFailException;
 use App\Drive\Folder\Folder;
 use App\Drive\Folder\Repositories\Interfaces\FolderRepositoryInterface;
 use App\Drive\Log\Repositories\LogRepository;
+use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use File;
+use Illuminate\Support\Facades\Storage;
 
 class FolderRepository implements FolderRepositoryInterface
 {
@@ -53,7 +56,7 @@ class FolderRepository implements FolderRepositoryInterface
      */
     public function getTrashedFolders(): Collection
     {
-        return $this->model->onlyTrashed()->whereNull('parent_folder_id')->get();
+        return $this->model->onlyTrashed()->whereDoesntHave('deletedParentFolder')->get();
     }
 
     /**
@@ -69,7 +72,7 @@ class FolderRepository implements FolderRepositoryInterface
     {
         return DB::transaction(function () use($id, $is_make_log, $deleted) {
             if ($deleted) {
-                $file = $this->model->withTrashed()->find($id);
+                $file = $this->model->onlyTrashed()->find($id);
 
             } else {
                 $file = $this->model->find($id);
@@ -96,6 +99,17 @@ class FolderRepository implements FolderRepositoryInterface
     public function createFolder(array $params): Folder
     {
         return DB::transaction(function () use($params) {
+            $user_obj = auth()->user();
+
+            if (isset($params['parent_folder_id'])) {
+                $parent_folder = $this->findFolderById($params['parent_folder_id'], false);
+                $params['folder_path'] =  $parent_folder->folder_path . '/' . $params['name'];
+                
+            } else {
+                $params['folder_path'] =  "/upload/users/{$user_obj->id}/my-drive" . '/' . $params['name'];
+            }
+            Storage::disk('public')->makeDirectory($params['folder_path']);
+
             $file = $this->model->create($params);
             
             throw_if(!$file, FolderCreateFailException::class, 'Folder Create Fail', 400);
@@ -157,12 +171,14 @@ class FolderRepository implements FolderRepositoryInterface
     public function deletePermenentFolder(string $id): bool
     {
         return DB::transaction(function () use($id) {
-            $folder = $this->model->withTrashed()->find($id);  
+            $folder = $this->model->onlyTrashed()->find($id);  
 
             throw_if(!$folder, FolderNotFoundException::class, 'Folder Not Found', 404);
              
             throw_if(!$folder->forceDelete(), FolderDeleteFailException::class, 'Folder Delete Fail', 400);
             
+            Storage::disk('public')->deleteDirectory($folder->folder_path);
+
             $this->makeLog($folder->id, $this->process_types['delete_permanent']); 
             
             return true;
@@ -179,7 +195,7 @@ class FolderRepository implements FolderRepositoryInterface
     public function restoreFolder(string $id): bool
     {
         return DB::transaction(function () use($id) {
-            $folder = $this->model->withTrashed()->find($id);  
+            $folder = $this->model->onlyTrashed()->find($id);  
 
             throw_if(!$folder, FolderNotFoundException::class, 'Folder Not Found', 404);
              

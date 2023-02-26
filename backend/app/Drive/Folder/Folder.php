@@ -18,7 +18,8 @@ class Folder extends Model
         'owner_id',
         'parent_folder_id',
         'name',
-        'access'
+        'access',
+        'folder_path'
     ];
 
     protected $with = [
@@ -38,7 +39,12 @@ class Folder extends Model
 
     public function folders()
     {
-        return $this->hasMany(self::class, 'parent_folder_id');
+        return $this->hasMany(Folder::class, 'parent_folder_id');
+    }
+
+    public function deletedParentFolder()
+    {
+        return $this->belongsTo(Folder::class, 'parent_folder_id', 'id')->onlyTrashed();
     }
 
     public function lastView()
