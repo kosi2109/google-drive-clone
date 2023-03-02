@@ -2,7 +2,7 @@ import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import getIconByType from "../../constant/fileTypes";
-import { selectIsOpenDetailView } from "../../features/appSlice";
+import { selectIsOpenDetailView, selectListView } from "../../features/appSlice";
 import { changeSelectItem, selectSelectedItem } from "../../features/itemSlice";
 import { ItemType } from "../../types/components/cardTypes";
 import Logo from "../../public/assets/driveLogo.png";
@@ -73,26 +73,22 @@ const renderByType = (mime_type: string, id: number) => {
   }
 };
 
-function Item({ item, isListItem = false }: ItemType) {
+function File({ item }: ItemType) {
   const { Icon, color } = getIconByType(item.mime_type);
   const [focus, setFocus] = useState(false);
+  const isListItem = useSelector(selectListView);
   const style = styleFunction(isListItem);
   const selectItem = useSelector(selectSelectedItem);
   const dispatch = useDispatch();
   const isOpenDetail = useSelector(selectIsOpenDetailView);
-  const router = useRouter();
 
   useEffect(() => {
     setFocus(selectItem?.id === item.id && selectItem.name === item.name && selectItem.mime_type === item.mime_type);
   }, [selectItem, item.id]);
 
-  const changeRoute = () => {
-    item.mime_type === "folder" && router.push(`/drive/folders/${item.id}`);
-  };
 
   return (
     <div
-      onDoubleClick={() => changeRoute()}
       onClick={() => dispatch(changeSelectItem(item))}
       className={`${style.itemClass} 
       ${focus ? style.itemClassOnFocus : style.itemClassNotOnFocus}`}
@@ -139,4 +135,4 @@ function Item({ item, isListItem = false }: ItemType) {
   );
 }
 
-export default Item;
+export default File;

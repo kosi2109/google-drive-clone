@@ -6,6 +6,9 @@ import AppLayout from "../../components/layouts/AppLayout";
 import { updateProgessById } from "../../features/downloadQueueSlice";
 import useSWR from 'swr'
 import { foldersApiEndPoint, getFolders } from "../../api/folders/foldersApi";
+import { filesApiEndPoint, getFiles } from "../../api/files/filesApi";
+import FolderContainer from "../../components/folder/folderContainer";
+import FileContainer from "../../components/file/FileContainer";
 
 function MyDrive() {
   const { data : session, status } : any = useSession();
@@ -13,6 +16,7 @@ function MyDrive() {
   const token = session?.token?.access_token;
   const page = 'my-drive';
   const { data : folderData, isLoading : folderLoading} = useSWR(foldersApiEndPoint, getFolders)
+  const { data : fileData, isLoading : fileLoading} = useSWR(filesApiEndPoint, getFiles)
 
   useItemFinishListener(async (item) => {    
     dispatch(
@@ -26,9 +30,9 @@ function MyDrive() {
   });
   
   return (
-    <AppLayout breadcrumb={["My Drive"]} isLoading={folderLoading}>
-      <ItemsContainer title="Folder" files={folderData?.data} />
-      {/* <ItemsContainer title="Files" files={data?.files} /> */}
+    <AppLayout breadcrumb={["My Drive"]} isLoading={folderLoading || fileLoading}>
+      <FolderContainer folders={folderData?.data} />
+      <FileContainer files={fileData?.data} />
     </AppLayout>
   );
 }

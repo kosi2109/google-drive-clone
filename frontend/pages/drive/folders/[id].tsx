@@ -5,6 +5,8 @@ import useSWR from "swr";
 import { useRouter } from "next/router";
 import ItemsContainer from "../../../components/items/ItemsContainer";
 import { foldersApiEndPoint, getFolderById } from "../../../api/folders/foldersApi";
+import FolderContainer from "../../../components/folder/folderContainer";
+import FileContainer from "../../../components/file/FileContainer";
 
 function Folder() {
   const { query: { id } } = useRouter();
@@ -20,8 +22,8 @@ function Folder() {
 
   return (
     <AppLayout breadcrumb={breadcrumb} isLoading={isLoading}>
-      <ItemsContainer title="Folder" files={data?.data?.folders} />
-      <ItemsContainer title="Files" files={data?.data?.files} />
+      <FolderContainer folders={data?.data?.folders} />
+      <FileContainer files={data?.data?.files} />
     </AppLayout>
   );
 }

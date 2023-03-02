@@ -13,7 +13,7 @@ function Trash() {
   );
 
   return (
-    <AppLayout>
+    <AppLayout breadcrumb={["Trash"]}>
       <ItemsContainer title="Folder" files={folderData?.data} />
     </AppLayout>
   );
