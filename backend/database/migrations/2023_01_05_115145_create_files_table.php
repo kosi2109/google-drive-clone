@@ -14,11 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('files', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
 
-            $table->foreignId('ower_id');
+            $table->foreignId('owner_id');
 
-            $table->foreignId('folder_id')->nullable();
+            $table->foreignUuid('folder_id')->nullable();
 
             $table->string('name');
 
@@ -27,6 +27,8 @@ return new class extends Migration
             $table->string('size');
 
             $table->string('file_path');
+
+            $table->string('mime_type');
 
             $table->softDeletes();
 

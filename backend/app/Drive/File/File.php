@@ -8,18 +8,20 @@ use App\Drive\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class File extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasUuids;
 
     protected $fillable = [
-        'ower_id',
+        'owner_id',
         'folder_id',
         'name',
         'access',
         'size',
-        'file_path'
+        'file_path',
+        'mime_type'
     ];
 
     protected $with = [
@@ -29,7 +31,7 @@ class File extends Model
 
     public function ownBy()
     {
-        return $this->belongsTo(User::class, 'ower_id');
+        return $this->belongsTo(User::class, 'owner_id');
     }
 
     public function folder()
@@ -42,6 +44,14 @@ class File extends Model
         return $this->hasOne(Log::class, 'process_id')
                 ->where('process_name', config('constant.process_names.file'))
                 ->where('process_type', config('constant.process_types.view'))
+                ->latestOfMany();
+    }
+
+    public function lastModify()
+    {
+        return $this->hasOne(Log::class, 'process_id')
+                ->where('process_name', config('constant.process_names.file'))
+                ->where('process_type', config('constant.process_types.update'))
                 ->latestOfMany();
     }
 }

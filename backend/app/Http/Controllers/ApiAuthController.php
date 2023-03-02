@@ -27,7 +27,7 @@ class ApiAuthController extends Controller
     {
         $user = $this->userRepo->firstOrCreateUser($request->all());
 
-        $token = $user->createToken(env('JWT_SECRET'))->plainTextToken;
+        $token = $user->createToken(env('JWT_SECRET'), ['*'], now()->addDays(30))->plainTextToken;
 
         return response()->json([
             'user' => $user,

@@ -16,7 +16,6 @@ class LogResource extends BaseResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
             'created_at' => $this->created_at,
             'process_by' => new UserResource($this->processBy)
         ];

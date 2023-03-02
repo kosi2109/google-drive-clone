@@ -1,15 +1,12 @@
 import { IconType } from "../../constant/fileTypes"
-
+import {ItemType as ItemDataType} from "../data/itemTypes";
 type ItemsContainerType = {
     title : string,
-    data : any
+    files : any
 }
 
 type ItemType = {
-    id : number,
-    type : keyof typeof IconType,
-    image : string,
-    title : string,
+    item : ItemDataType
     isListItem? : boolean
 }
 

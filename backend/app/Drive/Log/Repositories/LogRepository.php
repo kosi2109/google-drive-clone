@@ -26,14 +26,13 @@ class LogRepository implements LogRepositoryInterface
      * 
      * @return Log
      */
-    public function createLog(string $process_name, int $process_id, int $process_type) : Log
+    public function createLog(string $process_name, string $process_id, int $process_type) : Log
     {
         return $this->model->create([
             'process_name' => $process_name,
             'process_id' => $process_id,
             'process_type' => $process_type,
-            // 'process_by' => auth()->id()
-            'process_by' => 3
+            'process_by' => auth()->user()->id
         ]);
     }
 

@@ -14,15 +14,17 @@ return new class extends Migration
     public function up()
     {
         Schema::create('folders', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
 
-            $table->foreignId('ower_id');
+            $table->foreignId('owner_id');
 
-            $table->foreignId('parent_folder_id')->nullable();
+            $table->foreignUuid('parent_folder_id')->nullable();
 
             $table->string('name');
 
             $table->integer('access')->default(2);
+
+            $table->string('folder_path');
 
             $table->softDeletes();
 
