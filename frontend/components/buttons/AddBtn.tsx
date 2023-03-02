@@ -5,6 +5,8 @@ import { AiOutlineFolderAdd } from "react-icons/ai";
 import { BsFileEarmarkArrowUp } from "react-icons/bs";
 import { GrAdd } from "react-icons/gr";
 import { RiFolderUploadLine } from "react-icons/ri";
+import { useDispatch } from "react-redux";
+import { changeFolderCreate } from "../../features/appSlice";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import Devider from "../Common/Devider";
 
@@ -43,6 +45,8 @@ export const CustomUploadButton = asUploadButton(Test);
 
 function AddBtn() {
   const [open, setOpen] = useState(false);
+  const dispatch = useDispatch();
+
   const btnRef = useRef<any>();
   useOutsideClick(btnRef, setOpen);
 
@@ -60,7 +64,7 @@ function AddBtn() {
           open ? "h-fit opacity-100 pointer-events-auto" : ""
         }`}
       >
-        <LinkBtn Icon={AiOutlineFolderAdd} text="new folder" />
+        <LinkBtn onClickHandler={() => dispatch(changeFolderCreate(true))} Icon={AiOutlineFolderAdd} text="new folder" />
         <Devider className="h-[2px] bg-gray-100 my-2" />
         <CustomUploadButton />
         <LinkBtn Icon={RiFolderUploadLine} text="folder upload" />

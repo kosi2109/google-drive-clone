@@ -36,7 +36,7 @@ function Header() {
   };
   
   return (
-    <div className="py-3 px-4 border-b flex justify-between items-center h-18">
+    <div className="py-3 px-4 border-b flex justify-between items-center h-18 z-10">
       {/* logo */}
       <div className="flex items-center w-1/6">
         <RoundedHoverBtn Icon={AiOutlineMenu} text="Menu" className="lg:hidden" onClickHandle={() => dispatch(changeOpenMobileMenu())} />

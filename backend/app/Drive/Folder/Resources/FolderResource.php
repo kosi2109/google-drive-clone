@@ -20,6 +20,7 @@ class FolderResource extends BaseResource
         return [
             'id' => $this->id,
             'name' => $this->name,
+            'folder_path' => $this->folder_path,
             'folders' => FolderOveviewResource::collection($this->folders),
             'files' => FileOverviewResource::collection($this->files),
             'lastView' => new LogResource($this->lastView),

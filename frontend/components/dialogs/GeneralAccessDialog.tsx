@@ -4,7 +4,8 @@ import { BiLockAlt } from "react-icons/bi";
 import { FiLink2 } from "react-icons/fi";
 import { ImEarth } from "react-icons/im";
 import { TiTick } from "react-icons/ti";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { changeGeneralAccess } from "../../features/appSlice";
 import { selectSelectedItem } from "../../features/itemSlice";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { ItemType } from "../../types/data/itemTypes";
@@ -25,16 +26,13 @@ const accessOption = [
   },
 ];
 
-function GeneralAccessDialog({
-  openHandler,
-}: {
-  openHandler: React.Dispatch<boolean>;
-}) {
+function GeneralAccessDialog({}: {}) {
   const [menuOpen, setMenuOpen] = useState(false);
   const [selectedMenu, setSelectedMenu] = useState<typeof accessOption[0]>();
   const [copied, setCopied] = useState(false);
   const menuRef = useRef<any>();
   const item = useSelector(selectSelectedItem) as ItemType;
+  const dispatch = useDispatch();
 
   useOutsideClick(menuRef, setMenuOpen);
 
@@ -50,8 +48,12 @@ function GeneralAccessDialog({
     }, 1000);
   };
 
+  const close = () => {
+    dispatch(changeGeneralAccess(false))
+  };
+
   return (
-    <Dialog setIsOpen={openHandler} width="30%" height="auto">
+    <Dialog setIsOpen={close} width="30%" height="auto">
       <div className="p-4 dark:text-black relative">
         <h1 className="text-xl mb-1">Share</h1>
         <h1 className="text-xl mb-3 break-words">{item.name}</h1>
@@ -131,7 +133,7 @@ function GeneralAccessDialog({
 
           <div>
             <button
-              onClick={() => openHandler(false)}
+              onClick={() => close()}
               className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-md"
             >
               Done

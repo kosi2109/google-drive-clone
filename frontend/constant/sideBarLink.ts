@@ -10,11 +10,6 @@ export default [
     url : '/drive/my-drive'
   },
   {
-    icon: MdDevices,
-    text: "Computers",
-    url : '/drive/computers'
-  },
-  {
     icon: MdOutlinePeopleOutline,
     text: "Share with me",
     url : '/drive/share-with-me'
@@ -23,11 +18,6 @@ export default [
     icon: BiTimeFive,
     text: "Recent",
     url : '/drive/recent'
-  },
-  {
-    icon: AiOutlineStar,
-    text: "Starred",
-    url : '/drive/starred'
   },
   {
     icon: BsTrash,

@@ -8,16 +8,18 @@ use App\Drive\User\User;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Folder extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, HasUuids;
 
     protected $fillable = [
         'owner_id',
         'parent_folder_id',
         'name',
-        'access'
+        'access',
+        'folder_path'
     ];
 
     protected $with = [
@@ -37,7 +39,12 @@ class Folder extends Model
 
     public function folders()
     {
-        return $this->hasMany(self::class, 'parent_folder_id');
+        return $this->hasMany(Folder::class, 'parent_folder_id');
+    }
+
+    public function deletedParentFolder()
+    {
+        return $this->belongsTo(Folder::class, 'parent_folder_id', 'id')->onlyTrashed();
     }
 
     public function lastView()

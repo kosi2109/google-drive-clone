@@ -15,32 +15,32 @@ const getIconByType = (mime_type: string) => {
     color: "red",
   };
 
-  if (mime_type.includes("video")) {
+  if (mime_type?.includes("video")) {
     typeObj = {
       Icon: MdMovie,
       color: "red",
     };
-  } else if (mime_type.includes("image")) {
+  } else if (mime_type?.includes("image")) {
     typeObj = {
       Icon: BsImageFill,
       color: "red",
     };
-  } else if (mime_type.includes("pdf")) {
+  } else if (mime_type?.includes("pdf")) {
     typeObj = {
       Icon: MdPictureAsPdf,
       color: "red",
     };
-  } else if (mime_type.includes("sheet")) {
+  } else if (mime_type?.includes("sheet")) {
     typeObj = {
       Icon: BsFillFileEarmarkExcelFill,
       color: "green",
     };
-  } else if (mime_type.includes("document")) {
+  } else if (mime_type?.includes("document")) {
     typeObj = {
       Icon: HiDocumentText,
       color: "blue",
     };
-  } else if (mime_type.includes("folder")) {
+  } else if (mime_type?.includes("folder")) {
     typeObj = {
       Icon: MdFolderShared,
       color: "blue",
