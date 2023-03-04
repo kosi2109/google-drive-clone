@@ -47,7 +47,7 @@ class FolderRepository implements FolderRepositoryInterface
      */
     public function getOuterFolders(): Collection
     {
-        return $this->model->whereNull('parent_folder_id')->get();
+        return $this->model->where('owner_id', auth()->user()->id)->whereNull('parent_folder_id')->get();
     }
 
     /**
@@ -56,7 +56,7 @@ class FolderRepository implements FolderRepositoryInterface
      */
     public function getTrashedFolders(): Collection
     {
-        return $this->model->onlyTrashed()->whereDoesntHave('deletedParentFolder')->get();
+        return $this->model->onlyTrashed()->where('owner_id', auth()->user()->id)->whereDoesntHave('deletedParentFolder')->get();
     }
 
     /**

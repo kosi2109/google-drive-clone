@@ -7,8 +7,6 @@ import { updateProgessById } from "../../features/downloadQueueSlice";
 import useSWR from 'swr'
 import { foldersApiEndPoint, getFolders } from "../../api/folders/foldersApi";
 import { filesApiEndPoint, getFiles } from "../../api/files/filesApi";
-import FolderContainer from "../../components/folder/folderContainer";
-import FileContainer from "../../components/file/FileContainer";
 
 function MyDrive() {
   const { data : session, status } : any = useSession();
@@ -31,8 +29,7 @@ function MyDrive() {
   
   return (
     <AppLayout breadcrumb={["My Drive"]} isLoading={folderLoading || fileLoading}>
-      <FolderContainer folders={folderData?.data} />
-      <FileContainer files={fileData?.data} />
+      <ItemsContainer folders={folderData?.data} files={fileData?.data} />
     </AppLayout>
   );
 }

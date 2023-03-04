@@ -132,7 +132,7 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
               </div>
               <div
                 className={`${
-                  isOpenDetail ? "w-2/6 hidden lg:block" : "w-0 hidden lg:block"
+                  isOpenDetail ? "w-2/6 hidden lg:block" : "lg:hidden"
                 } h-screen transition`}
               >
                 <ItemDetail />
