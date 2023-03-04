@@ -17,7 +17,7 @@ function ItemsContainer({ folders, files }: any) {
         <ListContainer folders={folders} files={files} />
       ) : (
         <>
-          {folders.length > 0 && (
+          {folders?.length > 0 && (
             <GridContainer title="Folders">
               {folders?.map((item: any) => (
                 <Folder
@@ -33,7 +33,7 @@ function ItemsContainer({ folders, files }: any) {
             </GridContainer>
           )}
 
-          {files.length > 0 && (
+          {files?.length > 0 && (
             <GridContainer title="Files">
               {files?.map((item: any) => (
                 <File

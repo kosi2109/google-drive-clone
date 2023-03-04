@@ -14,7 +14,7 @@ function Trash() {
 
   return (
     <AppLayout breadcrumb={["Trash"]}>
-      <ItemsContainer title="Folder" files={folderData?.data} />
+      <ItemsContainer folders={folderData?.data} files={[]} />
     </AppLayout>
   );
 }
