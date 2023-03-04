@@ -7,7 +7,8 @@ type ItemsContainerType = {
 
 type ItemType = {
     item : ItemDataType
-    isListItem? : boolean
+    isListItem? : boolean,
+    focus? : boolean
 }
 
 export type {
