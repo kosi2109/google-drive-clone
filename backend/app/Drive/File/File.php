@@ -54,4 +54,9 @@ class File extends Model
                 ->where('process_type', config('constant.process_types.update'))
                 ->latestOfMany();
     }
+
+    public function deletedParentFolder()
+    {
+        return $this->belongsTo(Folder::class, 'folder_id', 'id')->onlyTrashed();
+    }
 }

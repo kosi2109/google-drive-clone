@@ -202,14 +202,12 @@ class FolderRepository implements FolderRepositoryInterface
      */
     public function restoreFolder(string $id): bool
     {
-        return DB::transaction(function () use($id) {
-            $folder = $this->model->onlyTrashed()->find($id);  
+        $folder = $this->model->onlyTrashed()->find($id);  
 
-            throw_if(!$folder, FolderNotFoundException::class, 'Folder Not Found', 404);
-             
-            throw_if(!$folder->restore(), FolderRestoreFailException::class, 'Folder Restore Fail', 400);
-                        
-            return true;
-        });
+        throw_if(!$folder, FolderNotFoundException::class, 'Folder Not Found', 404);
+         
+        throw_if(!$folder->restore(), FolderRestoreFailException::class, 'Folder Restore Fail', 400);
+                    
+        return true;
     }
 }

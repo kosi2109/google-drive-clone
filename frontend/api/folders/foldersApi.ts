@@ -21,4 +21,4 @@ export const deleteFoldersPermanent = (id : string) =>
   axioInstance.delete(`${foldersApiEndPoint}/delete/permanent/${id}`).then((res) => res.data);
 
 export const restoreFolders = (id : string) => 
-  axioInstance.delete(`${foldersApiEndPoint}/restore/${id}`).then((res) => res.data);
+  axioInstance.post(`${foldersApiEndPoint}/restore/${id}`).then((res) => res.data);

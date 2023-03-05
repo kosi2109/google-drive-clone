@@ -27,6 +27,7 @@ class FileOverviewResource extends BaseResource
             'lastModify' => new LogResource($this->lastModify),
             'lastView' => new LogResource($this->lastView),
             'created' => $this->created_at,
+            'deleted_at' => $this->deleted_at
         ];
     }
 }

@@ -8,9 +8,11 @@ use App\Drive\File\Exceptions\FileNotFoundException;
 use App\Drive\File\Exceptions\FileUpdateFailException;
 use App\Drive\File\File;
 use App\Drive\File\Repositories\Interfaces\FileRepositoryInterface;
+use App\Drive\Folder\Exceptions\FileRestoreFailException;
 use App\Drive\Log\Repositories\LogRepository;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 
 class FileRepository implements FileRepositoryInterface
 {
@@ -47,6 +49,15 @@ class FileRepository implements FileRepositoryInterface
     }
 
     /**
+     * Get Files from trash
+     * 
+     */
+    public function getTrashedFiles(): Collection
+    {
+        return $this->model->onlyTrashed()->where('owner_id', auth()->user()->id)->whereDoesntHave('deletedParentFolder')->get();
+    }
+
+    /**
      * Get File by Id
      * 
      * @param string $id
@@ -56,9 +67,9 @@ class FileRepository implements FileRepositoryInterface
      */
     public function findFileById(string $id, bool $is_make_log = true): File
     {
-        return DB::transaction(function() use($id, $is_make_log) {
+        return DB::transaction(function () use ($id, $is_make_log) {
             $file = $this->model->find($id);
-            
+
             throw_if(!$file, FileNotFoundException::class, 'File Not Found', 404);
 
             if ($is_make_log) {
@@ -78,13 +89,13 @@ class FileRepository implements FileRepositoryInterface
      */
     public function createFile(array $params): File
     {
-        return DB::transaction(function() use($params) {
+        return DB::transaction(function () use ($params) {
             $file = $this->model->create($params);
-            
+
             throw_if(!$file, FileCreateFailException::class, 'File Create Fail', 400);
 
             $this->makeLog($file->id, $this->process_types['add']);
-    
+
             return $file;
         });
     }
@@ -99,14 +110,14 @@ class FileRepository implements FileRepositoryInterface
      */
     public function updateFile(string $id, array $params): File
     {
-        return DB::transaction(function () use($id, $params) {
+        return DB::transaction(function () use ($id, $params) {
             $file = $this->findFileById($id, false);
-            
+
             throw_if(!$file->update($params), FileUpdateFailException::class, 'File Update Fail', 400);
-    
-            $this->makeLog($file->id, $this->process_types['update']); 
-    
-            return $file->fresh();  
+
+            $this->makeLog($file->id, $this->process_types['update']);
+
+            return $file->fresh();
         });
     }
 
@@ -119,13 +130,13 @@ class FileRepository implements FileRepositoryInterface
      */
     public function deleteFile(string $id): bool
     {
-        return DB::transaction(function () use($id) {
+        return DB::transaction(function () use ($id) {
             $file = $this->findFileById($id, false);
-            
+
             throw_if(!$file->delete(), FileDeleteFailException::class, 'File Delete Fail', 400);
 
-            $this->makeLog($file->id, $this->process_types['delete']); 
-    
+            $this->makeLog($file->id, $this->process_types['delete']);
+
             return true;
         });
     }
@@ -133,7 +144,7 @@ class FileRepository implements FileRepositoryInterface
     /**
      * Delete Files by Folder Id
      * 
-     * @param int $folderId
+     * @param string $folderId
      * 
      * @return bool
      */
@@ -153,34 +164,72 @@ class FileRepository implements FileRepositoryInterface
     /**
      * Delete Files by Folder Id
      * 
-     * @param int $folderId
+     * @param string $folderId
      * 
      * @return bool
      */
     public function deleteFilesPermenentByFolderId(string $folderId): bool
     {
-        $files = $this->model->withTrashed()->where('folder_id', $folderId)->get();
+        $files = $this->model->onlyTrashed()->where('folder_id', $folderId)->get();
 
         if ($files->count() < 1) return true;
 
         $files = $files->toQuery();
 
         throw_if(!$files->forceDelete(), FileDeleteFailException::class, 'Files Delete Fail', 404);
-        
+
         return true;
     }
 
     /**
      * Restore Files by Folder Id
      * 
-     * @param int $folderId
+     * @param string $folderId
      * 
      * @return bool
      */
-    public function restoreFilesByFolderId(string $folderId): bool
+    public function restoreFilesByFolderId(string $id): bool
     {
-        $this->model->withTrashed()->where('folder_id', $folderId)->restore();
+        $this->model->onlyTrashed()->where('folder_id', $id)->forceDelete();
+
+        return true;
+    }
+
+    /**
+     * Delete Perment by Id
+     * 
+     * @param string $folderId
+     * 
+     * @return bool
+     */
+    public function deleteFilesPermentById(string $id): bool
+    {
+        $file = $this->model->onlyTrashed()->find($id);
         
+        throw_if(!$file, FileNotFoundException::class, 'File Not Found', 404);
+
+        Storage::disk('public')->delete($file->file_path);
+
+        throw_if(!$file->forceDelete(), FileDeleteFailException::class, 'Folder Delete Fail', 400);
+
+        return true;
+    }
+
+    /**
+     * Restore Files by Id
+     * 
+     * @param string $folderId
+     * 
+     * @return bool
+     */
+    public function restoreFilesById(string $id): bool
+    {
+        $folder = $this->model->onlyTrashed()->find($id);
+
+        throw_if(!$folder, FileNotFoundException::class, 'File Not Found', 404);
+
+        throw_if(!$folder->restore(), FileRestoreFailException::class, 'File Restore Fail', 400);
+
         return true;
     }
 }
