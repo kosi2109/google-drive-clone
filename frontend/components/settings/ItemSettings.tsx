@@ -19,35 +19,67 @@ import { RoundedHoverBtn } from "../buttons";
 import { selectSelectedItem } from "../../features/itemSlice";
 import { ItemType } from "../../types/data/itemTypes";
 import useSWRMutation from "swr/mutation";
+import { deleteFiles, deleteFilesPermanent, filesApiEndPoint, restoreFiles } from "../../api/files/filesApi";
 
 function ItemSettings({}: {}) {
   const dispatch = useDispatch();
   const item = useSelector(selectSelectedItem) as ItemType;
 
-  const { trigger: deleteTrigger, isMutating: deleting } = useSWRMutation(
+  const { trigger: folderDeleteTrigger } = useSWRMutation(
     foldersApiEndPoint,
     (key, { arg }) => deleteFolders(arg.id)
   );
-  const { trigger: deletePermanentTrigger, isMutating: permenentDeleting } = useSWRMutation(
+
+  const { trigger: fileDeleteTrigger } = useSWRMutation(
+    filesApiEndPoint,
+    (key, { arg }) => deleteFiles(arg.id)
+  );
+
+  const { trigger: folderDeletePermanentTrigger } = useSWRMutation(
     [foldersApiEndPoint, "trashed=true"], 
     (key, { arg }) => deleteFoldersPermanent(arg.id)
     );
 
-  const { trigger: restoreTrigger, isMutating: restoring } = useSWRMutation(
+  const { trigger: fileDeletePermanentTrigger } = useSWRMutation(
+    [filesApiEndPoint, "trashed=true"], 
+    (key, { arg }) => deleteFilesPermanent(arg.id)
+    );
+
+  const { trigger: folderRestoreTrigger } = useSWRMutation(
     [foldersApiEndPoint, "trashed=true"],
     (key, { arg }) => restoreFolders(arg.id)
   );
 
+  const { trigger: fileRestoreTrigger } = useSWRMutation(
+    [filesApiEndPoint, "trashed=true"],
+    (key, { arg }) => restoreFiles(arg.id)
+  );
+
   const deleteHandler = async () => {
-    if (item.deleted_at) {
-      await deletePermanentTrigger({ id: item.id });
+    if (item.mime_type === 'folder') {
+      if (item.deleted_at) {
+        await folderDeletePermanentTrigger({ id: item.id });
+      } else {
+        await folderDeleteTrigger({ id: item.id });
+      }
     } else {
-      await deleteTrigger({ id: item.id });
+      if (item.deleted_at) {
+        await fileDeletePermanentTrigger({ id: item.id });
+      } else {
+        await fileDeleteTrigger({ id: item.id });
+      }
     }
+
   };
 
   const restoreHandler = async () => {
-    await restoreTrigger({ id: item.id });
+    if (item.mime_type === 'folder') {
+      await folderRestoreTrigger({ id: item.id });
+      
+    } else {
+      await fileRestoreTrigger({ id: item.id });
+
+    }
   };
 
   return (
