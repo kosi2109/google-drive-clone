@@ -20,18 +20,28 @@ import { selectSelectedItem } from "../../features/itemSlice";
 import { ItemType } from "../../types/data/itemTypes";
 import useSWRMutation from "swr/mutation";
 import { deleteFiles, deleteFilesPermanent, filesApiEndPoint, restoreFiles } from "../../api/files/filesApi";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 
 function ItemSettings({}: {}) {
   const dispatch = useDispatch();
   const item = useSelector(selectSelectedItem) as ItemType;
+  const [parentFolderId, setParentFolderId] = useState("");
+  const router = useRouter();
 
+  useEffect(() => {
+    if (router.pathname === "/drive/folders/[id]") {
+      setParentFolderId(router?.query?.id as string);
+    }
+  }, [router.pathname, router.query.id]);
+  
   const { trigger: folderDeleteTrigger } = useSWRMutation(
-    foldersApiEndPoint,
+    [foldersApiEndPoint, parentFolderId],
     (key, { arg }) => deleteFolders(arg.id)
   );
 
   const { trigger: fileDeleteTrigger } = useSWRMutation(
-    filesApiEndPoint,
+    [foldersApiEndPoint, parentFolderId],
     (key, { arg }) => deleteFiles(arg.id)
   );
 

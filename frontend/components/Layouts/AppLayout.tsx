@@ -32,6 +32,8 @@ import ItemDetail from "../ItemDetail";
 import PageNavigator from "../PageNavigator";
 import SideBar from "../SideBar";
 import AuthGuard from "./AuthGuard";
+import useSWR from "swr";
+import { foldersApiEndPoint, getFolderById } from "../../api/folders/foldersApi";
 
 function AppLayout({ children, breadcrumb, isLoading = false }: any) {
   const isOpenDetail = useSelector(selectIsOpenDetailView);
@@ -47,6 +49,8 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
 
   const dispatch = useDispatch();
 
+  //TODO : remove page api
+  
   useEffect(() => {
     if (downloadItems.length > 0) {
       dispatch(changeDownloadController({ isOpen: true, isMinimize: false }));
@@ -58,6 +62,11 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
       setParentFolderId(router?.query?.id as string);
     }
   }, [router.pathname, router.query.id]);
+
+  const { mutate } = useSWR(
+    [foldersApiEndPoint, parentFolderId],
+    (cacheKey) => getFolderById(cacheKey[1])
+  );
 
   //upload progess handler
   useItemStartListener((item) => {
@@ -83,7 +92,7 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
     );
   });
 
-  useItemFinishListener((item) => {
+  useItemFinishListener(async (item) => {
     dispatch(
       updateProgessById({
         id: item.id,
@@ -91,6 +100,7 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
         state: item.state,
       })
     );
+    await mutate();
   });
 
   useRequestPreSend(({ items, options }) => {

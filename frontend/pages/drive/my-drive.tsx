@@ -13,8 +13,8 @@ function MyDrive() {
   const dispatch = useDispatch();
   const token = session?.token?.access_token;
   const page = 'my-drive';
-  const { data : folderData, isLoading : folderLoading} = useSWR(foldersApiEndPoint, getFolders)
-  const { data : fileData, isLoading : fileLoading} = useSWR(filesApiEndPoint, getFiles)
+  const { data : folderData, isLoading : folderLoading} = useSWR([foldersApiEndPoint, ''], getFolders)
+  const { data : fileData, isLoading : fileLoading} = useSWR([filesApiEndPoint, ''], getFiles)
 
   useItemFinishListener(async (item) => {    
     dispatch(

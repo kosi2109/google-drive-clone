@@ -12,7 +12,7 @@ function CreateFolderDialog() {
   const dispatch = useDispatch();
   const router = useRouter();
   const { trigger, isMutating } = useSWRMutation(
-    foldersApiEndPoint,
+    [foldersApiEndPoint, parentFolderId],
     (key, { arg }) => createFolder(arg.data)
   );
 
