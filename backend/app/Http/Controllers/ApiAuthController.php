@@ -25,7 +25,14 @@ class ApiAuthController extends Controller
         GoogleAuthRequest $request
     ) 
     {
-        $user = $this->userRepo->firstOrCreateUser($request->all());
+        $params = $request->input();
+
+        $user = $this->userRepo->firstOrCreateUser([
+            'email' => $params['email'],
+            'google_id' => $params['google_id'],
+            'avatar' => $params['imageUrl'],
+            'name' => $params['name']
+        ]);
 
         $token = $user->createToken(env('JWT_SECRET'), ['*'], now()->addDays(30))->plainTextToken;
 
@@ -34,5 +41,12 @@ class ApiAuthController extends Controller
             'access_token' => $token,
             'token_type' => 'Bearer',
         ]);
+    }
+
+    public function logout()
+    {
+        auth()->user()->currentAccessToken()->delete();
+
+        return response('Logout Success');
     }
 }

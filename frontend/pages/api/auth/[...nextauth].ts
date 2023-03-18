@@ -18,7 +18,7 @@ export default (req : NextApiRequest, res : NextApiResponse)=> {
           name : {type : 'text'},
         },
         async authorize(credentials, req) {                
-          const u = (await googleUserLogin({
+          const u : any = (await googleUserLogin({
             email: credentials?.email,
             google_id: credentials?.googleId,
             imageUrl: credentials?.imageUrl,
@@ -36,7 +36,7 @@ export default (req : NextApiRequest, res : NextApiResponse)=> {
             return null;
           }
           
-          res.setHeader('Set-Cookie', serialize('jwt', JSON.stringify(user.access_token), { path: '/',maxAge : MAX_AGE}))
+          res.setHeader('Set-Cookie', serialize('jwt', JSON.stringify(user.access_token), { path: '/', maxAge : MAX_AGE}))
           
           return user as any;
         },

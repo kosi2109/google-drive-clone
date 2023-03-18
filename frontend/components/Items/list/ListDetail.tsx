@@ -1,9 +1,10 @@
 import { useRouter } from "next/router";
-import React from "react";
+import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import getIconByType from "../../../constant/fileTypes";
 import { changeSelectItem } from "../../../features/itemSlice";
 import { ItemType } from "../../../types/data/itemTypes";
+import {filesize} from "filesize";
 
 function ListDetail({ item, focus }: { item: ItemType; focus: boolean }) {
   const { Icon, color } = getIconByType(item.mime_type);
@@ -15,6 +16,8 @@ function ListDetail({ item, focus }: { item: ItemType; focus: boolean }) {
         router.push(`/drive/folders/${item.id}`);
     }
   };
+  
+  let fileSize = filesize(item.size as any, {base: 2, standard: "jedec"}) as string;
 
   return (
     <tr
@@ -32,7 +35,7 @@ function ListDetail({ item, focus }: { item: ItemType; focus: boolean }) {
       </td>
       <td>{item.ownBy.name}</td>
       <td>{item.lastModify ? item.lastModify?.process_by?.name : "-"}</td>
-      <td>{item.size ? item.size : "-"}</td>
+      <td>{item.size ? fileSize : "-"}</td>
     </tr>
   );
 }

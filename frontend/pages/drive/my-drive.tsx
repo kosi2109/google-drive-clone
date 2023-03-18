@@ -1,5 +1,4 @@
 import { useItemFinishListener } from "@rpldy/uploady";
-import { useSession } from "next-auth/react";
 import { useDispatch } from "react-redux";
 import ItemsContainer from "../../components/items/ItemsContainer";
 import AppLayout from "../../components/layouts/AppLayout";
@@ -9,7 +8,6 @@ import { foldersApiEndPoint, getFolders } from "../../api/folders/foldersApi";
 import { filesApiEndPoint, getFiles } from "../../api/files/filesApi";
 
 function MyDrive() {
-  const { data : session, status } : any = useSession();
   const dispatch = useDispatch();
 
   const { data : folderData, isLoading : folderLoading} = useSWR([foldersApiEndPoint, ''], () => getFolders(''))

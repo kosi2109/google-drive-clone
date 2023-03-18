@@ -1,8 +1,12 @@
+import { filesize } from "filesize";
 import React from "react";
 import { ItemType } from "../../types/data/itemTypes";
 import DetailBodyText from "./DetailBodyText";
 
 function DetailBody({ item }: { item: ItemType }) {
+
+  let fileSize = filesize(item.size as any, {base: 2, standard: "jedec"}) as string;
+
   return (
     <div className="w-full h-5/6 overflow-auto px-8 select-none">
       <h5 className="font-semibold mb-4">Folder Details</h5>
@@ -13,7 +17,7 @@ function DetailBody({ item }: { item: ItemType }) {
 
       <DetailBodyText 
         title="Size" 
-        body={item.size} 
+        body={fileSize} 
       />
 
       <DetailBodyText 

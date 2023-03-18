@@ -57,7 +57,7 @@ function File({ item, focus }: ItemType) {
           focus ? "" : "group-hover:file__content__hover"
         }`}
       >
-        <div className="w-[50px]">
+        <div className="w-[10%]">
           <Icon size={22} color={color} />
         </div>
         <p className="truncate ml-2">{item.name}</p>

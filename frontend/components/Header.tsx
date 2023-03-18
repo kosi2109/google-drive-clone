@@ -7,21 +7,27 @@ import RoundedHoverBtn from "./buttons/RoundedHoverBtn";
 import { SearchHistories, AdvanceFilter, FileTypes } from "./search";
 import { useTheme } from "next-themes";
 import { BsMoon, BsSun } from "react-icons/bs";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { changeOpenMobileMenu } from "../features/appSlice";
-import { selectUser } from "../features/userSlice";
 import { useSession } from "next-auth/react";
+import { FiLogOut } from "react-icons/fi";
+import useOutsideClick from "../hooks/useOutsideClick";
+import { signOut } from "next-auth/react"
+import { logout } from "../api/backendApi";
+import { destroyCookie } from 'nookies'
+import { logoutUser } from "../features/userSlice";
 
 function Header() {
   const [isFoucs, setIsFoucs] = useState<boolean>(false);
   const [keyword, setKeyword] = useState<string>("");
   const [openFilter, setOpenFilter] = useState<boolean>(false);
+  const [openSettings, setOpenSettings] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
   const { systemTheme, theme, setTheme } = useTheme();
   const currentTheme = theme === "system" ? systemTheme : theme;
   const dispatch = useDispatch();
   const { data: session, status } = useSession()
-  
+  const btnRef = useRef<any>();
 
   const searchHandler = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -35,6 +41,16 @@ function Header() {
     inputRef.current?.focus();
   };
   
+  const logoutHandler = () => {
+    logout().then(() => {
+      destroyCookie(null, 'jwt')
+      dispatch(logoutUser)
+      signOut({callbackUrl : '/auth'});
+    })
+  }
+
+  useOutsideClick(btnRef, setOpenSettings);
+
   return (
     <div className="py-3 px-4 border-b flex justify-between items-center h-18 z-10">
       {/* logo */}
@@ -48,22 +64,22 @@ function Header() {
       <div className="hidden lg:block w-5/6">
         <div
           className={`z-50 h-full flex justify-start items-center w-3/5 h-12 p-1 rounded relative ${
-            isFoucs ? "bg-white-200 shadow-lg border" : "bg-gray-100"
+            isFoucs ? "bg-white shadow-lg border" : "bg-gray-100"
           }`}
         >
           <RoundedHoverBtn
             Icon={AiOutlineSearch}
-            className={`px-2 ${isFoucs ? 'dark:text-white' : 'inputInnerBtn' }`}
+            className={`px-2 inputInnerBtn`}
             text="Search"
           />
           <input
             ref={inputRef}
-            onFocus={() => setIsFoucs(true)}
-            onBlur={() => setIsFoucs(false)}
+            // onFocus={() => setIsFoucs(true)}
+            // onBlur={() => setIsFoucs(false)}
             value={keyword}
             onChange={searchHandler}
             type="text"
-            className={`border-none outline-none bg-transparent w-full h-8 text-md ${isFoucs ? 'text-white' : 'text-black' }`}
+            className={`border-none outline-none bg-transparent w-full h-8 text-md text-black`}
             placeholder="Search in Drive"
           />
           {keyword.length > 0 && (
@@ -71,14 +87,14 @@ function Header() {
               Icon={AiOutlineClose}
               onClickHandle={clearKeyword}
               text="Clear Search"
-              className={`${isFoucs ? 'dark:text-white' : 'inputInnerBtn' }`}
+              className={`inputInnerBtn`}
             />
           )}
           <RoundedHoverBtn
-            className={`px-2 ${isFoucs ? 'dark:text-white' : 'inputInnerBtn' }`}
+            className={`px-2 inputInnerBtn`}
             Icon={GoSettings}
             text="Show Search Options"
-            onClickHandle={() => setOpenFilter((pre: any) => !pre)}
+            // onClickHandle={() => setOpenFilter((pre: any) => !pre)}
           />
 
           {/* if open filter */}
@@ -126,14 +142,23 @@ function Header() {
         </div>
       </div>
       <div className="w-12 flex justify-end items-center">
-        <div className="w-10 h-10 rounded-full hover:bg-gray-100 p-1 cursor-pointer">
-          {/* <Image
+        <div className="w-10 h-10 rounded-full relative dark:hover:bg-gray-100 hover:bg-gray-300 p-[3px] cursor-pointer">
+          <img
             width={10}
             height={10}
             src={session?.user?.image as string}
             alt="profile"
             className="w-full h-full rounded-full"
-          /> */}
+            onClick={() => setOpenSettings(true)}
+          />
+
+          {openSettings && 
+          <div ref={btnRef} className="absolute z-50 w-40 h-auto bg-red top-[100%] bg-white shadow-md right-0 flex flex-col p-2">
+            <button onClick={logoutHandler} className="w-full hover:bg-gray-100 h-10 rounded-md flex items-center px-3">
+              <FiLogOut className="mr-4" /> Logout
+            </button>
+          </div>
+          }
         </div>
       </div>
       </div>
