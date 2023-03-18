@@ -51,7 +51,7 @@ function RenameFolderDialog() {
   return (
     <Dialog setIsOpen={close} width="25%" height="auto">
       <form onSubmit={handleSubmit} className="p-4">
-        <h3 className="font-semibold text-xl mb-3">Rename</h3>
+        <h3 className="font-semibold text-xl mb-3 text-gray-600">Rename</h3>
         <input
           value={name}
           onChange={(e) => setName(e.target.value)}
@@ -61,7 +61,7 @@ function RenameFolderDialog() {
         <div className="flex justify-end items-center">
           <button
             type="button"
-            className="px-2 py-1 hover:bg-sky-50 hover:text-blue-900 rounded mx-1"
+            className="px-2 py-1 hover:bg-sky-50 hover:text-blue-900 dark:text-blue-900 rounded mx-1"
             onClick={close}
           >
             Cancel

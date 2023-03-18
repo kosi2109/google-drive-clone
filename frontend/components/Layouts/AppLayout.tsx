@@ -40,7 +40,6 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
   const isOpenDetail = useSelector(selectIsOpenDetailView);
   const isOpenMobileMenu = useSelector(selectIsOpenMobileMenu);
   const { isOpen } = useSelector(selectDownloadControll);
-  const downloadItems = useSelector(selectDownloadQueue);
   const isOpenFolderCreate = useSelector(selectFolderCreate);
   const isOpenFolderRename = useSelector(selectFolderRename);
   const isOpenGeneralAccess = useSelector(selectGeneralAccess);
@@ -49,12 +48,6 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
   const router = useRouter();
 
   const dispatch = useDispatch();
-  
-  useEffect(() => {
-    if (downloadItems.length > 0) {
-      dispatch(changeDownloadController({ isOpen: true, isMinimize: false }));
-    }
-  }, [downloadItems.length]);
 
   useEffect(() => {
     if (router.pathname === "/drive/folders/[id]") {
@@ -62,14 +55,8 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
     }
   }, [router.pathname, router.query.id]);
 
-  // const { mutate } = useSWR(
-  //   [foldersApiEndPoint, parentFolderId],
-  //   (cacheKey) => getFolderById(cacheKey[1])
-  // );
-
   //upload progess handler
   useItemStartListener((item) => {
-    console.log(item);
     dispatch(
       addToQeue({
         id: item.id,
@@ -79,6 +66,9 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
         mime_type : item.file.type
       })
     );
+
+    dispatch(changeDownloadController({ isOpen: true, isMinimize: false }));
+
   });
 
   useItemProgressListener((item) => {
@@ -101,12 +91,11 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
     );
 
     if (parentFolderId !== "") {
-
       await mutate([foldersApiEndPoint, parentFolderId]);
     } else {
-
       await mutate([filesApiEndPoint, '']);
-    }
+    };
+
   });
 
   useRequestPreSend(() => {
@@ -141,15 +130,15 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
             <div className="w-full flex">
               <div
                 className={`${
-                  isOpenDetail ? "w-4/6" : "w-full"
-                } h-screen overflow-scroll pb-32 transition-all ease-in-out`}
+                  isOpenDetail ? "lg:w-4/6" : 'lg:w-full'
+                } w-full h-screen overflow-scroll pb-32 transition-all ease-in-out`}
               >
                 {isLoading ? <SkeletonLoading /> : children}
               </div>
               <div
                 className={`${
-                  isOpenDetail ? "w-2/6 hidden lg:block" : "lg:hidden"
-                } h-screen transition`}
+                  isOpenDetail ? "lg:w-2/6 lg:block" : "lg:hidden"
+                } h-screen transition hidden`}
               >
                 <ItemDetail />
               </div>

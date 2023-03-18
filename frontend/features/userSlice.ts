@@ -14,13 +14,13 @@ export const userSlice = createSlice({
     login: (state, action) => {
       state.user = action.payload.user;
     },
-    logout: (state) => {
+    logoutUser: (state) => {
       state.user = null;
     },
   },
 });
 
-export const { login, logout } = userSlice.actions;
+export const { login, logoutUser } = userSlice.actions;
 
 export const selectUser = (state : any) => state.user.user;
 

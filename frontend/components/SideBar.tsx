@@ -28,7 +28,7 @@ function SideBar() {
   const percent = Math.round(used/available * 100);
   
   return (
-    <div className="h-screen py-4">
+    <div className="h-screen py-4 dark:bg-gray-900">
       <AddBtn />
       <LinkList />
       <div className="border-t pr-4 py-2 flex flex-col">
