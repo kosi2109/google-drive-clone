@@ -191,7 +191,7 @@ class FileController extends Controller
             'owner_id' => $user_obj->id,
             'name' => $file->getClientOriginalName(),
             'size' => $fileSize,
-            'file_path' => $filePath . $fileName ,
+            'file_path' => $filePath . '/' . $fileName ,
             'mime_type' => $file->getClientMimeType(),
             'folder_id' => $request->folder_id
         ]));

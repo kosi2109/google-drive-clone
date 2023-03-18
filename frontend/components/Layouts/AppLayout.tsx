@@ -32,8 +32,9 @@ import ItemDetail from "../ItemDetail";
 import PageNavigator from "../PageNavigator";
 import SideBar from "../SideBar";
 import AuthGuard from "./AuthGuard";
-import useSWR from "swr";
+import {mutate} from "swr";
 import { foldersApiEndPoint, getFolderById } from "../../api/folders/foldersApi";
+import { filesApiEndPoint } from "../../api/files/filesApi";
 
 function AppLayout({ children, breadcrumb, isLoading = false }: any) {
   const isOpenDetail = useSelector(selectIsOpenDetailView);
@@ -48,8 +49,6 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
   const router = useRouter();
 
   const dispatch = useDispatch();
-
-  //TODO : remove page api
   
   useEffect(() => {
     if (downloadItems.length > 0) {
@@ -63,10 +62,10 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
     }
   }, [router.pathname, router.query.id]);
 
-  const { mutate } = useSWR(
-    [foldersApiEndPoint, parentFolderId],
-    (cacheKey) => getFolderById(cacheKey[1])
-  );
+  // const { mutate } = useSWR(
+  //   [foldersApiEndPoint, parentFolderId],
+  //   (cacheKey) => getFolderById(cacheKey[1])
+  // );
 
   //upload progess handler
   useItemStartListener((item) => {
@@ -100,10 +99,17 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
         state: item.state,
       })
     );
-    await mutate();
+
+    if (parentFolderId !== "") {
+
+      await mutate([foldersApiEndPoint, parentFolderId]);
+    } else {
+
+      await mutate([filesApiEndPoint, '']);
+    }
   });
 
-  useRequestPreSend(({ items, options }) => {
+  useRequestPreSend(() => {
     return {
       options: {
         destination: {

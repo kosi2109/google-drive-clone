@@ -41,7 +41,7 @@ function ItemSettings({}: {}) {
   );
 
   const { trigger: fileDeleteTrigger } = useSWRMutation(
-    [foldersApiEndPoint, parentFolderId],
+    [filesApiEndPoint, parentFolderId],
     (key, { arg }) => deleteFiles(arg.id)
   );
 
