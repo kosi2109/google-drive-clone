@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { foldersApiEndPoint, updateFolders } from "../../api/folders/foldersApi";
 import { changeFolderRename } from "../../features/appSlice";
@@ -7,10 +7,20 @@ import useSWRMutation from "swr/mutation";
 import { selectSelectedItem } from "../../features/itemSlice";
 import { ItemType } from "../../types/data/itemTypes";
 import { filesApiEndPoint, updateFiles } from "../../api/files/filesApi";
+import { useRouter } from "next/router";
 
 function RenameFolderDialog() {
-  const { trigger : folderTrigger, isMutating : folderMutating } = useSWRMutation(foldersApiEndPoint,(key, {arg}) => updateFolders(arg.id, arg.data));
-  const { trigger : fileTrigger, isMutating : fileMutating } = useSWRMutation(filesApiEndPoint,(key, {arg}) => updateFiles(arg.id, arg.data));
+  const [parentFolderId, setParentFolderId] = useState("");
+  const router = useRouter();
+
+  useEffect(() => {
+    if (router.pathname === "/drive/folders/[id]") {
+      setParentFolderId(router?.query?.id as string);
+    }
+  }, [router.pathname, router.query.id]);
+
+  const { trigger : folderTrigger, isMutating : folderMutating } = useSWRMutation([foldersApiEndPoint, parentFolderId],(key, {arg}) => updateFolders(arg.id, arg.data));
+  const { trigger : fileTrigger, isMutating : fileMutating } = useSWRMutation([foldersApiEndPoint, parentFolderId],(key, {arg}) => updateFiles(arg.id, arg.data));
   const item = useSelector(selectSelectedItem) as ItemType;
   const dispatch = useDispatch();
   const [name, setName] = useState(item.name);
