@@ -10,7 +10,6 @@ use App\Drive\Folder\Exceptions\FolderUpdateFailException;
 use App\Drive\Folder\Folder;
 use App\Drive\Folder\Repositories\Interfaces\FolderRepositoryInterface;
 use App\Drive\Log\Repositories\LogRepository;
-use Exception;
 use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\File;
@@ -179,9 +178,7 @@ class FolderRepository implements FolderRepositoryInterface
     public function deletePermenentFolder(string $id): bool
     {
         return DB::transaction(function () use($id) {
-            $folder = $this->model->onlyTrashed()->find($id);  
-
-            throw_if(!$folder, FolderNotFoundException::class, 'Folder Not Found', 404);
+            $folder = $this->findFolderById($id, false, true);  
              
             throw_if(!$folder->forceDelete(), FolderDeleteFailException::class, 'Folder Delete Fail', 400);
             
@@ -202,9 +199,7 @@ class FolderRepository implements FolderRepositoryInterface
      */
     public function restoreFolder(string $id): bool
     {
-        $folder = $this->model->onlyTrashed()->find($id);  
-
-        throw_if(!$folder, FolderNotFoundException::class, 'Folder Not Found', 404);
+        $folder = $this->findFolderById($id, false, true);  
          
         throw_if(!$folder->restore(), FolderRestoreFailException::class, 'Folder Restore Fail', 400);
                     

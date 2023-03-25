@@ -16,4 +16,5 @@ interface FileRepositoryInterface
     public function restoreFilesByFolderId(string $folderId) : bool;
     public function deleteFilesPermentById(string $id) : bool;
     public function restoreFilesById(string $id) : bool;
+    public function findFileFromTrashById(string $id) : File;
 }

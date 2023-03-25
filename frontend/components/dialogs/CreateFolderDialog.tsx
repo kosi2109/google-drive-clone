@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createFolder, foldersApiEndPoint } from "../../api/folders/foldersApi";
 import { changeFolderCreate } from "../../features/appSlice";
@@ -15,6 +15,11 @@ function CreateFolderDialog() {
     [foldersApiEndPoint, parentFolderId],
     (key, { arg }) => createFolder(arg.data)
   );
+  const inputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, []);
 
   useEffect(() => {
     if (router.pathname === "/drive/folders/[id]") {
@@ -37,6 +42,7 @@ function CreateFolderDialog() {
       <form onSubmit={handleSubmit} className="p-4">
         <h3 className="font-semibold text-xl mb-3 text-gray-600">New Folder</h3>
         <input
+          ref={inputRef}
           value={name}
           onChange={(e) => setName(e.target.value)}
           type="text"

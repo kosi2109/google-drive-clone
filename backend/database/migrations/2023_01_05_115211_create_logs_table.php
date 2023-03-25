@@ -27,6 +27,8 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->timestamps();
+
+            $table->index(['process_name', 'process_id', 'process_type', 'process_by']);
         });
     }
 

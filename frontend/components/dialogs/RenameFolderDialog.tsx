@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   foldersApiEndPoint,
@@ -9,13 +9,17 @@ import Dialog from "../common/Dialog";
 import useSWRMutation from "swr/mutation";
 import { selectSelectedItem } from "../../features/itemSlice";
 import { ItemType } from "../../types/data/itemTypes";
-import { updateFiles } from "../../api/files/filesApi";
+import { filesApiEndPoint, updateFiles } from "../../api/files/filesApi";
 import { useRouter } from "next/router";
 
 function RenameFolderDialog() {
   const [parentFolderId, setParentFolderId] = useState("");
   const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>(null);
 
+  useEffect(() => {
+    inputRef.current?.focus();
+  }, [])
   useEffect(() => {
     if (router.pathname === "/drive/folders/[id]") {
       setParentFolderId(router?.query?.id as string);
@@ -27,7 +31,7 @@ function RenameFolderDialog() {
     (key, { arg }) => updateFolders(arg.id, arg.data)
   );
   const { trigger: fileTrigger, isMutating: fileMutating } = useSWRMutation(
-    [foldersApiEndPoint, parentFolderId],
+    [parentFolderId ? foldersApiEndPoint : filesApiEndPoint, parentFolderId],
     (key, { arg }) => updateFiles(arg.id, arg.data)
   );
   const item = useSelector(selectSelectedItem) as ItemType;
@@ -60,6 +64,7 @@ function RenameFolderDialog() {
       <form onSubmit={handleSubmit} className="p-4">
         <h3 className="font-semibold text-xl mb-3 text-gray-600">Rename</h3>
         <input
+          ref={inputRef}
           value={name}
           onChange={(e) => setName(e.target.value)}
           type="text"

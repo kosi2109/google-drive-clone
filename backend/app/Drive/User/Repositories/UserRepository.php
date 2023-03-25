@@ -85,6 +85,8 @@ class UserRepository implements UserRepositoryInterface
 
     /**
      * @param array $params
+     * 
+     * @return User
      */
     public function firstOrCreateUser(array $params): User
     {
@@ -95,6 +97,7 @@ class UserRepository implements UserRepositoryInterface
 
             $user = $this->model->create($params);
 
+            //send welcome mail to new User and mail to owner about new user created 
             event(new NewUserCreated($user));
         }
 

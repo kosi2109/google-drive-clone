@@ -42,17 +42,17 @@ class File extends Model
     public function lastView()
     {
         return $this->hasOne(Log::class, 'process_id')
-                ->where('process_name', config('constant.process_names.file'))
-                ->where('process_type', config('constant.process_types.view'))
-                ->latestOfMany();
+            ->where('process_name', config('constant.process_names.file'))
+            ->where('process_type', config('constant.process_types.view'))
+            ->latestOfMany();
     }
 
     public function lastModify()
     {
         return $this->hasOne(Log::class, 'process_id')
-                ->where('process_name', config('constant.process_names.file'))
-                ->where('process_type', config('constant.process_types.update'))
-                ->latestOfMany();
+            ->where('process_name', config('constant.process_names.file'))
+            ->where('process_type', config('constant.process_types.update'))
+            ->latestOfMany();
     }
 
     public function deletedParentFolder()

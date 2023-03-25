@@ -8,7 +8,6 @@ use App\Drive\Folder\Requests\CreateFolderRequest;
 use App\Drive\Folder\Resources\FolderOveviewResource;
 use App\Drive\Folder\Resources\FolderResource;
 use App\Http\Controllers\Controller;
-use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -106,11 +105,14 @@ class FolderController extends Controller
         DB::transaction(function() use($id) {
             
             $folder = $this->folderRepo->findFolderById($id, false);
-    
+
+            //trash child folder and their files
             $this->deleteRecursively($folder->folders);
             
+            //trash file under this folder
             $this->fileRepo->deleteFilesByFolderId($folder->id);
-    
+            
+            //trash itself
             $this->folderRepo->deleteFolder($folder->id);
 
             return true;
@@ -129,7 +131,6 @@ class FolderController extends Controller
      */
     public function deleteRecursively($folders, $permanent = false)
     {
-        // throw new Exception(json_encode($folders));
         foreach ($folders as $folder) {
             if ($permanent) {
                 $this->deleteRecursively($folder->folders()->withTrashed()->get(), $permanent); // Recursively delete child's children
@@ -160,10 +161,13 @@ class FolderController extends Controller
             
             $folder = $this->folderRepo->findFolderById($id, false, true);
 
+            //delete permanently child folder and their files
             $this->deleteRecursively($folder->folders()->withTrashed()->get(), true);
             
+            //delete permanently file under this folder
             $this->fileRepo->deleteFilesPermenentByFolderId($folder->id);
     
+            //delete permanently itself
             $this->folderRepo->deletePermenentFolder($folder->id);
 
             return true;
@@ -201,10 +205,13 @@ class FolderController extends Controller
             
             $folder = $this->folderRepo->findFolderById($id, false, true);
 
+            //restore child folder and their files
             $this->restoreFolderRecursively($folder->folders()->withTrashed()->get());
             
+            //restore file under this folder
             $this->fileRepo->restoreFilesByFolderId($folder->id);
-    
+            
+            //restore itself
             $this->folderRepo->restoreFolder($folder->id);
 
             return true;
@@ -214,7 +221,7 @@ class FolderController extends Controller
     }
 
     /**
-     * Delete Folder Recursively
+     * Restore Folder Recursively
      * 
      * @param Collection $folders
      * @param bool $permanent
@@ -223,11 +230,10 @@ class FolderController extends Controller
      */
     public function restoreFolderRecursively($folders)
     {
-        // throw new Exception(json_encode($folders));
         foreach ($folders as $folder) {
-            $this->restoreFolderRecursively($folder->folders()->withTrashed()->get()); // Recursively delete child's children
-            $this->fileRepo->restoreFilesByFolderId($folder->id); //delete files under folder permantely
-            $this->folderRepo->restoreFolder($folder->id); //delete itself permantely
+            $this->restoreFolderRecursively($folder->folders()->withTrashed()->get()); // Recursively restore child's children
+            $this->fileRepo->restoreFilesByFolderId($folder->id); //restore files under folder permantely
+            $this->folderRepo->restoreFolder($folder->id); //restore itself permantely
         }
     }
 }

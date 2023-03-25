@@ -29,6 +29,8 @@ return new class extends Migration
             $table->softDeletes();
 
             $table->timestamps();
+
+            $table->index(['owner_id', 'parent_folder_id', 'name']);
         });
     }
 

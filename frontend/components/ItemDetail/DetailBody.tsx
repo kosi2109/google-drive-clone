@@ -4,8 +4,11 @@ import { ItemType } from "../../types/data/itemTypes";
 import DetailBodyText from "./DetailBodyText";
 
 function DetailBody({ item }: { item: ItemType }) {
+  let fileSize = null;
 
-  let fileSize = filesize(item.size as any, {base: 2, standard: "jedec"}) as string;
+  if (item.mime_type !== 'folder') {
+    fileSize = filesize(item?.size as any, {base: 2, standard: "jedec"}) as string;
+  }
 
   return (
     <div className="w-full h-5/6 overflow-auto px-8 select-none">

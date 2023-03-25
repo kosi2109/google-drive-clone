@@ -45,6 +45,7 @@ class ApiAuthController extends Controller
 
     public function logout()
     {
+        //only delete token that currently device is used
         auth()->user()->currentAccessToken()->delete();
 
         return response('Logout Success');

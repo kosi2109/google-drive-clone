@@ -45,7 +45,9 @@ class FileRepository implements FileRepositoryInterface
      */
     public function getOuterFiles(): Collection
     {
-        return $this->model->where('owner_id', auth()->user()->id)->whereNull('folder_id')->get();
+        return $this->model->where('owner_id', auth()->user()->id)
+            ->whereNull('folder_id')
+            ->get();
     }
 
     /**
@@ -54,7 +56,10 @@ class FileRepository implements FileRepositoryInterface
      */
     public function getTrashedFiles(): Collection
     {
-        return $this->model->onlyTrashed()->where('owner_id', auth()->user()->id)->whereDoesntHave('deletedParentFolder')->get();
+        return $this->model->onlyTrashed()
+            ->where('owner_id', auth()->user()->id)
+            ->whereDoesntHave('deletedParentFolder')
+            ->get();
     }
 
     /**
@@ -68,7 +73,7 @@ class FileRepository implements FileRepositoryInterface
     public function findFileById(string $id, bool $is_make_log = true): File
     {
         return DB::transaction(function () use ($id, $is_make_log) {
-            $file = $this->model->find($id);
+            $file = $this->model->withTrashed()->find($id);
 
             throw_if(!$file, FileNotFoundException::class, 'File Not Found', 404);
 
@@ -150,13 +155,7 @@ class FileRepository implements FileRepositoryInterface
      */
     public function deleteFilesByFolderId(string $folderId): bool
     {
-        $files = $this->model->where('folder_id', $folderId)->get();
-
-        if ($files->count() < 1) return true;
-
-        $files = $files->toQuery();
-
-        throw_if(!$files->update(['deleted_at' => now()]), FileDeleteFailException::class, 'Files Delete Fail', 400);
+        throw_if(!$this->model->where('folder_id', $folderId)->delete(), FileDeleteFailException::class, 'Files Delete Fail', 400);
 
         return true;
     }
@@ -170,13 +169,7 @@ class FileRepository implements FileRepositoryInterface
      */
     public function deleteFilesPermenentByFolderId(string $folderId): bool
     {
-        $files = $this->model->onlyTrashed()->where('folder_id', $folderId)->get();
-
-        if ($files->count() < 1) return true;
-
-        $files = $files->toQuery();
-
-        throw_if(!$files->forceDelete(), FileDeleteFailException::class, 'Files Delete Fail', 404);
+        throw_if(!$this->model->onlyTrashed()->where('folder_id', $folderId)->forceDelete(), FileDeleteFailException::class, 'Files Delete Fail', 400);
 
         return true;
     }
@@ -190,9 +183,26 @@ class FileRepository implements FileRepositoryInterface
      */
     public function restoreFilesByFolderId(string $id): bool
     {
-        $this->model->onlyTrashed()->where('folder_id', $id)->forceDelete();
+        throw_if(!$this->model->onlyTrashed()->where('folder_id', $id)->restore(), 
+            FileRestoreFailException::class, 'File Restore Fail', 400);
 
         return true;
+    }
+
+    /**
+     * Find File From Trash by Id
+     * 
+     * @param string $id
+     * 
+     * @return File
+     */
+    public function findFileFromTrashById(string $id) : File
+    {
+        $file = $this->model->onlyTrashed()->find($id);
+        
+        throw_if(!$file, FileNotFoundException::class, 'File Not Found', 404);
+
+        return $file;
     }
 
     /**
@@ -204,9 +214,7 @@ class FileRepository implements FileRepositoryInterface
      */
     public function deleteFilesPermentById(string $id): bool
     {
-        $file = $this->model->onlyTrashed()->find($id);
-        
-        throw_if(!$file, FileNotFoundException::class, 'File Not Found', 404);
+        $file = $this->findFileFromTrashById($id);
 
         Storage::disk('public')->delete($file->file_path);
 
@@ -224,11 +232,9 @@ class FileRepository implements FileRepositoryInterface
      */
     public function restoreFilesById(string $id): bool
     {
-        $folder = $this->model->onlyTrashed()->find($id);
+        $file = $this->findFileFromTrashById($id);
 
-        throw_if(!$folder, FileNotFoundException::class, 'File Not Found', 404);
-
-        throw_if(!$folder->restore(), FileRestoreFailException::class, 'File Restore Fail', 400);
+        throw_if(!$file->restore(), FileRestoreFailException::class, 'File Restore Fail', 400);
 
         return true;
     }

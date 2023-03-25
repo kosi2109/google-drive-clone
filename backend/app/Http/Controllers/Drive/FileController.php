@@ -7,11 +7,9 @@ use App\Drive\File\Requests\CreateFileRequest;
 use App\Drive\File\Resources\FileOverviewResource;
 use App\Drive\File\Resources\FileResource;
 use App\Drive\Folder\Repositories\Interfaces\FolderRepositoryInterface;
-use App\Drive\User\User;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Http\UploadedFile;
-use Illuminate\Log\Logger;
 use Illuminate\Support\Facades\Storage;
 use Pion\Laravel\ChunkUpload\Exceptions\UploadMissingFileException;
 use Pion\Laravel\ChunkUpload\Handler\HandlerFactory;
@@ -45,6 +43,7 @@ class FileController extends Controller
 
     /**
      * FileController : File List
+     * 
      * 
      * @return Collection
      */

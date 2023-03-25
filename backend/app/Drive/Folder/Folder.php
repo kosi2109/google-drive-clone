@@ -50,8 +50,8 @@ class Folder extends Model
     public function lastView()
     {
         return $this->hasOne(Log::class, 'process_id')
-                ->where('process_name', config('constant.process_names.folder'))
-                ->where('process_type', config('constant.process_types.view'))
-                ->latestOfMany();
+            ->where('process_name', config('constant.process_names.folder'))
+            ->where('process_type', config('constant.process_types.view'))
+            ->latestOfMany();
     }
 }
