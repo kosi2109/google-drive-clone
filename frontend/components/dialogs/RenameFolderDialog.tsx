@@ -19,7 +19,8 @@ function RenameFolderDialog() {
 
   useEffect(() => {
     inputRef.current?.focus();
-  }, [])
+  }, []);
+  
   useEffect(() => {
     if (router.pathname === "/drive/folders/[id]") {
       setParentFolderId(router?.query?.id as string);
