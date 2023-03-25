@@ -1,9 +1,9 @@
 import React from "react";
-import AppLayout from "../../components/layouts/AppLayout";
 import useSWR from "swr";
 import { foldersApiEndPoint, getFolders } from "../../api/folders/foldersApi";
-import ItemsContainer from "../../components/items/ItemsContainer";
 import { filesApiEndPoint, getFiles } from "../../api/files/filesApi";
+import AppLayout from "../../components/Layouts/AppLayout";
+import ItemsContainer from "../../components/Items/ItemsContainer";
 
 function Trash() {
   let query = "trashed=true";

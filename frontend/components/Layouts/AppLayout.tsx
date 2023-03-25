@@ -19,10 +19,9 @@ import {
 } from "../../features/appSlice";
 import {
   addToQeue,
-  selectDownloadQueue,
   updateProgessById,
 } from "../../features/downloadQueueSlice";
-import SkeletonLoading from "../Common/SkeletonLoading";
+import SkeletonLoading from "../common/SkeletonLoading";
 import CreateFolderDialog from "../dialogs/CreateFolderDialog";
 import GeneralAccessDialog from "../dialogs/GeneralAccessDialog";
 import RenameFolderDialog from "../dialogs/RenameFolderDialog";
@@ -32,8 +31,8 @@ import ItemDetail from "../ItemDetail";
 import PageNavigator from "../PageNavigator";
 import SideBar from "../SideBar";
 import AuthGuard from "./AuthGuard";
-import {mutate} from "swr";
-import { foldersApiEndPoint, getFolderById } from "../../api/folders/foldersApi";
+import { mutate } from "swr";
+import { foldersApiEndPoint } from "../../api/folders/foldersApi";
 import { filesApiEndPoint } from "../../api/files/filesApi";
 
 function AppLayout({ children, breadcrumb, isLoading = false }: any) {
@@ -48,7 +47,8 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
   const router = useRouter();
 
   const dispatch = useDispatch();
-
+  
+  //get folder id for mutation
   useEffect(() => {
     if (router.pathname === "/drive/folders/[id]") {
       setParentFolderId(router?.query?.id as string);
@@ -63,14 +63,14 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
         name: item.file.name,
         completed: item.completed,
         state: item.state,
-        mime_type : item.file.type
+        mime_type: item.file.type,
       })
     );
 
     dispatch(changeDownloadController({ isOpen: true, isMinimize: false }));
-
   });
 
+  //listerner for upload progress
   useItemProgressListener((item) => {
     dispatch(
       updateProgessById({
@@ -81,6 +81,7 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
     );
   });
 
+  //listerner for upload done
   useItemFinishListener(async (item) => {
     dispatch(
       updateProgessById({
@@ -89,15 +90,16 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
         state: item.state,
       })
     );
-
+    
+    //after upload done mutate according to folder id or file
     if (parentFolderId !== "") {
       await mutate([foldersApiEndPoint, parentFolderId]);
     } else {
-      await mutate([filesApiEndPoint, '']);
-    };
-
+      await mutate([filesApiEndPoint, ""]);
+    }
   });
 
+  //cookie not work in Uploady so add token with request
   useRequestPreSend(() => {
     return {
       options: {
@@ -130,7 +132,7 @@ function AppLayout({ children, breadcrumb, isLoading = false }: any) {
             <div className="w-full flex">
               <div
                 className={`${
-                  isOpenDetail ? "lg:w-4/6" : 'lg:w-full'
+                  isOpenDetail ? "lg:w-4/6" : "lg:w-full"
                 } w-full h-screen overflow-scroll pb-32 transition-all ease-in-out`}
               >
                 {isLoading ? <SkeletonLoading /> : children}

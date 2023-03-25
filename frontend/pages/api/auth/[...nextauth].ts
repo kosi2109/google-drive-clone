@@ -56,7 +56,7 @@ export default (req : NextApiRequest, res : NextApiResponse)=> {
         return { ...session, token : token?.account };
       },
     },
-    secret : process.env.SESSION_SECRET,
+    secret : process.env.NEXT_PUBLIC_SESSION_SECRET,
     pages : {
       signIn : '/auth'
     },

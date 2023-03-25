@@ -1,13 +1,13 @@
 import { useSession } from "next-auth/react";
 import React from "react";
-import AppLayout from "../../../components/layouts/AppLayout";
 import useSWR from "swr";
 import { useRouter } from "next/router";
 import {
   foldersApiEndPoint,
   getFolderById,
 } from "../../../api/folders/foldersApi";
-import ItemsContainer from "../../../components/items/ItemsContainer";
+import AppLayout from "../../../components/Layouts/AppLayout";
+import ItemsContainer from "../../../components/Items/ItemsContainer";
 
 function Folder() {
   const {

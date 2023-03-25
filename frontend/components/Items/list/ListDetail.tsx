@@ -1,5 +1,5 @@
 import { useRouter } from "next/router";
-import React, { useState } from "react";
+import React from "react";
 import { useDispatch } from "react-redux";
 import getIconByType from "../../../constant/fileTypes";
 import { changeSelectItem } from "../../../features/itemSlice";

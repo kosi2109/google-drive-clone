@@ -9,8 +9,8 @@ import { changeGeneralAccess } from "../../features/appSlice";
 import { selectSelectedItem } from "../../features/itemSlice";
 import useOutsideClick from "../../hooks/useOutsideClick";
 import { ItemType } from "../../types/data/itemTypes";
-import Dialog from "../Common/Dialog";
-import OverviewProfile from "../Common/OverviewProfile";
+import Dialog from "../common/Dialog";
+import OverviewProfile from "../common/OverviewProfile";
 import "./GeneralAccessDialog";
 
 const accessOption = [
@@ -49,7 +49,7 @@ function GeneralAccessDialog({}: {}) {
   };
 
   const close = () => {
-    dispatch(changeGeneralAccess(false))
+    dispatch(changeGeneralAccess(false));
   };
 
   return (

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { foldersApiEndPoint, updateFolders } from "../../api/folders/foldersApi";
+import {
+  foldersApiEndPoint,
+  updateFolders,
+} from "../../api/folders/foldersApi";
 import { changeFolderRename } from "../../features/appSlice";
-import Dialog from "../Common/Dialog";
+import Dialog from "../common/Dialog";
 import useSWRMutation from "swr/mutation";
 import { selectSelectedItem } from "../../features/itemSlice";
 import { ItemType } from "../../types/data/itemTypes";
-import { filesApiEndPoint, updateFiles } from "../../api/files/filesApi";
+import { updateFiles } from "../../api/files/filesApi";
 import { useRouter } from "next/router";
 
 function RenameFolderDialog() {
@@ -19,8 +22,14 @@ function RenameFolderDialog() {
     }
   }, [router.pathname, router.query.id]);
 
-  const { trigger : folderTrigger, isMutating : folderMutating } = useSWRMutation([foldersApiEndPoint, parentFolderId],(key, {arg}) => updateFolders(arg.id, arg.data));
-  const { trigger : fileTrigger, isMutating : fileMutating } = useSWRMutation([foldersApiEndPoint, parentFolderId],(key, {arg}) => updateFiles(arg.id, arg.data));
+  const { trigger: folderTrigger, isMutating: folderMutating } = useSWRMutation(
+    [foldersApiEndPoint, parentFolderId],
+    (key, { arg }) => updateFolders(arg.id, arg.data)
+  );
+  const { trigger: fileTrigger, isMutating: fileMutating } = useSWRMutation(
+    [foldersApiEndPoint, parentFolderId],
+    (key, { arg }) => updateFiles(arg.id, arg.data)
+  );
   const item = useSelector(selectSelectedItem) as ItemType;
   const dispatch = useDispatch();
   const [name, setName] = useState(item.name);
@@ -32,18 +41,16 @@ function RenameFolderDialog() {
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
-    if (item.mime_type === 'folder') {
+    if (item.mime_type === "folder") {
       await folderTrigger({
-        id : item.id,
-        data : {name}
+        id: item.id,
+        data: { name },
       });
-      
     } else {
       await fileTrigger({
-        id : item.id,
-        data : {name}
+        id: item.id,
+        data: { name },
       });
-
     }
     close();
   };
@@ -67,7 +74,7 @@ function RenameFolderDialog() {
             Cancel
           </button>
           <button className="px-2 py-1 hover:bg-sky-50 text-blue-900 rounded mx-1">
-            {folderMutating || fileMutating ? 'Renaming' : 'OK' }
+            {folderMutating || fileMutating ? "Renaming" : "OK"}
           </button>
         </div>
       </form>

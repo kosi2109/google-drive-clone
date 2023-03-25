@@ -8,7 +8,7 @@ import { RiFolderUploadLine } from "react-icons/ri";
 import { useDispatch } from "react-redux";
 import { changeFolderCreate } from "../../features/appSlice";
 import useOutsideClick from "../../hooks/useOutsideClick";
-import Devider from "../Common/Devider";
+import Devider from "../common/Devider";
 
 function LinkBtn({
   Icon,

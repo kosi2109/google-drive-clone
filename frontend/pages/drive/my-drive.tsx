@@ -1,11 +1,11 @@
 import { useItemFinishListener } from "@rpldy/uploady";
 import { useDispatch } from "react-redux";
-import ItemsContainer from "../../components/items/ItemsContainer";
-import AppLayout from "../../components/layouts/AppLayout";
 import { updateProgessById } from "../../features/downloadQueueSlice";
 import useSWR from 'swr'
 import { foldersApiEndPoint, getFolders } from "../../api/folders/foldersApi";
 import { filesApiEndPoint, getFiles } from "../../api/files/filesApi";
+import AppLayout from "../../components/Layouts/AppLayout";
+import ItemsContainer from "../../components/Items/ItemsContainer";
 
 function MyDrive() {
   const dispatch = useDispatch();

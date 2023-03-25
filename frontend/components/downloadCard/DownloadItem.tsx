@@ -4,7 +4,7 @@ import { RoundedHoverBtn } from "../buttons";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { DownQueueState } from "../../features/downloadQueueSlice";
-import { MdDone , MdFolder } from "react-icons/md";
+import { MdDone, MdFolder } from "react-icons/md";
 
 export interface DownloadItem {
   item: DownQueueState;

@@ -1,6 +1,6 @@
 import React from "react";
 
-function GridContainer({ children, title }: { children: any; title: string }) {
+function GridContainer({ children, title }: { children: JSX.Element; title: string }) {
   return (
     <div className="flex flex-col">
       <h5 className="m-3 text-sm font-semibold select-none">{title}</h5>

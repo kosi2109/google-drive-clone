@@ -6,6 +6,7 @@ import { ThemeProvider } from "next-themes";
 import { SessionProvider } from "next-auth/react";
 import ChunkedUploady from "@rpldy/chunked-uploady";
 import { useEffect, useState } from "react";
+
 const chunkSize = 10 * 1024 * 1024;
 
 export default function App({
@@ -22,6 +23,7 @@ export default function App({
     return null;
   }
 
+  //to prevent error in next 14
   if (typeof window === "undefined") {
     return <></>;
   }
@@ -33,10 +35,9 @@ export default function App({
           <ChunkedUploady
             method="POST"
             destination={{
-              url: "http://localhost:8000/api/files/uploadLargeFiles",
+              url: `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/files/uploadLargeFiles`,
               headers: {
-                "x-custom": "123",
-                "Accept" : "application/json"
+                Accept: "application/json",
               },
             }}
             chunkSize={chunkSize}

@@ -2,9 +2,9 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { createFolder, foldersApiEndPoint } from "../../api/folders/foldersApi";
 import { changeFolderCreate } from "../../features/appSlice";
-import Dialog from "../Common/Dialog";
 import useSWRMutation from "swr/mutation";
 import { useRouter } from "next/router";
+import Dialog from "../common/Dialog";
 
 function CreateFolderDialog() {
   const [name, setName] = useState("");

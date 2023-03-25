@@ -1,12 +1,8 @@
-type BaseUser = {
-    id: number;
-    name: string;
-    email: string;
-}
+import { User } from "./userType";
 
 type BaseLog = {
     created_at: string;
-    process_by: BaseUser;
+    process_by: User;
 }
 
 type ItemType = {
@@ -16,7 +12,7 @@ type ItemType = {
   size: string;
   file_path: string;
   mime_type: string;
-  ownBy: BaseUser;
+  ownBy: User;
   lastModify: BaseLog;
   lastView: BaseLog;
   created: string;

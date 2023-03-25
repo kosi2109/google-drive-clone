@@ -1,5 +1,5 @@
 import React from 'react'
-import AppLayout from '../../components/layouts/AppLayout'
+import AppLayout from '../../components/Layouts/AppLayout'
 
 function Recent() {
   return (

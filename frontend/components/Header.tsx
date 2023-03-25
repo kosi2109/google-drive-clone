@@ -4,7 +4,6 @@ import Logo from "../public/assets/driveLogo.png";
 import { GoSettings } from "react-icons/go";
 import { AiOutlineClose, AiOutlineMenu, AiOutlineSearch } from "react-icons/ai";
 import RoundedHoverBtn from "./buttons/RoundedHoverBtn";
-import { SearchHistories, AdvanceFilter, FileTypes } from "./search";
 import { useTheme } from "next-themes";
 import { BsMoon, BsSun } from "react-icons/bs";
 import { useDispatch } from "react-redux";
@@ -16,6 +15,7 @@ import { signOut } from "next-auth/react"
 import { logout } from "../api/backendApi";
 import { destroyCookie } from 'nookies'
 import { logoutUser } from "../features/userSlice";
+import { AdvanceFilter, FileTypes, SearchHistories } from "./Search";
 
 function Header() {
   const [isFoucs, setIsFoucs] = useState<boolean>(false);

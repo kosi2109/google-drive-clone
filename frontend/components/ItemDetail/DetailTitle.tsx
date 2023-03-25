@@ -5,9 +5,9 @@ import getIconByType from "../../constant/fileTypes";
 import { changeOpenDetailView } from "../../features/appSlice";
 import { RoundedHoverBtn } from "../buttons";
 
-function DetailTitle({ name, mime_type }: { name: string, mime_type : string }) {
+function DetailTitle({ name, mime_type }: { name: string; mime_type: string }) {
   const dispatch = useDispatch();
-  const { Icon, color } = getIconByType(mime_type) ;
+  const { Icon, color } = getIconByType(mime_type);
 
   return (
     <div className="flex items-center p-8 w-full justify-between h-1/6 select-none">
