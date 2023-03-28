@@ -21,7 +21,7 @@ I want to handle and practice large file upload so I just clone Google Drive.
 - Redux toolkit for application state management
 - Tailwind for styling
 - Axois for data fetching
-- Filesize for calculate file size from bite
+- Filesize for calculate file size from byte
 
 ## Screenshots
 
