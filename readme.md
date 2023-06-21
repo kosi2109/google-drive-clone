@@ -1,27 +1,21 @@
 
-# Google Drive Clone
-
-I want to handle and practice large file upload so I just clone Google Drive.
+The Google Drive Clone project aims to develop a web application that replicates the core functionalities of Google Drive. The application will be built using Next.js for the frontend and Laravel with the repository pattern for the backend.
 
 
+## Key Features of SnapChatChat:
 
-## Technologies Used In Backend
+- User Registration and Authentication: The application will allow users to register, log in securely, and manage their account information. User authentication will be implemented using OAuth, leveraging third-party providers for a secure login process.
 
-- Laravel 9
-- Laravel-chunk-upload For Receiving chunks that sends from frontend
-- Sanctum for Api user authentication
+- File Management: Users will be able to upload, organize, and manage their files within the application. The file management system will include features such as creating folders, renaming files, moving files between folders, and deleting files.
 
+- Trash Functionality: The application will incorporate a trash feature where deleted files will be moved to a designated "trash" folder instead of being permanently deleted. Users can choose to restore files from the trash or permanently delete them.
 
-## Technologies Used In Frontend
+- Recursive File Deletion: Users will have the option to delete files recursively, meaning that when a folder is deleted, all the files and subfolders within it will also be deleted. This feature allows for efficient file organization and cleanup.
 
-- Next Js 13 with TypeScript
-- Next Auth for frontend authentication 
-- React-google-login for Google login
-- SWR for service state management
-- Redux toolkit for application state management
-- Tailwind for styling
-- Axois for data fetching
-- Filesize for calculate file size from byte
+- State Management: The application's state management will be handled using Redux Toolkit, enabling efficient handling of application-wide states, such as user authentication status, file/folder data, and trash status.
+
+- Server State Management: SWR (Stale-While-Revalidate) will be implemented for server state management, providing optimized data fetching and caching. This ensures a fast and responsive user experience while minimizing unnecessary API requests.
+
 
 ## Screenshots
 
