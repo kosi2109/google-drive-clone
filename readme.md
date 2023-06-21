@@ -6,6 +6,8 @@ The Google Drive Clone project aims to develop a web application that replicates
 
 - User Registration and Authentication: The application will allow users to register, log in securely, and manage their account information. User authentication will be implemented using OAuth, leveraging third-party providers for a secure login process.
 
+- Frontend Authentication: NextAuth, a widely-used authentication library for Next.js, will be implemented to handle frontend authentication. This will include features such as secure login, registration, and session management.
+
 - File Management: Users will be able to upload, organize, and manage their files within the application. The file management system will include features such as creating folders, renaming files, moving files between folders, and deleting files.
 
 - Trash Functionality: The application will incorporate a trash feature where deleted files will be moved to a designated "trash" folder instead of being permanently deleted. Users can choose to restore files from the trash or permanently delete them.
